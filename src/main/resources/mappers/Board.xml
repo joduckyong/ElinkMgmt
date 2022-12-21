@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.mapper.BoardMapper">
+
+	<select id="selectBoard" parameterType="kr.co.elink.dto.BoardVo" resultType="kr.co.elink.dto.BoardVo">
+		select *
+		  from tb_board
+	</select>
+
+	<select id="selectBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardVo">
+		select *
+		  from tb_board
+		 where board_id = #{id}
+	</select>
+	
+	<insert id="insertBoard" parameterType="kr.co.elink.dto.BoardVo">
+		insert into tb_board
+					(	
+						board_id
+					  <if test="boardType neq '' and boardType != null">
+					  , board_type
+					  </if>
+					  <if test="boardTitle neq '' and boardTitle != null">
+					  , board_title
+					  </if>
+					  <if test="boardContents neq '' and boardContents != null">
+					  , board_contents
+					  </if>
+					  <if test="url neq '' and url != null">
+					  , url
+					  </if>
+					  <if test="createdId neq '' and createdId != null">
+					  , created_id
+					  </if>
+					)
+					values
+					(
+						FNC_ID(#{boardId})
+					  <if test="boardType neq '' and boardType != null">
+					  , #{boardType}
+					  </if>
+					  <if test="boardTitle neq '' and boardTitle != null">
+					  , #{boardTitle}
+					  </if>
+					  <if test="boardContents neq '' and boardContents != null">
+					  , #{boardContents}
+					  </if>
+					  <if test="url neq '' and url != null">
+					  , #{url}
+					  </if>
+					  <if test="createdId neq '' and createdId != null">
+					  , #{createdId}
+					  </if>
+					)		  
+	</insert>
+	
+	<update id="updateBoard" parameterType="kr.co.elink.dto.BoardVo">
+		update tb_board
+		   set updated_datetime = now()
+		   <if test="updatedId neq '' and updatedId != null">
+		     , updated_id = #{updatedId}
+		   </if>
+		   <if test="boardTitle neq '' and boardTitle != null">
+		     , board_title = #{boardTitle}
+		   </if>
+		   <if test="boardContents neq '' and boardContents != null">
+		     , board_contents = #{boardContents}
+		   </if>
+		   <if test="url neq '' and url != null">
+		     , url = #{url}
+		   </if>
+		 where board_id = #{boardId}
+	</update>		
+	
+	<delete id="deleteBoard" parameterType="String">
+		delete 
+	 	  from tb_board
+	 	 where board_id = #{id}
+	</delete>		
+	
+</mapper>
