@@ -24,34 +24,34 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-    @GetMapping("")
-    public ResponseEntity<List<BoardVo>> selectBoard(BoardVo boardVo) {
-        List<BoardVo> selecctBoard = boardService.selectBoard(boardVo);
+    @GetMapping("/All/{id}")
+    public ResponseEntity<List<BoardVo>> selectBoard(@PathVariable("id") String id) {
+        List<BoardVo> selecctBoard = boardService.selectBoard(id);
         return ResponseEntity.status(HttpStatus.OK).body(selecctBoard);
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<BoardVo> selectBoardInfo(@PathVariable("id") String id) {
     	BoardVo selectBoardInfo = boardService.selectBoardInfo(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(selectBoardInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(selectBoardInfo);
     }
     
     @PostMapping("")
-    public ResponseEntity<List<BoardVo>> insertBoard(@RequestBody BoardVo boardVo) {
-    	List<BoardVo> insertBoard = boardService.insertBoard(boardVo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(insertBoard);
+    public ResponseEntity<Integer> insertBoard(@RequestBody BoardVo boardVo) {
+    	int insertBoard = boardService.insertBoard(boardVo);
+        return ResponseEntity.status(HttpStatus.OK).body(insertBoard);
     }    
     
     @PutMapping("")
-    public ResponseEntity<BoardVo> updateBoard(@RequestBody BoardVo boardVo) {
-    	BoardVo updateBoard = boardService.updateBoard(boardVo);
+    public ResponseEntity<Integer> updateBoard(@RequestBody BoardVo boardVo) {
+    	int updateBoard = boardService.updateBoard(boardVo);
         return ResponseEntity.status(HttpStatus.OK).body(updateBoard);
     }    
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteBoard(@PathVariable("id") String id) {
-    	boardService.deleteBoard(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    public ResponseEntity<Integer> deleteBoard(@PathVariable("id") String id) {
+    	int deleteBoard = boardService.deleteBoard(id);
+        return ResponseEntity.status(HttpStatus.OK).body(deleteBoard);
     }
     
 }

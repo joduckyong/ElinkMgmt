@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.mapper.ConactUsMapper">
+
+	<select id="selectConactUs" parameterType="kr.co.elink.dto.ConactUsVo" resultType="kr.co.elink.dto.ConactUsVo">
+		select *
+		  from tb_conact_us
+	</select>
+
+	<select id="selecConactUsInfo" parameterType="String" resultType="kr.co.elink.dto.ConactUsVo">
+		select *
+		  from tb_conact_us
+		 where conact_id = #{id}
+	</select>
+	
+	<insert id="insertConactUs" parameterType="kr.co.elink.dto.ConactUsVo">
+		insert into tb_conact_us
+					(	
+						conact_id
+					  <if test="conactNm neq '' and conactNm != null">
+					  , conact_nm
+					  </if>
+					  <if test="conactPhone neq '' and conactPhone != null">
+					  , conact_phone
+					  </if>
+					  <if test="conactMail neq '' and conactMail != null">
+					  , conact_mail
+					  </if>
+					  <if test="conactContents neq '' and conactContents != null">
+					  , conact_contents
+					  </if>
+					  <if test="conactAgree neq '' and conactAgree != null">
+					  , conact_agree
+					  </if>
+					)
+					values
+					(
+						FNC_ID(#{conactId})
+					  <if test="conactNm neq '' and conactNm != null">
+					  , #{conactNm}
+					  </if>
+					  <if test="conactPhone neq '' and conactPhone != null">
+					  , #{conactPhone}
+					  </if>
+					  <if test="conactMail neq '' and conactMail != null">
+					  , #{conactMail}
+					  </if>
+					  <if test="conactContents neq '' and conactContents != null">
+					  , #{conactContents}
+					  </if>
+					  <if test="conactAgree neq '' and conactAgree != null">
+					  , #{conactAgree}
+					  </if>
+					)		  
+	</insert>
+	
+	<update id="updateConactUs" parameterType="kr.co.elink.dto.ConactUsVo">
+		update tb_conact_us
+		   set conact_agree = 'Y'
+		   <if test="conactNm neq '' and conactNm != null">
+		     , conact_nm = #{conactNm}
+		   </if>
+		   <if test="conactPhone neq '' and conactPhone != null">
+		     , conact_phone = #{conactPhone}
+		   </if>
+		   <if test="conactMail neq '' and conactMail != null">
+		     , conact_mail = #{conactMail}
+		   </if>
+		   <if test="conactContents neq '' and conactContents != null">
+		     , conact_contents = #{conactContents}
+		   </if>
+		 where conact_id = #{conactId}
+	</update>		
+	
+	<delete id="deleteConactUs" parameterType="String">
+		delete 
+	 	  from tb_conact_us
+	 	 where conact_id = #{id}
+	</delete>		
+	
+</mapper>

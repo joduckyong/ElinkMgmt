@@ -4,7 +4,8 @@
 
 	<select id="selectBoard" parameterType="kr.co.elink.dto.BoardVo" resultType="kr.co.elink.dto.BoardVo">
 		select *
-		  from tb_board
+		  from tb_board 
+		 where board_id like concat(#{id},'%')   
 	</select>
 
 	<select id="selectBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardVo">

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.mapper.PopupMapper">
+
+	<select id="selectPopup" parameterType="kr.co.elink.dto.PopupVo" resultType="kr.co.elink.dto.PopupVo">
+		select *
+		  from tb_popup
+	</select>
+
+	<select id="selectPopupInfo" parameterType="String" resultType="kr.co.elink.dto.PopupVo">
+		select *
+		  from tb_popup
+		 where popup_id = #{id}
+	</select>
+	
+	<insert id="insertPopup" parameterType="kr.co.elink.dto.PopupVo">
+		insert into tb_popup
+					(	
+						popup_id
+					  <if test="popupTitle neq '' and popupTitle != null">
+					  , popup_title
+					  </if>
+					  <if test="popupLink neq '' and popupLink != null">
+					  , popup_link
+					  </if>
+					  <if test="popupClose1 neq '' and popupClose1 != null">
+					  , popup_close1
+					  </if>
+					  <if test="popupClose2 neq '' and popupClose2 != null">
+					  , popup_close2
+					  </if>
+					  <if test="popupHeight neq '' and popupHeight != null">
+					  , popup_height
+					  </if>
+					  <if test="popupWidth neq '' and popupWidth != null">
+					  , popup_width
+					  </if>
+					  <if test="popupStartdate neq '' and popupStartdate != null">
+					  , popup_startdate
+					  </if>
+					  <if test="popupEnddate neq '' and popupEnddate != null">
+					  , popup_enddate
+					  </if>
+					  <if test="createdId neq '' and createdId != null">
+					  , created_id
+					  </if>
+					)
+					values
+					(
+						FNC_ID(#{popupId})
+					  <if test="popupTitle neq '' and popupTitle != null">
+					  , #{popupTitle}
+					  </if>
+					  <if test="popupLink neq '' and popupLink != null">
+					  , #{popupLink}
+					  </if>
+					  <if test="popupClose1 neq '' and popupClose1 != null">
+					  , #{popupClose1}
+					  </if>
+					  <if test="popupClose2 neq '' and popupClose2 != null">
+					  , #{popupClose2}
+					  </if>
+					  <if test="popupHeight neq '' and popupHeight != null">
+					  , #{popupHeight}
+					  </if>
+					  <if test="popupWidth neq '' and popupWidth != null">
+					  , #{popupWidth}
+					  </if>
+					  <if test="popupStartdate neq '' and popupStartdate != null">
+					  , #{popupStartdate}
+					  </if>
+					  <if test="popupEnddate neq '' and popupEnddate != null">
+					  , #{popupEnddate}
+					  </if>
+					  <if test="createdId neq '' and createdId != null">
+					  , #{createdId}
+					  </if>
+					)		  
+	</insert>
+	
+	<update id="updatePopup" parameterType="kr.co.elink.dto.PopupVo">
+		update tb_popup
+		   set updated_datetime = now()
+		   <if test="updatedId neq '' and updatedId != null">
+		     , updated_id = #{updatedId}
+		   </if>
+		   <if test="popupTitle neq '' and popupTitle != null">
+		     , popup_title = #{popupTitle}
+		   </if>
+		   <if test="popupLink neq '' and popupLink != null">
+		     , popup_link = #{popupLink}
+		   </if>
+		   <if test="popupClose1 neq '' and popupClose1 != null">
+		     , popup_close1 = #{popupClose1}
+		   </if>
+		   <if test="popupClose2 neq '' and popupClose2 != null">
+		     , popup_close2 = #{popupClose2}
+		   </if>
+		   <if test="popupHeight neq '' and popupHeight != null">
+		     , popup_height = #{popupHeight}
+		   </if>
+		   <if test="popupWidth neq '' and popupWidth != null">
+		     , popup_width = #{popupWidth}
+		   </if>
+		   <if test="popupStartdate neq '' and popupStartdate != null">
+		     , popup_startdate = #{popupStartdate}
+		   </if>
+		   <if test="popupEnddate neq '' and popupEnddate != null">
+		     , popup_enddate = #{popupEnddate}
+		  </if>
+		 where popup_id = #{popupId}
+	</update>		
+	
+	<delete id="deletePopup" parameterType="String">
+		delete 
+	 	  from tb_popup
+	 	 where popup_id = #{id}
+	</delete>		
+	
+</mapper>

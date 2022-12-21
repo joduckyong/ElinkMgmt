@@ -3,7 +3,7 @@ package kr.co.elink.dto;
 import lombok.Data;
 
 @Data
-public class BoardVo
+public class BoardVo extends DefaultVo
 {
 	private String boardId;
 	

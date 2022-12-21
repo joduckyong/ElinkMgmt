@@ -15,8 +15,8 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	public List<BoardVo> selectBoard(BoardVo boardVo){
-		return boardMapper.selectBoard(boardVo);
+	public List<BoardVo> selectBoard(String id){
+		return boardMapper.selectBoard(id);
 	};
 	
 	public BoardVo selectBoardInfo(String id){
@@ -24,17 +24,13 @@ public class BoardService {
 	};
 	
 	@Transactional
-	public List<BoardVo> insertBoard(BoardVo boardVo){
-		
-		boardMapper.insertBoard(boardVo);
-		return boardMapper.selectBoard(boardVo);
+	public int insertBoard(BoardVo boardVo){
+		return boardMapper.insertBoard(boardVo);
 	};
 	
 	@Transactional
-	public BoardVo updateBoard(BoardVo boardVo){
-		boardMapper.updateBoard(boardVo);
-		String id = boardVo.getBoardId();
-		return boardMapper.selectBoardInfo(id);
+	public int updateBoard(BoardVo boardVo){
+		return boardMapper.updateBoard(boardVo);
 	};
 	
 	@Transactional
