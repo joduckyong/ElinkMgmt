@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class BoardVo extends DefaultVo
 {
+	private String id;
+	
 	private String boardId;
 	
 	private String boardType;

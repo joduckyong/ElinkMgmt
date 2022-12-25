@@ -11,7 +11,7 @@ import kr.co.elink.dto.BoardVo;
 @Mapper
 public interface BoardMapper {
 	
-	public List<BoardVo> selectBoard(String id);
+	public List<BoardVo> selectBoard(BoardVo boardVo);
 	
 	public BoardVo selectBoardInfo(String id);
 	

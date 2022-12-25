@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.mapper.CommonMapper">
+ 
+    <!--  ============================================= -->
+    <!--           전체 공통  페이징에 사용             -->
+
+    <!--  ============================================= -->
+    <!-- SELECT PAGING_OUT.* FROM ( SELECT ROW_NUMBER() OVER() AS RNUM, PAGING_IN.* FROM ( -->
+    <sql id="pagePrefix">
+		<![CDATA[
+		SELECT TB.* FROM ( SELECT PAGING_OUT.* FROM (
+		]]>
+    </sql>
+
+    <!-- ) PAGING_IN )  PAGING_OUT WHERE RNUM > #{firstIndex} LIMIT #{lastIndex} -->
+    <sql id="pageSubfix">
+		<![CDATA[
+		)  PAGING_OUT WHERE RNUM > #{firstIndex} ORDER BY RNUM
+		LIMIT #{lastIndex} ) TB ORDER BY RNUM
+		]]>
+    </sql>
+		
+</mapper>

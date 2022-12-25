@@ -15,8 +15,15 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	public List<BoardVo> selectBoard(String id){
-		return boardMapper.selectBoard(id);
+	public List<BoardVo> selectBoard(String id, int pageIndex){
+		// 페이징 처리
+		BoardVo boardVo = new BoardVo();
+		boardVo.setId(id);
+		boardVo.setFirstIndex(pageIndex);
+		boardVo.setFirstIndex((boardVo.getPageIndex() - 1) * boardVo.getRecordCountPerPage());
+		boardVo.setLastIndex(boardVo.getRecordCountPerPage());
+		
+		return boardMapper.selectBoard(boardVo);
 	};
 	
 	public BoardVo selectBoardInfo(String id){

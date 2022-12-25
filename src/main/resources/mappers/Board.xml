@@ -3,9 +3,24 @@
 <mapper namespace="kr.co.elink.mapper.BoardMapper">
 
 	<select id="selectBoard" parameterType="kr.co.elink.dto.BoardVo" resultType="kr.co.elink.dto.BoardVo">
-		select *
-		  from tb_board 
-		 where board_id like concat(#{id},'%')   
+		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
+	   select row_number() over(order by board_id desc ) as rnum
+			, tb.*
+		from (	
+			select board_id
+			     , board_type
+			     , board_title
+			     , board_contents
+			     , url
+			     , created_id
+			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+			     , updated_id
+			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
+			  from tb_board
+			 where board_id like concat(#{id},'%')   
+			 )tb 
+	   where 1 = 1		
+	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 
 	</select>
 
 	<select id="selectBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardVo">
