@@ -15,7 +15,14 @@ public class PopupService {
 	@Autowired
 	PopupMapper popupMapper;
 	
-	public List<PopupVo> selectPopup(PopupVo popupVo){
+	public List<PopupVo> selectPopup(String id, int pageIndex){
+		
+		// 페이징 처리
+		PopupVo popupVo = new PopupVo();
+		popupVo.setId(id);
+		popupVo.setFirstIndex(pageIndex);
+		popupVo.setFirstIndex((popupVo.getPageIndex() - 1) * popupVo.getRecordCountPerPage());
+		popupVo.setLastIndex(popupVo.getRecordCountPerPage());		
 		return popupMapper.selectPopup(popupVo);
 	};
 	
@@ -34,8 +41,12 @@ public class PopupService {
 	};
 	
 	@Transactional
-	public int updatePopup(String id){
-		return popupMapper.updatePopup(id);
+	public int deletePopup(String id){
+		return popupMapper.deletePopup(id);
 	};
 	
+	@Transactional
+	public int deletePopupIds(List<String> ids){
+		return popupMapper.deletePopupIds(ids);
+	}
 }

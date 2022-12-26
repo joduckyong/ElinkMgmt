@@ -3,17 +3,40 @@
 <mapper namespace="kr.co.elink.mapper.PopupMapper">
 
 	<select id="selectPopup" parameterType="kr.co.elink.dto.PopupVo" resultType="kr.co.elink.dto.PopupVo">
-		select *
-		  from tb_popup
+		/* PopupMapper.selectPopup */	
+		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
+	   select row_number() over(order by board_id desc ) as rnum
+			, tb.*
+		 from (	
+			select popup_id
+			     , popup_title
+			     , popup_link
+			     , popup_close1
+			     , popup_close2
+			     , popup_height
+			     , popup_width
+			     , popup_startdate
+			     , popup_enddate
+			     , created_id
+			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+			     , updated_id
+			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
+			  from tb_popup
+			 where popup_id like concat(#{id},'%')   
+			  )tb 
+	    where 1 = 1		
+	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 		  
 	</select>
 
 	<select id="selectPopupInfo" parameterType="String" resultType="kr.co.elink.dto.PopupVo">
+		/* PopupMapper.selectPopupInfo */	
 		select *
 		  from tb_popup
 		 where popup_id = #{id}
 	</select>
 	
 	<insert id="insertPopup" parameterType="kr.co.elink.dto.PopupVo">
+		/* PopupMapper.insertPopup */	
 		insert into tb_popup
 					(	
 						popup_id
@@ -79,6 +102,7 @@
 	</insert>
 	
 	<update id="updatePopup" parameterType="kr.co.elink.dto.PopupVo">
+		/* PopupMapper.updatePopup */	
 		update tb_popup
 		   set updated_datetime = now()
 		   <if test="updatedId neq '' and updatedId != null">
@@ -112,9 +136,17 @@
 	</update>		
 	
 	<delete id="deletePopup" parameterType="String">
+		/* PopupMapper.deletePopup */	
 		delete 
 	 	  from tb_popup
 	 	 where popup_id = #{id}
 	</delete>		
 	
+	<delete id="deletePopupIds">
+		/* PopupMapper.deletePopupIds */		
+		delete from tb_popup where popup_id in 
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>		
+	</delete>		
 </mapper>

@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class PopupVo extends DefaultVo
 {
+	private String id;
+	
 	private String popupId;
 	
 	private String popupTitle;

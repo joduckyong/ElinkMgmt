@@ -24,9 +24,9 @@ public class PopupController {
 	@Autowired
 	PopupService popupService;
 	
-    @GetMapping("")
-    public ResponseEntity<List<PopupVo>> selectPopup(PopupVo popupVo) {
-        List<PopupVo> selectPopup = popupService.selectPopup(popupVo);
+	@GetMapping("/{id}/{pageIndex}/{searchKeyword}")
+    public ResponseEntity<List<PopupVo>> selectPopup(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex) {
+        List<PopupVo> selectPopup = popupService.selectPopup(id, pageIndex);
         return ResponseEntity.status(HttpStatus.OK).body(selectPopup);
     }
     
@@ -49,9 +49,14 @@ public class PopupController {
     }    
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> updatePopup(@PathVariable("id") String id) {
-    	int updatePopup = popupService.updatePopup(id);
-        return ResponseEntity.status(HttpStatus.OK).body(updatePopup);
+    public ResponseEntity<Integer> deletePopup(@PathVariable("id") String id) {
+    	int deletePopup = popupService.deletePopup(id);
+        return ResponseEntity.status(HttpStatus.OK).body(deletePopup);
     }
     
+	@DeleteMapping("")
+	public ResponseEntity<Integer> deletePopupIds(@RequestBody List<String> ids) throws Exception{
+    	int deletePopupIds = popupService.deletePopupIds(ids);
+        return ResponseEntity.status(HttpStatus.OK).body(deletePopupIds);
+	}
 }
