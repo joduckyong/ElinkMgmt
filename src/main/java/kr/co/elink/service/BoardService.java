@@ -22,8 +22,7 @@ public class BoardService {
 		if(searchKeyword != null && !"null".equals(searchKeyword) && !"".equals(searchKeyword)) {
 			boardVo.setSearchKeyword(searchKeyword);
 		}
-		boardVo.setFirstIndex(pageIndex);
-		boardVo.setFirstIndex((boardVo.getPageIndex() - 1) * boardVo.getRecordCountPerPage());
+		boardVo.setFirstIndex((pageIndex - 1) * boardVo.getRecordCountPerPage());
 		boardVo.setLastIndex(boardVo.getRecordCountPerPage());
 		
 		return boardMapper.selectBoard(boardVo);

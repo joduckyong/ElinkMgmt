@@ -50,4 +50,6 @@ public class DefaultVo
     /** row number */
     private int rnum = 0;
 
+    /** total count */
+    private int totalCount = 0;
 }

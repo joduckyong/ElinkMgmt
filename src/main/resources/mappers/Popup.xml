@@ -5,7 +5,8 @@
 	<select id="selectPopup" parameterType="kr.co.elink.dto.PopupVo" resultType="kr.co.elink.dto.PopupVo">
 		/* PopupMapper.selectPopup */	
 		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
-	   select row_number() over(order by board_id desc ) as rnum
+	   select count(1) over() as total_count
+	        , row_number() over(order by board_id desc ) as rnum
 			, tb.*
 		 from (	
 			select popup_id

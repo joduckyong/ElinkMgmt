@@ -20,8 +20,7 @@ public class PopupService {
 		// 페이징 처리
 		PopupVo popupVo = new PopupVo();
 		popupVo.setId(id);
-		popupVo.setFirstIndex(pageIndex);
-		popupVo.setFirstIndex((popupVo.getPageIndex() - 1) * popupVo.getRecordCountPerPage());
+		popupVo.setFirstIndex((pageIndex - 1) * popupVo.getRecordCountPerPage());
 		popupVo.setLastIndex(popupVo.getRecordCountPerPage());		
 		return popupMapper.selectPopup(popupVo);
 	};
