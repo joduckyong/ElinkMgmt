@@ -1,8 +1,5 @@
 package kr.co.elink.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.elink.dto.BasicResponse;
 import kr.co.elink.dto.BoardVo;
 import kr.co.elink.service.BoardService;
 
@@ -60,5 +55,11 @@ public class BoardController {
     	int deleteBoard = boardService.deleteBoard(id);
         return ResponseEntity.status(HttpStatus.OK).body(deleteBoard);
     }
+    
+	@DeleteMapping("")
+	public ResponseEntity<Integer> deleteBoardIds(@RequestBody List<String> ids) throws Exception{
+    	int deleteBoardIds = boardService.deleteBoardIds(ids);
+        return ResponseEntity.status(HttpStatus.OK).body(deleteBoardIds);
+	}	    
     
 }

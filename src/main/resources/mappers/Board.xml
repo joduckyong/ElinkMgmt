@@ -3,6 +3,7 @@
 <mapper namespace="kr.co.elink.mapper.BoardMapper">
 
 	<select id="selectBoard" parameterType="kr.co.elink.dto.BoardVo" resultType="kr.co.elink.dto.BoardVo">
+		/* BoardMapper.selectBoard */	
 		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
 	   select row_number() over(order by board_id desc ) as rnum
 			, tb.*
@@ -27,12 +28,14 @@
 	</select>
 
 	<select id="selectBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardVo">
+		/* BoardMapper.selectBoardInfo */	
 		select *
 		  from tb_board
 		 where board_id = #{id}
 	</select>
 	
 	<insert id="insertBoard" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardMapper.insertBoard */	
 		insert into tb_board
 					(	
 						board_id
@@ -74,6 +77,7 @@
 	</insert>
 	
 	<update id="updateBoard" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardMapper.updateBoard */	
 		update tb_board
 		   set updated_datetime = now()
 		   <if test="updatedId neq '' and updatedId != null">
@@ -92,9 +96,18 @@
 	</update>		
 	
 	<delete id="deleteBoard" parameterType="String">
+		/* BoardMapper.deleteBoard */	
 		delete 
 	 	  from tb_board
 	 	 where board_id = #{id}
 	</delete>		
+	
+	<delete id="deleteBoardIds">
+		/* BoardMapper.deleteBoardIds */		
+		delete from tb_board where board_id in 
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>		
+	</delete>	
 	
 </mapper>

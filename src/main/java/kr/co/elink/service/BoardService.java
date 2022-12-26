@@ -48,4 +48,9 @@ public class BoardService {
 		return boardMapper.deleteBoard(id);
 	};
 	
+	@Transactional
+	public int deleteBoardIds(List<String> ids) throws Exception {
+		int result = boardMapper.deleteBoardIds(ids);
+		return result;
+	}
 }
