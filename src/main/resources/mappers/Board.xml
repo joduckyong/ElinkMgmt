@@ -18,6 +18,9 @@
 			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
 			  from tb_board
 			 where board_id like concat(#{id},'%')   
+			  <if test="searchKeyword neq '' and searchKeyword != null">
+			   and board_title like concat('%',#{searchKeyword},'%')  
+			  </if>
 			 )tb 
 	   where 1 = 1		
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 

@@ -29,9 +29,9 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-    @GetMapping("/{id}/{pageIndex}")
-    public ResponseEntity<List<BoardVo>> selectBoard(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex) {
-        List<BoardVo> list = boardService.selectBoard(id, pageIndex);
+    @GetMapping("/{id}/{pageIndex}/{searchKeyword}")
+    public ResponseEntity<List<BoardVo>> selectBoard(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex, @PathVariable("searchKeyword") String searchKeyword) {
+        List<BoardVo> list = boardService.selectBoard(id, pageIndex, searchKeyword);
         
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }

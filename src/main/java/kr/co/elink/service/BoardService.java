@@ -15,10 +15,13 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	public List<BoardVo> selectBoard(String id, int pageIndex){
+	public List<BoardVo> selectBoard(String id, int pageIndex, String searchKeyword){
 		// 페이징 처리
 		BoardVo boardVo = new BoardVo();
 		boardVo.setId(id);
+		if(searchKeyword != null && !"null".equals(searchKeyword) && !"".equals(searchKeyword)) {
+			boardVo.setSearchKeyword(searchKeyword);
+		}
 		boardVo.setFirstIndex(pageIndex);
 		boardVo.setFirstIndex((boardVo.getPageIndex() - 1) * boardVo.getRecordCountPerPage());
 		boardVo.setLastIndex(boardVo.getRecordCountPerPage());
