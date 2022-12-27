@@ -1,5 +1,7 @@
 package kr.co.elink.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -24,4 +26,6 @@ public class BoardVo extends DefaultVo
 	private String updatedId;
 	
 	private String updatedDatetime;
+	
+	private List<String> ids;
 }

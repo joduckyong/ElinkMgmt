@@ -21,5 +21,5 @@ public interface BoardMapper {
 	
 	public int deleteBoard(String id);
 	
-	public int deleteBoardIds(List<String> ids);
+	public int deleteBoardIds(BoardVo boardVo);
 }

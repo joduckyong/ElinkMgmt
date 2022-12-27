@@ -21,5 +21,5 @@ public interface PopupMapper {
 	
 	public int deletePopup(String id);
 	
-	public int deletePopupIds(List<String> ids);
+	public int deletePopupIds(PopupVo popupVo);
 }

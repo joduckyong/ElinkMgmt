@@ -48,7 +48,7 @@ public class BoardService {
 	};
 	
 	@Transactional
-	public int deleteBoardIds(List<String> ids){
-		return boardMapper.deleteBoardIds(ids);
+	public int deleteBoardIds(BoardVo boardVo){
+		return boardMapper.deleteBoardIds(boardVo);
 	}
 }

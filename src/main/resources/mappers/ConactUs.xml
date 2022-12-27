@@ -101,7 +101,7 @@
 	<delete id="deleteConactUsIds">
 		/* PopupMapper.deleteConactUsIds */		
 		delete from tb_conact_us where conact_id in 
-		<foreach collection="list" item="id" open="(" close=")" separator=",">
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>		
 	</delete>		

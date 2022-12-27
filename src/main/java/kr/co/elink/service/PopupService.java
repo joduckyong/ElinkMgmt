@@ -45,7 +45,7 @@ public class PopupService {
 	};
 	
 	@Transactional
-	public int deletePopupIds(List<String> ids){
-		return popupMapper.deletePopupIds(ids);
+	public int deletePopupIds(PopupVo popupVo){
+		return popupMapper.deletePopupIds(popupVo);
 	}
 }

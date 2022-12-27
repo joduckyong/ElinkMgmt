@@ -21,5 +21,5 @@ public interface ConactUsMapper {
 	
 	public int deleteConactUs(String id);
 	
-	public int deleteConactUsIds(List<String> ids);
+	public int deleteConactUsIds(ConactUsVo conactUsVo);
 }

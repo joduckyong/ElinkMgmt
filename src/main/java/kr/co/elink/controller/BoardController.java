@@ -57,8 +57,8 @@ public class BoardController {
     }
     
 	@DeleteMapping("")
-	public ResponseEntity<Integer> deleteBoardIds(@RequestBody List<String> ids) throws Exception{
-    	int deleteBoardIds = boardService.deleteBoardIds(ids);
+	public ResponseEntity<Integer> deleteBoardIds(@RequestBody BoardVo boardVo) throws Exception{
+    	int deleteBoardIds = boardService.deleteBoardIds(boardVo);
         return ResponseEntity.status(HttpStatus.OK).body(deleteBoardIds);
 	}	    
     

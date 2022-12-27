@@ -55,8 +55,8 @@ public class PopupController {
     }
     
 	@DeleteMapping("")
-	public ResponseEntity<Integer> deletePopupIds(@RequestBody List<String> ids) throws Exception{
-    	int deletePopupIds = popupService.deletePopupIds(ids);
+	public ResponseEntity<Integer> deletePopupIds(@RequestBody PopupVo popupVo) throws Exception{
+    	int deletePopupIds = popupService.deletePopupIds(popupVo);
         return ResponseEntity.status(HttpStatus.OK).body(deletePopupIds);
 	}
 }

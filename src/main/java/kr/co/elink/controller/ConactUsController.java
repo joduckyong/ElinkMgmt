@@ -55,8 +55,8 @@ public class ConactUsController {
     }
     
 	@DeleteMapping("")
-	public ResponseEntity<Integer> deleteConactUsIds(@RequestBody List<String> ids) throws Exception{
-    	int deleteConactUsIds = conactUsService.deleteConactUsIds(ids);
+	public ResponseEntity<Integer> deleteConactUsIds(@RequestBody ConactUsVo conactUsVo) throws Exception{
+    	int deleteConactUsIds = conactUsService.deleteConactUsIds(conactUsVo);
         return ResponseEntity.status(HttpStatus.OK).body(deleteConactUsIds);
 	}
 }

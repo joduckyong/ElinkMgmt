@@ -1,5 +1,7 @@
 package kr.co.elink.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -20,5 +22,7 @@ public class ConactUsVo extends DefaultVo
 	private String conactAgree;
 	
 	private String createdDatetime;
+	
+	private List<String> ids;
 	
 }

@@ -47,7 +47,7 @@ public class ConactUsService {
 	};
 	
 	@Transactional
-	public int deleteConactUsIds(List<String> ids){
-		return conactUsMapper.deleteConactUsIds(ids);
+	public int deleteConactUsIds(ConactUsVo conactUsVo){
+		return conactUsMapper.deleteConactUsIds(conactUsVo);
 	}
 }

@@ -106,7 +106,7 @@
 	<delete id="deleteBoardIds">
 		/* BoardMapper.deleteBoardIds */		
 		delete from tb_board where board_id in 
-		<foreach collection="list" item="id" open="(" close=")" separator=",">
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>		
 	</delete>	

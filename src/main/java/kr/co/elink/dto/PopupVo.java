@@ -1,5 +1,7 @@
 package kr.co.elink.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -32,4 +34,6 @@ public class PopupVo extends DefaultVo
 	private String updatedId;
 	
 	private String updatedDatetime;
+	
+	private List<String> ids;
 }
