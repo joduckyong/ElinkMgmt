@@ -3,17 +3,35 @@
 <mapper namespace="kr.co.elink.mapper.ConactUsMapper">
 
 	<select id="selectConactUs" parameterType="kr.co.elink.dto.ConactUsVo" resultType="kr.co.elink.dto.ConactUsVo">
-		select *
-		  from tb_conact_us
+		/* ConactUsMapper.selectConactUs */	
+		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
+	   select count(1) over() as total_count
+	        , row_number() over(order by conact_id desc ) as rnum
+			, tb.*
+		 from (	
+			select conact_id
+			     , conact_nm
+			     , conact_phone
+			     , conact_mail
+			     , conact_contents
+			     , conact_agree
+			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+			  from tb_conact_us
+			 where conact_id like concat(#{id},'%')   
+			  )tb 
+	    where 1 = 1		
+	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 	
 	</select>
 
 	<select id="selecConactUsInfo" parameterType="String" resultType="kr.co.elink.dto.ConactUsVo">
+		/* ConactUsMapper.selecConactUsInfo */	
 		select *
 		  from tb_conact_us
 		 where conact_id = #{id}
 	</select>
 	
 	<insert id="insertConactUs" parameterType="kr.co.elink.dto.ConactUsVo">
+		/* ConactUsMapper.insertConactUs */	
 		insert into tb_conact_us
 					(	
 						conact_id
@@ -55,6 +73,7 @@
 	</insert>
 	
 	<update id="updateConactUs" parameterType="kr.co.elink.dto.ConactUsVo">
+		/* ConactUsMapper.updateConactUs */	
 		update tb_conact_us
 		   set conact_agree = 'Y'
 		   <if test="conactNm neq '' and conactNm != null">
@@ -73,9 +92,17 @@
 	</update>		
 	
 	<delete id="deleteConactUs" parameterType="String">
+		/* ConactUsMapper.deleteConactUs */	
 		delete 
 	 	  from tb_conact_us
 	 	 where conact_id = #{id}
 	</delete>		
 	
+	<delete id="deleteConactUsIds">
+		/* PopupMapper.deleteConactUsIds */		
+		delete from tb_conact_us where conact_id in 
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>		
+	</delete>		
 </mapper>

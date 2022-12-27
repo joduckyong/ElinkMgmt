@@ -24,9 +24,9 @@ public class ConactUsController {
 	@Autowired
 	ConactUsService conactUsService;
 	
-    @GetMapping("")
-    public ResponseEntity<List<ConactUsVo>> selectConactUs(ConactUsVo conactUsVo) {
-        List<ConactUsVo> selectConactUs = conactUsService.selectConactUs(conactUsVo);
+	@GetMapping("/{id}/{pageIndex}")
+    public ResponseEntity<List<ConactUsVo>> selectConactUs(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex) {
+        List<ConactUsVo> selectConactUs = conactUsService.selectConactUs(id, pageIndex);
         return ResponseEntity.status(HttpStatus.OK).body(selectConactUs);
     }
     
@@ -54,4 +54,9 @@ public class ConactUsController {
         return ResponseEntity.status(HttpStatus.OK).body(deleteConactUs);
     }
     
+	@DeleteMapping("")
+	public ResponseEntity<Integer> deleteConactUsIds(@RequestBody List<String> ids) throws Exception{
+    	int deleteConactUsIds = conactUsService.deleteConactUsIds(ids);
+        return ResponseEntity.status(HttpStatus.OK).body(deleteConactUsIds);
+	}
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class ConactUsVo extends DefaultVo
 {
+	private String id;
+	
 	private String conactId;
 	
 	private String conactNm;
