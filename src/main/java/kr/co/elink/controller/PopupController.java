@@ -24,7 +24,7 @@ public class PopupController {
 	@Autowired
 	PopupService popupService;
 	
-	@GetMapping("/{id}/{pageIndex}/{searchKeyword}")
+	@GetMapping("/{id}/{pageIndex}")
     public ResponseEntity<List<PopupVo>> selectPopup(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex) {
         List<PopupVo> selectPopup = popupService.selectPopup(id, pageIndex);
         return ResponseEntity.status(HttpStatus.OK).body(selectPopup);

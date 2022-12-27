@@ -6,7 +6,7 @@
 		/* PopupMapper.selectPopup */	
 		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
 	   select count(1) over() as total_count
-	        , row_number() over(order by board_id desc ) as rnum
+	        , row_number() over(order by popup_id desc ) as rnum
 			, tb.*
 		 from (	
 			select popup_id
