@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.elink.mapper.BoardMapper">
 
-	<select id="selectBoard" parameterType="kr.co.elink.dto.BoardVo" resultType="kr.co.elink.dto.BoardVo">
+	<select id="selectBoard" parameterType="kr.co.elink.dto.BoardVo" resultType="kr.co.elink.dto.BoardRVo">
 		/* BoardMapper.selectBoard */	
 		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
 	   select count(1) over() as total_count
@@ -28,7 +28,7 @@
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 
 	</select>
 
-	<select id="selectBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardVo">
+	<select id="selectBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardRVo">
 		/* BoardMapper.selectBoardInfo */	
 		select *
 		  from tb_board

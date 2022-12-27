@@ -1,6 +1,7 @@
 package kr.co.elink.controller;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.elink.common.StatusEnum;
+import kr.co.elink.dto.BoardRVo;
 import kr.co.elink.dto.BoardVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.service.BoardService;
@@ -31,31 +33,40 @@ public class BoardController {
 	
     @GetMapping("/{id}/{pageIndex}/{searchKeyword}")
     public ResponseEntity<MessageVo> selectBoard(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex, @PathVariable("searchKeyword") String searchKeyword) {
-        List<BoardVo> list = boardService.selectBoard(id, pageIndex, searchKeyword);
+        List<BoardRVo> list = boardService.selectBoard(id, pageIndex, searchKeyword);
+        int totalCount = 0;
+        if(list.size() > 0) {
+        	totalCount = list.get(0).getTotalCount();
+        }
         
-        MessageVo message = new MessageVo();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("성공 코드");
-        message.setData(list);
+        MessageVo message = MessageVo.builder()
+        	.status(StatusEnum.OK)
+        	.message("성공 코드")
+        	.totalCount(totalCount)
+        	.data(list)
+        	.build();
         
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<MessageVo> selectBoardInfo(@PathVariable("id") String id) {
-    	BoardVo selectBoardInfo = boardService.selectBoardInfo(id);
+    	BoardRVo selectBoardInfo = boardService.selectBoardInfo(id);
     	
-    	MessageVo message = new MessageVo();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("성공 코드");
-        message.setData(selectBoardInfo);
-    	
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.totalCount(1)
+            	.data(selectBoardInfo)
+            	.files(new ArrayList<>())
+            	.build();
+        
     	return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
@@ -63,13 +74,14 @@ public class BoardController {
     public ResponseEntity<MessageVo> insertBoard(@RequestBody BoardVo boardVo) {
     	int insertBoard = boardService.insertBoard(boardVo);
     	
-    	MessageVo message = new MessageVo();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("성공 코드");
-        message.setData(insertBoard);
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(insertBoard)
+            	.build();
     	
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }    
@@ -78,14 +90,15 @@ public class BoardController {
     public ResponseEntity<MessageVo> updateBoard(@RequestBody BoardVo boardVo) {
     	int updateBoard = boardService.updateBoard(boardVo);
     	
-    	MessageVo message = new MessageVo();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("성공 코드");
-        message.setData(updateBoard);
-    	
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(updateBoard)
+            	.build();
+        
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }    
     
@@ -93,14 +106,15 @@ public class BoardController {
     public ResponseEntity<MessageVo> deleteBoard(@PathVariable("id") String id) {
     	int deleteBoard = boardService.deleteBoard(id);
         
-    	MessageVo message = new MessageVo();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("성공 코드");
-        message.setData(deleteBoard);
-    	
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(deleteBoard)
+            	.build();
+        
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
@@ -108,14 +122,15 @@ public class BoardController {
 	public ResponseEntity<MessageVo> deleteBoardIds(@RequestBody BoardVo boardVo) throws Exception{
     	int deleteBoardIds = boardService.deleteBoardIds(boardVo);
         
-    	MessageVo message = new MessageVo();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("성공 코드");
-        message.setData(deleteBoardIds);
-    	
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(deleteBoardIds)
+            	.build();
+        
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
 	}	    
     

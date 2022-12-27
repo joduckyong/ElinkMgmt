@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.elink.dto.BoardRVo;
 import kr.co.elink.dto.BoardVo;
 import kr.co.elink.mapper.BoardMapper;
 
@@ -15,7 +16,7 @@ public class BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
-	public List<BoardVo> selectBoard(String id, int pageIndex, String searchKeyword){
+	public List<BoardRVo> selectBoard(String id, int pageIndex, String searchKeyword){
 		// 페이징 처리
 		BoardVo boardVo = new BoardVo();
 		boardVo.setId(id);
@@ -28,7 +29,7 @@ public class BoardService {
 		return boardMapper.selectBoard(boardVo);
 	};
 	
-	public BoardVo selectBoardInfo(String id){
+	public BoardRVo selectBoardInfo(String id){
 		return boardMapper.selectBoardInfo(id);
 	};
 	
