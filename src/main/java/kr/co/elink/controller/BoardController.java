@@ -31,8 +31,8 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-    @GetMapping("/{id}/{pageIndex}/{searchKeyword}")
-    public ResponseEntity<MessageVo> selectBoard(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex, @PathVariable("searchKeyword") String searchKeyword) {
+    @GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}"})
+    public ResponseEntity<MessageVo> selectBoard(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex, @PathVariable(name="searchKeyword", required=false) String searchKeyword) {
         List<BoardRVo> list = boardService.selectBoard(id, pageIndex, searchKeyword);
         int totalCount = 0;
         if(list.size() > 0) {
@@ -128,7 +128,7 @@ public class BoardController {
         MessageVo message = MessageVo.builder()
             	.status(StatusEnum.OK)
             	.message("성공 코드")
-            	.data(deleteBoardIds)
+            	.data(boardVo.getIds())
             	.build();
         
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
