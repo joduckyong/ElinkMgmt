@@ -26,6 +26,9 @@ public class BoardRVo
 	
 	private String updatedDatetime;
 	
+	/** row number */
+    private int rnum = 0;
+	
 	@JsonIgnore
 	private int totalCount;
 	

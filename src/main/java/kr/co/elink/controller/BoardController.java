@@ -31,9 +31,14 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-    @GetMapping("/{id}/{pageIndex}/{searchKeyword}")
-    public ResponseEntity<MessageVo> selectBoard(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex, @PathVariable("searchKeyword") String searchKeyword) {
-        List<BoardRVo> list = boardService.selectBoard(id, pageIndex, searchKeyword);
+    @GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}/{searchKeyword}/{searchCondition}", "/{id}/{pageIndex}"})
+    public ResponseEntity<MessageVo> selectBoard(
+    		@PathVariable("id") String id
+    		, @PathVariable("pageIndex") int pageIndex
+    		, @PathVariable(name="searchCondition", required=false) String searchCondition
+    		, @PathVariable(name="searchKeyword", required=false) String searchKeyword
+    	) {
+        List<BoardRVo> list = boardService.selectBoard(id, pageIndex, searchKeyword, searchCondition);
         int totalCount = 0;
         if(list.size() > 0) {
         	totalCount = list.get(0).getTotalCount();
