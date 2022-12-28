@@ -21,7 +21,16 @@
 			  from tb_board
 			 where board_id like concat(#{id},'%')   
 			  <if test="searchKeyword neq '' and searchKeyword != null">
-			   and board_title like concat('%',#{searchKeyword},'%')  
+			   	<choose>
+					<when test="searchCondition eq 'title'">and board_title like concat('%',#{searchKeyword},'%')</when>
+					<when test="searchCondition eq 'content'">and board_contents like concat('%',#{searchKeyword},'%')</when>
+					<otherwise>
+						and (
+							board_title like concat('%',#{searchKeyword},'%') or
+							board_contents like concat('%',#{searchKeyword},'%')
+							)
+					</otherwise>					
+				</choose>
 			  </if>
 			 )tb 
 	   where 1 = 1		
@@ -92,6 +101,9 @@
 		   </if>
 		   <if test="url neq '' and url != null">
 		     , url = #{url}
+		   </if>
+		   <if test="boardType neq '' and boardType != null">
+		     , board_type = #{boardType}
 		   </if>
 		 where board_id = #{boardId}
 	</update>		
