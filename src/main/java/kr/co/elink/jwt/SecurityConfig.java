@@ -29,7 +29,9 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/auth").permitAll()
-//                .antMatchers("/members/test").hasRole("USER")
+//                .antMatchers("/api/popup/**").hasRole("ADMIN")
+//                .antMatchers("/api/board/**").hasRole("ADMIN")
+//                .antMatchers("/api/conactUs/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

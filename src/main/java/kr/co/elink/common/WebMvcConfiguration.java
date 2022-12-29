@@ -32,6 +32,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                     	HttpMethod.GET.name(),
                     	HttpMethod.POST.name(),
                     	HttpMethod.PUT.name(),
+                    	HttpMethod.PATCH.name(),
+                    	HttpMethod.TRACE.name(),
+                    	HttpMethod.OPTIONS.name(),
                     	HttpMethod.DELETE.name());
     }
     

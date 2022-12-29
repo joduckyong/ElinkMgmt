@@ -39,10 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new BadCredentialsException(loginId + " -> 사용자가 없습니다.");
 		}
 
-//		log.info("adminVo.getUsername() : " + adminVo.getUsername());
-//		log.info("passwordEncoder.encode(adminVo.getPassword()) : " + passwordEncoder.encode(adminVo.getPassword()));
-//        log.info("getRoles : "+adminVo.getAdminRole());
-		return User.builder().username(adminVo.getUsername()).password(adminVo.getPassword())
+		return User.builder().username(adminVo.getUsername())
 				.password(passwordEncoder.encode(adminVo.getPassword()))
                 .roles(adminVo.getAdminRole()).build();
 	}
