@@ -58,15 +58,15 @@ public class JwtTokenProvider {
                 .compact();
  
         // Refresh Token 생성
-//        String refreshToken = Jwts.builder()
-//                .setExpiration(new Date(now + this.tokenValidityInMilliseconds))
-//                .signWith(key, SignatureAlgorithm.HS256)
-//                .compact();
+        String refreshToken = Jwts.builder()
+                .setExpiration(new Date(now + this.tokenValidityInMilliseconds))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
  
         return TokenVo.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
-//                .refreshToken(refreshToken)
+                .refreshToken(refreshToken)
                 .build();
     }
  
