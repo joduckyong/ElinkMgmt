@@ -28,13 +28,16 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/auth").permitAll()
+                .antMatchers("/api/popup/**").permitAll()
+//                .antMatchers("/api/board/**").permitAll()
 //                .antMatchers("/api/popup/**").hasRole("ADMIN")
-//                .antMatchers("/api/board/**").hasRole("ADMIN")
+                .antMatchers("/api/board/**").hasRole("ADMIN")
 //                .antMatchers("/api/conactUs/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+        
     }
  
     @Bean
