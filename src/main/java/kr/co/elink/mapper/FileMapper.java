@@ -5,21 +5,16 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import kr.co.elink.dto.BoardVo;
-import kr.co.elink.dto.DefaultVo;
+import kr.co.elink.dto.FileVo;
 
 @Repository
 @Mapper
 public interface FileMapper {
 	
-	public List<DefaultVo> selectBoard(DefaultVo defaultVo);
+	public List<FileVo> selectFile(FileVo fileVo);
 	
-	public BoardVo selectBoardInfo(String id);
+	public int insertFile(FileVo fileVo);
 	
-	public int insertBoard(DefaultVo defaultVo);
-	
-	public int updateBoard(DefaultVo defaultVo);
-	
-	public int deleteBoard(String id);
+	public int deleteFile(String id);
 	
 }

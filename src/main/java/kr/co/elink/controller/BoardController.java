@@ -1,5 +1,6 @@
 package kr.co.elink.controller;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.StatusEnum;
+import kr.co.elink.common.util.UploadFile;
+import kr.co.elink.common.util.UploadThumbnail;
 import kr.co.elink.dto.BoardRVo;
 import kr.co.elink.dto.BoardVo;
+import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.service.BoardService;
 
@@ -89,7 +96,24 @@ public class BoardController {
             	.build();
     	
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }    
+    }  
+    
+    @PostMapping("/test")
+    public ResponseEntity<MessageVo> insertBoard2(@RequestPart BoardVo boardVo, @RequestPart(value="thumbnail", required = false) MultipartFile multipartThumbnail, @RequestPart(value="file", required = false) MultipartFile multipartFile) throws IOException {
+    	
+    	int insertBoard = boardService.insertBoard(boardVo, multipartThumbnail, multipartFile);
+    	
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(insertBoard)
+            	.build();
+    	
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
     
     @PutMapping("")
     public ResponseEntity<MessageVo> updateBoard(@RequestBody BoardVo boardVo) {

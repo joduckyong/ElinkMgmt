@@ -8,7 +8,7 @@
 		 where file_no = #{id}
 	</select>
 	
-	<insert id="insertFile" parameterType="kr.co.elink.dto.DefaultVo">
+	<insert id="insertFile" parameterType="kr.co.elink.dto.FileVo">
 		insert into tb_file
 					(	
 						file_id
@@ -20,6 +20,9 @@
 					  </if>
 					  <if test="fileNm neq '' and fileNm != null">
 					  , file_nm
+					  </if>
+					  <if test="fileOriginNm neq '' and fileOriginNm != null">
+					  , file_origin_nm
 					  </if>
 					  <if test="fileSize neq '' and fileSize != null">
 					  , file_size
@@ -36,6 +39,9 @@
 					  </if>
 					  <if test="fileNm neq '' and fileNm != null">
 					  , #{fileNm}
+					  </if>
+					  <if test="fileOriginNm neq '' and fileOriginNm != null">
+					  , #{fileOriginNm}
 					  </if>
 					  <if test="fileSize neq '' and fileSize != null">
 					  , #{fileSize}
