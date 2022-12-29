@@ -40,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 
 		return User.builder().username(adminVo.getUsername())
-				.password(passwordEncoder.encode(adminVo.getPassword()))
+				.password(adminVo.getPassword())
                 .roles(adminVo.getAdminRole()).build();
 	}
 }
