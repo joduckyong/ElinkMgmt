@@ -64,7 +64,7 @@ public class JwtTokenProvider {
                 .compact();
  
         return TokenVo.builder()
-                .grantType("Bearer")
+//                .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
