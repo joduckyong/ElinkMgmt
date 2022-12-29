@@ -11,10 +11,8 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.elink.dto.BoardVo;
 import kr.co.elink.dto.FileVo;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -67,7 +65,7 @@ public class UploadThumbnail {
 		fileVo.setFileId(vo.getFileId());
 		fileVo.setFileNm(fileName);
 		fileVo.setFileOriginNm(originalFileName);
-		fileVo.setFilePath(dir + File.separator + fileName);
+		fileVo.setFilePath(dir);
 		fileVo.setFileSize(thumbnailFile.length());
 		fileVo.setFileType("1");
 		

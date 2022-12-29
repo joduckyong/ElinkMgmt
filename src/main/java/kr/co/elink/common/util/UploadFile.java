@@ -32,6 +32,7 @@ public class UploadFile {
 			new File(serverFilePath, datePath).mkdir();
 		}
 		
+		
 		return datePath;
 		
 	}
@@ -44,8 +45,9 @@ public class UploadFile {
 		String dir = makeDir();
 		
 		File file = new File(serverFilePath + dir, fileName);
-		file.createNewFile();
-		FileCopyUtils.copy(multipartFile.getBytes(), file);
+		multipartFile.transferTo(file);
+//		file.createNewFile();
+//		FileCopyUtils.copy(multipartFile.getBytes(), file);
 		
 		String type="";
 		String fileType="";
@@ -60,7 +62,7 @@ public class UploadFile {
 		fileVo.setFileId(vo.getFileId());
 		fileVo.setFileNm(fileName);
 		fileVo.setFileOriginNm(originalFileName);
-		fileVo.setFilePath(dir + File.separator + fileName);
+		fileVo.setFilePath(dir);
 		fileVo.setFileSize(multipartFile.getSize());
 		fileVo.setFileType(fileType);
 		

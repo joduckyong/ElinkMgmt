@@ -16,6 +16,8 @@ public interface BoardMapper {
 	
 	public BoardRVo selectBoardInfo(String id);
 	
+	public String selectBoardId(BoardVo boardVo);
+	
 	public int insertBoard(BoardVo boardVo);
 	
 	public int updateBoard(BoardVo boardVo);

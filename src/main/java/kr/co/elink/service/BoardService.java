@@ -64,19 +64,22 @@ public class BoardService {
 	@Transactional
 	public int insertBoard(BoardVo boardVo, MultipartFile multipartThumbnail, MultipartFile multipartFile) throws IOException{
 		
+		boardMapper.insertBoard(boardVo);
+		System.out.println(boardVo.getId());
+		
 		if(multipartThumbnail != null) {
     		FileVo fileVo = new FileVo();
-    		fileVo.setFileId(boardVo.getBoardId());
+    		fileVo.setFileId(boardVo.getId());
     		fileMapper.insertFile(uploadThumbnail.upload(multipartThumbnail, fileVo));
     	}
     	
     	if(multipartFile != null) {
     		FileVo fileVo = new FileVo();
-    		fileVo.setFileId(boardVo.getBoardId());
+    		fileVo.setFileId(boardVo.getId());
     		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
     	}
 		
-		return boardMapper.insertBoard(boardVo);
+		return 1;
 	};
 	
 	@Transactional

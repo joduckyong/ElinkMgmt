@@ -17,17 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.StatusEnum;
-import kr.co.elink.common.util.UploadFile;
-import kr.co.elink.common.util.UploadThumbnail;
 import kr.co.elink.dto.BoardRVo;
 import kr.co.elink.dto.BoardVo;
-import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.service.BoardService;
 

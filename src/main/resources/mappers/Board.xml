@@ -45,7 +45,10 @@
 	</select>
 	
 	<insert id="insertBoard" parameterType="kr.co.elink.dto.BoardVo">
-		/* BoardMapper.insertBoard */	
+		/* BoardMapper.insertBoard */
+		<selectKey resultType="string" keyProperty="id" order="BEFORE">
+	        SELECT FNC_ID(#{boardId})       
+	    </selectKey>
 		insert into tb_board
 					(	
 						board_id

@@ -13,6 +13,8 @@ public interface FileMapper {
 	
 	public List<FileVo> selectFile(FileVo fileVo);
 	
+	public FileVo selectFileInfo(String fileNm);
+	
 	public int insertFile(FileVo fileVo);
 	
 	public int deleteFile(String id);
