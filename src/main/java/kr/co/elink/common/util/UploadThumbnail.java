@@ -28,6 +28,10 @@ public class UploadThumbnail {
 		String monthPath = yearPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
 		String datePath = monthPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.DATE));
 		
+		if(!new File(serverThumbnailPath).exists()) {
+			new File(serverThumbnailPath).mkdir();
+		}
+		
 		if(!new File(serverThumbnailPath+datePath, datePath).exists()) {
 			new File(serverThumbnailPath, yearPath).mkdir();
 			new File(serverThumbnailPath, monthPath).mkdir();

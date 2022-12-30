@@ -26,6 +26,10 @@ public class UploadFile {
 		String monthPath = yearPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
 		String datePath = monthPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.DATE));
 		
+		if(!new File(serverFilePath).exists()) {
+			new File(serverFilePath).mkdir();
+		}
+		
 		if(!new File(serverFilePath+datePath, datePath).exists()) {
 			new File(serverFilePath, yearPath).mkdir();
 			new File(serverFilePath, monthPath).mkdir();
