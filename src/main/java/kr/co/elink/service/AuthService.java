@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.elink.dto.AdminVo;
 import kr.co.elink.dto.TokenVo;
 import kr.co.elink.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,11 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
  
     @Transactional
-    public TokenVo login(String memberId, String password) {
+    public TokenVo login(AdminVo adminVo) {
     	
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(adminVo.getAdminId(), adminVo.getAdminPw());
  
         // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
         // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행

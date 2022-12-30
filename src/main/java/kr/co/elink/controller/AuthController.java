@@ -21,10 +21,7 @@ public class AuthController {
     
     @PostMapping("")
     public TokenVo login(@RequestBody AdminVo adminVo) {
-        String memberId = adminVo.getAdminId();
-        String password = adminVo.getAdminPw();
-        TokenVo tokenVo = authService.login(memberId, password);
-        
+        TokenVo tokenVo = authService.login(adminVo);
         return tokenVo;
     }    
     
