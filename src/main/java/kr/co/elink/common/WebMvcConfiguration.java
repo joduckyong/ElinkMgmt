@@ -23,26 +23,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Value("${upload.path}")
 	private String uploadPath;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")    
-                .allowedMethods(
-                		HttpMethod.HEAD.name(),
-                    	HttpMethod.GET.name(),
-                    	HttpMethod.POST.name(),
-                    	HttpMethod.PUT.name(),
-                    	HttpMethod.PATCH.name(),
-                    	HttpMethod.TRACE.name(),
-                    	HttpMethod.OPTIONS.name(),
-                    	HttpMethod.DELETE.name());
-    }
-    
 	@Override
 	public void addInterceptors (InterceptorRegistry registry) {
 		registry.addInterceptor(loggerInterceptor)
-//		.addPathPatterns("/server/**")
-//		.addPathPatterns("/sandbox/**")
 		.addPathPatterns("/**");
 	}
 	

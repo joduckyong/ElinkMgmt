@@ -18,15 +18,19 @@ public class AuthController {
 
 	@Autowired
 	AuthService authService;
-    
-    @PostMapping("")
-    public TokenVo login(@RequestBody AdminVo adminVo) {
-        TokenVo tokenVo = authService.login(adminVo);
-        return tokenVo;
-    }    
-    
-    @PostMapping("/test")
-    public String test() {
-        return "success";
-    }
+
+	@PostMapping("")
+	public TokenVo login(@RequestBody AdminVo adminVo) {
+
+		TokenVo tokenVo = authService.login(adminVo);
+		
+		return tokenVo;
+	}
+
+	@PostMapping(value = "/logout")
+	public String logout() {
+		
+		return "logout";
+		
+	}
 }
