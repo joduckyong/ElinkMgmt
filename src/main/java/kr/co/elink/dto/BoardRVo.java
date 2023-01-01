@@ -26,6 +26,12 @@ public class BoardRVo
 	
 	private String updatedDatetime;
 	
+	private String thumbNm;
+	
+	private String thumbOriginNm;
+	
+	private long thumbSize;
+	
 	/** row number */
     private int rnum = 0;
 	

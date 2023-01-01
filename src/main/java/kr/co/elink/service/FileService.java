@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,10 @@ public class FileService {
 	
 	public FileVo selectFileInfo(String fileNm) {
 		return fileMapper.selectFileInfo(fileNm);
-		
+	}
+	
+	public List<FileVo> selectFileList(String fileId) {
+		return fileMapper.selectFileList(fileId);
 	}
 	
 	public Resource loadFile(FileVo fileVo) throws FileNotFoundException {

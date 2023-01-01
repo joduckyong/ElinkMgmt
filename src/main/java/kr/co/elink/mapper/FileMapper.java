@@ -11,12 +11,18 @@ import kr.co.elink.dto.FileVo;
 @Mapper
 public interface FileMapper {
 	
-	public List<FileVo> selectFile(FileVo fileVo);
-	
 	public FileVo selectFileInfo(String fileNm);
+	
+	public List<FileVo> selectFileList(String fileId);
 	
 	public int insertFile(FileVo fileVo);
 	
 	public int deleteFile(String id);
+	
+	public int deleteFileIds(FileVo fileVo);
+	
+	public int deleteThumbnail(String id);
+	
+	public int deleteOtherFile(String id);
 	
 }

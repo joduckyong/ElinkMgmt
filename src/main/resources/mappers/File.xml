@@ -3,12 +3,21 @@
 <mapper namespace="kr.co.elink.mapper.FileMapper">
 
 	<select id="selectFileInfo" parameterType="String" resultType="kr.co.elink.dto.FileVo">
+		/* FileMapper.selectFileInfo */
 		select *
 		  from tb_file
 		 where file_nm = #{fileNm}
 	</select>
 	
+	<select id="selectFileList" parameterType="String" resultType="kr.co.elink.dto.FileVo">
+		/* FileMapper.selectFileList */
+		select *
+		  from tb_file
+		 where file_id = #{fileId}
+	</select>
+	
 	<insert id="insertFile" parameterType="kr.co.elink.dto.FileVo">
+		/* FileMapper.insertFile */
 		insert into tb_file
 					(	
 						file_id
@@ -51,9 +60,34 @@
 	
 	
 	<delete id="deleteFile" parameterType="String">
+		/* FileMapper.deleteFile */
 		delete 
 	 	  from tb_file
-	 	 where file_no = #{id}
-	</delete>		
+	 	 where file_id = #{id}
+	</delete>
+	
+	<delete id="deleteFileIds" parameterType="kr.co.elink.dto.FileVo">
+		/* FileMapper.deleteFileIds */		
+		delete from tb_file where file_id in 
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>		
+	</delete>
+	
+	<delete id="deleteThumbnail" parameterType="String">
+		/* FileMapper.deleteThumbnail */
+		delete 
+	 	  from tb_file
+	 	 where file_id = #{id}
+	 	 and file_type = '1'
+	</delete>
+	
+	<delete id="deleteOtherFile" parameterType="String">
+		/* FileMapper.deleteOtherFile */
+		delete 
+	 	  from tb_file
+	 	 where file_id = #{id}
+	 	 and file_type != '1'
+	</delete>	
 	
 </mapper>

@@ -8,6 +8,9 @@
 	   select count(1) over() as total_count
 	        , row_number() over(order by board_id desc ) as rnum
 			, tb.*
+			, tf.file_nm as thumb_nm
+			, tf.file_origin_nm as thumb_origin_nm
+			, tf.file_size as thumb_size
 		from (	
 			select board_id
 			     , board_type
@@ -32,7 +35,10 @@
 					</otherwise>					
 				</choose>
 			  </if>
-			 )tb 
+			 )tb
+			 left outer join tb_file tf 
+			on tb.board_id = tf.file_id 
+			and tf.file_type = '1' 
 	   where 1 = 1		
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 
 	</select>
@@ -118,7 +124,7 @@
 	 	 where board_id = #{id}
 	</delete>		
 	
-	<delete id="deleteBoardIds">
+	<delete id="deleteBoardIds" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardMapper.deleteBoardIds */		
 		delete from tb_board where board_id in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
