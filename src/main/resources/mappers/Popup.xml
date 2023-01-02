@@ -2,42 +2,77 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.elink.mapper.PopupMapper">
 
-	<select id="selectPopup" parameterType="kr.co.elink.dto.PopupVo" resultType="kr.co.elink.dto.PopupVo">
+	<select id="selectPopup" parameterType="kr.co.elink.dto.PopupVo" resultType="kr.co.elink.dto.PopupRVo">
 		/* PopupMapper.selectPopup */	
 		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
 	   select count(1) over() as total_count
 	        , row_number() over(order by popup_id desc ) as rnum
 			, tb.*
 		 from (	
-			select popup_id
-			     , popup_title
-			     , popup_link
-			     , popup_close1
-			     , popup_close2
-			     , popup_height
-			     , popup_width
-			     , popup_startdate
-			     , popup_enddate
-			     , created_id
-			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
-			     , updated_id
-			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
-			  from tb_popup
-			 where popup_id like concat(#{id},'%')   
+			select pop.popup_id
+			     , pop.popup_title
+			     , pop.popup_link
+			     , pop.popup_close1
+			     , pop.popup_close2
+			     , pop.popup_height
+			     , pop.popup_width
+			     , pop.popup_startdate
+			     , pop.popup_enddate
+			     , pop.created_id
+			     , DATE_FORMAT(pop.created_datetime, '%Y-%m-%d') as created_datetime
+			     , pop.updated_id
+			     , DATE_FORMAT(pop.updated_datetime, '%Y-%m-%d') as updated_datetime
+				 , fil.thumb_nm
+				 , fil.thumb_origin_nm
+				 , fil.thumb_size		     
+			  from tb_popup pop
+			  left join 
+				   (
+                    select file_id
+                         , file_nm as thumb_nm
+                         , file_origin_nm as thumb_origin_nm
+                         , file_size as thumb_size			
+                      from tb_file
+                   ) fil
+			    on pop.popup_id = fil.file_id 
+			 where pop.popup_id like concat(#{id},'%')   
 			  )tb 
 	    where 1 = 1		
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 		  
 	</select>
 
-	<select id="selectPopupInfo" parameterType="String" resultType="kr.co.elink.dto.PopupVo">
+	<select id="selectPopupInfo" parameterType="String" resultType="kr.co.elink.dto.PopupRVo">
 		/* PopupMapper.selectPopupInfo */	
-		select *
-		  from tb_popup
-		 where popup_id = #{id}
+		select pop.popup_id
+		     , pop.popup_title
+		     , pop.popup_link
+		     , pop.popup_close1
+		     , pop.popup_close2
+		     , pop.popup_height
+		     , pop.popup_width
+		     , pop.popup_startdate
+		     , pop.popup_enddate
+			 , fil.thumb_nm
+			 , fil.thumb_origin_nm
+			 , fil.thumb_size	
+		  from tb_popup pop
+		  left join 
+			   (
+                select file_id
+                     , file_nm as thumb_nm
+                     , file_origin_nm as thumb_origin_nm
+                     , file_size as thumb_size			
+                  from tb_file
+               ) fil
+		    on pop.popup_id = fil.file_id 		  
+		 where pop.popup_id = #{id}
 	</select>
 	
-	<insert id="insertPopup" parameterType="kr.co.elink.dto.PopupVo">
+	<insert id="insertPopup" parameterType="kr.co.elink.dto.PopupVo" >
 		/* PopupMapper.insertPopup */	
+		<selectKey resultType="string" keyProperty="id" order="BEFORE">
+	        SELECT FNC_ID(#{popupId})       
+	    </selectKey>		
 		insert into tb_popup
 					(	
 						popup_id
