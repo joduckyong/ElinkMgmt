@@ -1,5 +1,6 @@
 package kr.co.elink.controller;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.StatusEnum;
 import kr.co.elink.dto.BoardRVo;
 import kr.co.elink.dto.BoardVo;
+import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.service.BoardService;
+import kr.co.elink.service.FileService;
 
 @RestController
 @RequestMapping("/api/board")
@@ -30,6 +35,9 @@ public class BoardController {
 
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	FileService fileService;
 	
     @GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}/{searchKeyword}/{searchCondition}", "/{id}/{pageIndex}"})
     public ResponseEntity<MessageVo> selectBoard(
@@ -60,6 +68,7 @@ public class BoardController {
     @GetMapping("/{id}")
     public ResponseEntity<MessageVo> selectBoardInfo(@PathVariable("id") String id) {
     	BoardRVo selectBoardInfo = boardService.selectBoardInfo(id);
+    	List<FileVo> selectFileList = fileService.selectFileList(id);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -69,15 +78,18 @@ public class BoardController {
             	.message("성공 코드")
             	.totalCount(1)
             	.data(selectBoardInfo)
-            	.files(new ArrayList<>())
+            	.files(selectFileList)
             	.build();
         
     	return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
-    @PostMapping("")
-    public ResponseEntity<MessageVo> insertBoard(@RequestBody BoardVo boardVo) {
-    	int insertBoard = boardService.insertBoard(boardVo);
+    @PostMapping("/")
+    public ResponseEntity<MessageVo> insertBoard(@RequestPart BoardVo boardVo
+    		, @RequestPart(value="thumbnail", required = false) MultipartFile multipartThumbnail
+    		, @RequestPart(value="file", required = false) MultipartFile multipartFile) throws IOException {
+    	
+    	int insertBoard = boardService.insertBoard(boardVo, multipartThumbnail, multipartFile);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -89,11 +101,14 @@ public class BoardController {
             	.build();
     	
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }    
+    }
     
-    @PutMapping("")
-    public ResponseEntity<MessageVo> updateBoard(@RequestBody BoardVo boardVo) {
-    	int updateBoard = boardService.updateBoard(boardVo);
+    @PostMapping("/update")
+    public ResponseEntity<MessageVo> updateBoard(@RequestPart BoardVo boardVo
+    		, @RequestPart(value="thumbnail", required = false) MultipartFile multipartThumbnail
+    		, @RequestPart(value="file", required = false) MultipartFile multipartFile) throws IOException {
+    	
+    	int updateBoard = boardService.updateBoard(boardVo, multipartThumbnail, multipartFile);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -105,7 +120,23 @@ public class BoardController {
             	.build();
         
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }    
+    }
+    
+//    @PutMapping("")
+//    public ResponseEntity<MessageVo> updateBoard(@RequestBody BoardVo boardVo) {
+//    	int updateBoard = boardService.updateBoard(boardVo);
+//    	
+//        HttpHeaders headers= new HttpHeaders();
+//        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+//
+//        MessageVo message = MessageVo.builder()
+//            	.status(StatusEnum.OK)
+//            	.message("성공 코드")
+//            	.data(updateBoard)
+//            	.build();
+//        
+//        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+//    }    
     
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageVo> deleteBoard(@PathVariable("id") String id) {

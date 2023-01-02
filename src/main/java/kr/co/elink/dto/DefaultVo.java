@@ -20,6 +20,9 @@ public class DefaultVo
 	/** 파일명 */
 	private String fileNm;
 	
+	/** 실제 파일명 */
+	private String fileOriginNm;
+	
 	/** 파일사이즈 */
 	private String fileSize;
 	
