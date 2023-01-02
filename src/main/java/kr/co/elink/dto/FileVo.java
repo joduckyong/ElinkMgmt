@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class FileVo {
 	
+	private int fileNo;
+	
 	private String fileId;
 	
 	private String fileType;

@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.StatusEnum;
+import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.dto.PopupRVo;
 import kr.co.elink.dto.PopupVo;
+import kr.co.elink.service.FileService;
 import kr.co.elink.service.PopupService;
 
 @RestController
@@ -32,6 +34,9 @@ public class PopupController {
 
 	@Autowired
 	PopupService popupService;
+	
+	@Autowired
+	FileService fileService;
 	
 	@GetMapping("/{id}/{pageIndex}")
     public ResponseEntity<MessageVo> selectPopup(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex) {
@@ -57,6 +62,7 @@ public class PopupController {
     @GetMapping("/{id}")
     public ResponseEntity<MessageVo> selectPopupInfo(@PathVariable("id") String id) {
     	PopupRVo selectPopupInfo = popupService.selectPopupInfo(id);
+    	List<FileVo> selectFileList = fileService.selectFileList(id);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -66,7 +72,7 @@ public class PopupController {
             	.message("성공 코드")
             	.totalCount(1)
             	.data(selectPopupInfo)
-            	.files(new ArrayList<>())
+            	.files(selectFileList)
             	.build();
         
     	return new ResponseEntity<>(message, headers, HttpStatus.OK);
