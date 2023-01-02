@@ -43,29 +43,9 @@
 
 	<select id="selectPopupInfo" parameterType="String" resultType="kr.co.elink.dto.PopupRVo">
 		/* PopupMapper.selectPopupInfo */	
-		select pop.popup_id
-		     , pop.popup_title
-		     , pop.popup_link
-		     , pop.popup_close1
-		     , pop.popup_close2
-		     , pop.popup_height
-		     , pop.popup_width
-		     , pop.popup_startdate
-		     , pop.popup_enddate
-			 , fil.thumb_nm
-			 , fil.thumb_origin_nm
-			 , fil.thumb_size	
-		  from tb_popup pop
-		  left join 
-			   (
-                select file_id
-                     , file_nm as thumb_nm
-                     , file_origin_nm as thumb_origin_nm
-                     , file_size as thumb_size			
-                  from tb_file
-               ) fil
-		    on pop.popup_id = fil.file_id 		  
-		 where pop.popup_id = #{id}
+		select *
+		  from tb_popup
+		 where popup_id = #{id}
 	</select>
 	
 	<insert id="insertPopup" parameterType="kr.co.elink.dto.PopupVo" >
