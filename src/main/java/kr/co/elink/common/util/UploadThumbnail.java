@@ -56,10 +56,12 @@ public class UploadThumbnail {
 		
 		BufferedImage bi = ImageIO.read(file);
 		//비율 
-		double ratio = 3;
+//		double ratio = 3;
 		//넓이 높이
-		int width = (int) (bi.getWidth() / ratio);
-		int height = (int) (bi.getHeight() / ratio);					
+//		int width = (int) (bi.getWidth() / ratio);
+//		int height = (int) (bi.getHeight() / ratio);		
+		int width = 200;
+		int height = 100;
 	
 		Thumbnails.of(file)
 	    .size(width, height)

@@ -66,6 +66,14 @@
 	 	 where file_id = #{id}
 	</delete>
 	
+	<delete id="deleteFileForName" parameterType="kr.co.elink.dto.FileVo">
+		/* FileMapper.deleteFileForName */
+		delete from tb_file where file_nm in 
+		<foreach collection="ids" item="name" open="(" close=")" separator=",">
+			#{name}
+		</foreach>	
+	</delete>
+	
 	<delete id="deleteFileIds" parameterType="kr.co.elink.dto.FileVo">
 		/* FileMapper.deleteFileIds */		
 		delete from tb_file where file_id in 

@@ -20,9 +20,7 @@ public interface FileMapper {
 	public int deleteFile(String id);
 	
 	public int deleteFileIds(FileVo fileVo);
-	
-	public int deleteThumbnail(String id);
-	
-	public int deleteOtherFile(String id);
+
+	public int deleteFileForName(FileVo fileVo);
 	
 }

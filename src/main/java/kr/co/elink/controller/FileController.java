@@ -59,5 +59,30 @@ public class FileController {
                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileVo.getFileOriginNm() + "\"")
                .body(resource);
    }
+	
+	@GetMapping("/image/{fileName}")
+	public ResponseEntity<Resource> viewImage(@PathVariable String fileName, HttpServletRequest request){
+		
+		FileVo fileVo = fileService.selectFileInfo(fileName);
+		Resource resource = null;
+		try {
+			resource = fileService.loadFile(fileVo);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		String contentType = null;
+       try {
+           contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       
+       return ResponseEntity.ok()
+               .contentType(MediaType.parseMediaType(contentType))
+//               .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileVo.getFileOriginNm() + "\"")
+               .body(resource);
+		
+	}
 
 }
