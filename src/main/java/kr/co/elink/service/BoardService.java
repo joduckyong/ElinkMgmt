@@ -62,7 +62,7 @@ public class BoardService {
 	};
 	
 	@Transactional
-	public int insertBoard(BoardVo boardVo, MultipartFile multipartThumbnail, MultipartFile multipartFile) throws IOException{
+	public int insertBoard(BoardVo boardVo, MultipartFile multipartThumbnail, MultipartFile multipartFile, List<MultipartFile> multipartFiles) throws IOException{
 		
 		int result = boardMapper.insertBoard(boardVo);
 		
@@ -76,6 +76,14 @@ public class BoardService {
     		FileVo fileVo = new FileVo();
     		fileVo.setFileId(boardVo.getId());
     		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
+    	}
+    	
+    	if(multipartFiles != null) {
+    		FileVo fileVo = new FileVo();
+    		fileVo.setFileId(boardVo.getId());
+    		for(MultipartFile file : multipartFiles) {
+    			fileMapper.insertFile(uploadFile.upload(file, fileVo));
+    		}
     	}
 		
 		return result;
