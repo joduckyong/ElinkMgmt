@@ -55,4 +55,5 @@ public class DefaultVo
 
     /** total count */
     private int totalCount = 0;
+    
 }

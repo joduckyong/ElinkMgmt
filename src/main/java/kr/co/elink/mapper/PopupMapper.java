@@ -5,15 +5,16 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import kr.co.elink.dto.PopupRVo;
 import kr.co.elink.dto.PopupVo;
 
 @Repository
 @Mapper
 public interface PopupMapper {
 	
-	public List<PopupVo> selectPopup(PopupVo popupVo);
+	public List<PopupRVo> selectPopup(PopupVo popupVo);
 	
-	public PopupVo selectPopupInfo(String id);
+	public PopupRVo selectPopupInfo(String id);
 	
 	public int insertPopup(PopupVo popupVo);
 	
