@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.util.UploadFile;
+import kr.co.elink.dto.ContactUsRVo;
 import kr.co.elink.dto.ContactUsVo;
 import kr.co.elink.dto.FileVo;
-import kr.co.elink.dto.PopupVo;
 import kr.co.elink.mapper.ContactUsMapper;
 import kr.co.elink.mapper.FileMapper;
 
@@ -27,18 +27,22 @@ public class ContactUsService {
 	@Autowired
 	UploadFile uploadFile;
 	
-	public List<ContactUsVo> selectContactUs(String id, int pageIndex){
+	public List<ContactUsRVo> selectContactUs(String id, int pageIndex, String searchKeyword, String searchCondition){
 		
 		// 페이징 처리
 		ContactUsVo contactUsVo = new ContactUsVo();
 		contactUsVo.setId(id);
+		if(searchKeyword != null && !"".equals(searchKeyword)) {
+			contactUsVo.setSearchKeyword(searchKeyword);
+			contactUsVo.setSearchCondition(searchCondition);
+		}
 		contactUsVo.setFirstIndex((pageIndex - 1) * contactUsVo.getRecordCountPerPage());
 		contactUsVo.setLastIndex(contactUsVo.getRecordCountPerPage());		
 		return contactUsMapper.selectContactUs(contactUsVo);
 		
 	};
 	
-	public ContactUsVo selecContactUsInfo(String id){
+	public ContactUsRVo selecContactUsInfo(String id){
 		return contactUsMapper.selecContactUsInfo(id);
 	};
 	
@@ -68,6 +72,9 @@ public class ContactUsService {
 	
 	@Transactional
 	public int deleteContactUsIds(ContactUsVo contactUsVo){
+		FileVo fileVo = new FileVo();
+		fileVo.setIds(contactUsVo.getIds());
+		fileMapper.deleteFileIds(fileVo);
 		return contactUsMapper.deleteContactUsIds(contactUsVo);
 	}
 }

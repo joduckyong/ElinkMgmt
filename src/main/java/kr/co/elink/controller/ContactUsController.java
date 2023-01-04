@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.elink.common.StatusEnum;
+import kr.co.elink.dto.ContactUsRVo;
 import kr.co.elink.dto.ContactUsVo;
+import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.service.ContactUsService;
+import kr.co.elink.service.FileService;
 
 @RestController
 @RequestMapping("/api/contactUs")
@@ -27,9 +30,21 @@ public class ContactUsController {
 	@Autowired
 	ContactUsService contactUsService;
 	
-	@GetMapping("/{id}/{pageIndex}")
-    public ResponseEntity<MessageVo> selectContactUs(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex) {
-        List<ContactUsVo> selectContactUs = contactUsService.selectContactUs(id, pageIndex);
+	@Autowired
+	FileService fileService;
+	
+	@GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}/{searchKeyword}/{searchCondition}", "/{id}/{pageIndex}"})
+    public ResponseEntity<MessageVo> selectContactUs(
+    		@PathVariable("id") String id
+    		, @PathVariable("pageIndex") int pageIndex
+    		, @PathVariable(name="searchCondition", required=false) String searchCondition
+    		, @PathVariable(name="searchKeyword", required=false) String searchKeyword
+    	) {
+        List<ContactUsRVo> list = contactUsService.selectContactUs(id, pageIndex, searchKeyword, searchCondition);
+        int totalCount = 0;
+        if(list.size() > 0) {
+        	totalCount = list.get(0).getTotalCount();
+        }
         
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -37,8 +52,8 @@ public class ContactUsController {
         MessageVo message = MessageVo.builder()
         	.status(StatusEnum.OK)
         	.message("성공 코드")
-//        	.totalCount(totalCount)
-        	.data(selectContactUs)
+        	.totalCount(totalCount)
+        	.data(list)
         	.build();
         
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -46,7 +61,8 @@ public class ContactUsController {
     
     @GetMapping("/{id}")
     public ResponseEntity<MessageVo> selecContactUsInfo(@PathVariable("id") String id) {
-    	ContactUsVo selecContactUsInfo = contactUsService.selecContactUsInfo(id);
+    	ContactUsRVo selecContactUsInfo = contactUsService.selecContactUsInfo(id);
+    	List<FileVo> selectFileList = fileService.selectFileList(id);
         
     	HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -56,7 +72,7 @@ public class ContactUsController {
             	.message("성공 코드")
             	.totalCount(1)
             	.data(selecContactUsInfo)
-//            	.files(selectFileList)
+            	.files(selectFileList)
             	.build();
         
     	return new ResponseEntity<>(message, headers, HttpStatus.OK);
