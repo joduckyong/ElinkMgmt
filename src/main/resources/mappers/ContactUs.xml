@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.mapper.ContactUsMapper">
+
+	<select id="selectContactUs" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.ContactUsVo">
+		/* ContactUsMapper.selectContactUs */	
+		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
+	   select count(1) over() as total_count
+	        , row_number() over(order by contact_id desc ) as rnum
+			, tb.*
+		 from (	
+			select contact_id
+			     , contact_nm
+			     , contact_title
+			     , contact_phone
+			     , contact_mail
+			     , contact_contents
+			     , contact_agree
+			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+			  from tb_contact_us
+			 where contact_id like concat(#{id},'%')   
+			  )tb 
+	    where 1 = 1		
+	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 	
+	</select>
+
+	<select id="selecContactUsInfo" parameterType="String" resultType="kr.co.elink.dto.ContactUsVo">
+		/* ContactUsMapper.selecContactUsInfo */	
+		select *
+		  from tb_contact_us
+		 where contact_id = #{id}
+	</select>
+	
+	<insert id="insertContactUs" parameterType="kr.co.elink.dto.ContactUsVo">
+		/* ContactUsMapper.insertContactUs */
+		<selectKey resultType="string" keyProperty="id" order="BEFORE">
+	        SELECT FNC_ID(#{contactId})       
+	    </selectKey>
+		insert into tb_contact_us
+					(	
+						contact_id
+					  <if test="contactNm neq '' and contactNm != null">
+					  , contact_nm
+					  </if>
+					  <if test="contactTitle neq '' and contactTitle != null">
+					  , contact_title
+					  </if>
+					  <if test="contactPhone neq '' and contactPhone != null">
+					  , contact_phone
+					  </if>
+					  <if test="contactMail neq '' and contactMail != null">
+					  , contact_mail
+					  </if>
+					  <if test="contactContents neq '' and contactContents != null">
+					  , contact_contents
+					  </if>
+					  <if test="contactAgree neq '' and contactAgree != null">
+					  , contact_agree
+					  </if>
+					)
+					values
+					(
+						FNC_ID(#{contactId})
+					  <if test="contactNm neq '' and contactNm != null">
+					  , #{contactNm}
+					  </if>
+					  <if test="contactTitle neq '' and contactTitle != null">
+					  , #{contactTitle}
+					  </if>
+					  <if test="contactPhone neq '' and contactPhone != null">
+					  , #{contactPhone}
+					  </if>
+					  <if test="contactMail neq '' and contactMail != null">
+					  , #{contactMail}
+					  </if>
+					  <if test="contactContents neq '' and contactContents != null">
+					  , #{contactContents}
+					  </if>
+					  <if test="contactAgree neq '' and contactAgree != null">
+					  , #{contactAgree}
+					  </if>
+					)		  
+	</insert>
+	
+	<delete id="deleteContactUs" parameterType="String">
+		/* ContactUsMapper.deleteContactUs */	
+		delete 
+	 	  from tb_contact_us
+	 	 where contact_id = #{id}
+	</delete>		
+	
+	<delete id="deleteContactUsIds">
+		/* PopupMapper.deleteContactUsIds */		
+		delete from tb_contact_us where contact_id in 
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>		
+	</delete>		
+</mapper>
