@@ -107,9 +107,10 @@ public class BoardController {
     @PostMapping("/update")
     public ResponseEntity<MessageVo> updateBoard(@RequestPart BoardVo boardVo
     		, @RequestPart(value="thumbnail", required = false) MultipartFile multipartThumbnail
-    		, @RequestPart(value="file", required = false) MultipartFile multipartFile) throws IOException {
+    		, @RequestPart(value="file", required = false) MultipartFile multipartFile
+    		, @RequestPart(value="files", required = false) List<MultipartFile> multipartFiles) throws IOException {
     	
-    	int updateBoard = boardService.updateBoard(boardVo, multipartThumbnail, multipartFile);
+    	int updateBoard = boardService.updateBoard(boardVo, multipartThumbnail, multipartFile, multipartFiles);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
