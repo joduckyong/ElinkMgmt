@@ -45,6 +45,19 @@ public class BoardService {
 		return boardMapper.selectBoard(boardVo);
 	};
 	
+	public List<BoardRVo> selectClientBoard(String id, int pageIndex, String boardType){
+		// 페이징 처리
+		BoardVo boardVo = new BoardVo();
+		boardVo.setId(id);
+		if(boardType != null && !"".equals(boardType)) {
+			boardVo.setBoardType(boardType);
+		}
+		boardVo.setFirstIndex((pageIndex - 1) * boardVo.getRecordCountPerPage());
+		boardVo.setLastIndex(boardVo.getRecordCountPerPage());
+		
+		return boardMapper.selectBoard(boardVo);
+	};
+	
 	public BoardRVo selectBoardInfo(String id){
 		return boardMapper.selectBoardInfo(id);
 	};

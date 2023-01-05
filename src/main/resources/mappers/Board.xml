@@ -35,6 +35,9 @@
 					</otherwise>					
 				</choose>
 			  </if>
+			  <if test="boardType neq '' and boardType != null">
+			  	and board_type = #{boardType}
+			  </if>
 			 )tb
 			 left outer join tb_file tf 
 			on tb.board_id = tf.file_id 
