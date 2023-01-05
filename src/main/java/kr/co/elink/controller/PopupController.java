@@ -34,84 +34,70 @@ public class PopupController {
 
 	@Autowired
 	PopupService popupService;
-	
+
 	@Autowired
 	FileService fileService;
-	
-	@GetMapping("/{id}/{pageIndex}")
-    public ResponseEntity<MessageVo> selectPopup(@PathVariable("id") String id, @PathVariable("pageIndex") int pageIndex) {
-        List<PopupRVo> list = popupService.selectPopup(id, pageIndex);
-        int totalCount = 0;
-        if(list.size() > 0) {
-        	totalCount = list.get(0).getTotalCount();
-        }
-        
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        MessageVo message = MessageVo.builder()
-        	.status(StatusEnum.OK)
-        	.message("성공 코드")
-        	.totalCount(totalCount)
-        	.data(list)
-        	.build();
-        
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<MessageVo> selectPopupInfo(@PathVariable("id") String id) {
-    	PopupRVo selectPopupInfo = popupService.selectPopupInfo(id);
-    	List<FileVo> selectFileList = fileService.selectFileList(id);
-    	
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+	@GetMapping({ "/{id}/{pageIndex}", "/{id}/{pageIndex}/{searchCondition}" })
+	public ResponseEntity<MessageVo> selectPopup(@PathVariable("id") String id,
+			@PathVariable("pageIndex") int pageIndex,
+			@PathVariable(name = "searchCondition", required = false) String searchCondition) {
+		List<PopupRVo> list = popupService.selectPopup(id, pageIndex, searchCondition);
+		int totalCount = 0;
+		if (list.size() > 0) {
+			totalCount = list.get(0).getTotalCount();
+		}
 
-        MessageVo message = MessageVo.builder()
-            	.status(StatusEnum.OK)
-            	.message("성공 코드")
-            	.totalCount(1)
-            	.data(selectPopupInfo)
-            	.files(selectFileList)
-            	.build();
-        
-    	return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }
-    
-    @PostMapping("/")
-    public ResponseEntity<MessageVo> insertPopup(@RequestPart PopupVo popupVo, @RequestPart(value="thumbnail", required = false) MultipartFile multipartThumbnail) throws IOException {
-    	int insertPopup = popupService.insertPopup(popupVo, multipartThumbnail);
-    	
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        MessageVo message = MessageVo.builder()
-            	.status(StatusEnum.OK)
-            	.message("성공 코드")
-            	.data(insertPopup)
-            	.build();
-    	
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }    
+		MessageVo message = MessageVo.builder().status(StatusEnum.OK).message("성공 코드").totalCount(totalCount).data(list)
+				.build();
 
-    @PostMapping("/update")
-    public ResponseEntity<MessageVo> updatePopup(@RequestPart PopupVo popupVo
-    		, @RequestPart(value="thumbnail", required = false) MultipartFile multipartThumbnail) throws IOException {
-    	
-    	int updatePopup = popupService.updatePopup(popupVo, multipartThumbnail);
-    	
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
 
-        MessageVo message = MessageVo.builder()
-            	.status(StatusEnum.OK)
-            	.message("성공 코드")
-            	.data(updatePopup)
-            	.build();
-        
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }
-    
+	@GetMapping("/{id}")
+	public ResponseEntity<MessageVo> selectPopupInfo(@PathVariable("id") String id) {
+		PopupRVo selectPopupInfo = popupService.selectPopupInfo(id);
+		List<FileVo> selectFileList = fileService.selectFileList(id);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		MessageVo message = MessageVo.builder().status(StatusEnum.OK).message("성공 코드").totalCount(1)
+				.data(selectPopupInfo).files(selectFileList).build();
+
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+
+	@PostMapping("/")
+	public ResponseEntity<MessageVo> insertPopup(@RequestPart PopupVo popupVo,
+			@RequestPart(value = "thumbnail", required = false) MultipartFile multipartThumbnail) throws IOException {
+		int insertPopup = popupService.insertPopup(popupVo, multipartThumbnail);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		MessageVo message = MessageVo.builder().status(StatusEnum.OK).message("성공 코드").data(insertPopup).build();
+
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+
+	@PostMapping("/update")
+	public ResponseEntity<MessageVo> updatePopup(@RequestPart PopupVo popupVo,
+			@RequestPart(value = "thumbnail", required = false) MultipartFile multipartThumbnail) throws IOException {
+
+		int updatePopup = popupService.updatePopup(popupVo, multipartThumbnail);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		MessageVo message = MessageVo.builder().status(StatusEnum.OK).message("성공 코드").data(updatePopup).build();
+
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+
 //    @PutMapping("")
 //    public ResponseEntity<MessageVo> updatePopup(@RequestBody PopupVo popupVo) {
 //    	int updatePopup = popupService.updatePopup(popupVo);
@@ -127,36 +113,28 @@ public class PopupController {
 //        
 //        return new ResponseEntity<>(message, headers, HttpStatus.OK);
 //    }    
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MessageVo> deletePopup(@PathVariable("id") String id) {
-    	int deletePopup = popupService.deletePopup(id);
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+	@DeleteMapping("/{id}")
+	public ResponseEntity<MessageVo> deletePopup(@PathVariable("id") String id) {
+		int deletePopup = popupService.deletePopup(id);
 
-        MessageVo message = MessageVo.builder()
-            	.status(StatusEnum.OK)
-            	.message("성공 코드")
-            	.data(deletePopup)
-            	.build();
-        
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }
-    
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		MessageVo message = MessageVo.builder().status(StatusEnum.OK).message("성공 코드").data(deletePopup).build();
+
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+
 	@DeleteMapping("")
-	public ResponseEntity<MessageVo> deletePopupIds(@RequestBody PopupVo popupVo) throws Exception{
-    	int deletePopupIds = popupService.deletePopupIds(popupVo);
+	public ResponseEntity<MessageVo> deletePopupIds(@RequestBody PopupVo popupVo) throws Exception {
+		int deletePopupIds = popupService.deletePopupIds(popupVo);
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        MessageVo message = MessageVo.builder()
-            	.status(StatusEnum.OK)
-            	.message("성공 코드")
-            	.data(deletePopupIds)
-            	.build();
-        
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);	
+		MessageVo message = MessageVo.builder().status(StatusEnum.OK).message("성공 코드").data(deletePopupIds).build();
+
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
 	}
 }
