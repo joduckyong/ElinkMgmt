@@ -31,11 +31,14 @@ public class PopupService {
 	@Autowired
 	UploadThumbnail uploadThumbnail;
 	
-	public List<PopupRVo> selectPopup(String id, int pageIndex){
+	public List<PopupRVo> selectPopup(String id, int pageIndex, String searchCondition){
 		
 		// 페이징 처리
 		PopupVo popupVo = new PopupVo();
 		popupVo.setId(id);
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			popupVo.setSearchCondition(searchCondition);
+		}
 		popupVo.setFirstIndex((pageIndex - 1) * popupVo.getRecordCountPerPage());
 		popupVo.setLastIndex(popupVo.getRecordCountPerPage());		
 		return popupMapper.selectPopup(popupVo);
