@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.elink.common.StatusEnum;
@@ -30,13 +31,14 @@ public class ClientBoardController {
 	@Autowired
 	FileService fileService;
 	
-    @GetMapping({"/{id}/{pageIndex}/{boardType}", "/{id}/{pageIndex}"})
+    @GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}"})
     public ResponseEntity<MessageVo> selectBoard(
     		@PathVariable("id") String id
     		, @PathVariable("pageIndex") int pageIndex
-    		, @PathVariable(name="boardType", required=false) String boardType
+    		, @PathVariable(name="searchKeyword", required=false) String searchKeyword
+    		, @RequestParam(name="boardType", required=false) String boardType
     	) {
-        List<BoardRVo> list = boardService.selectClientBoard(id, pageIndex, boardType);
+        List<BoardRVo> list = boardService.selectClientBoard(id, pageIndex, searchKeyword, boardType);
         int totalCount = 0;
         if(list.size() > 0) {
         	totalCount = list.get(0).getTotalCount();
