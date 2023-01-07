@@ -22,6 +22,8 @@ public class BoardRVo
 	
 	private String createdDatetime;
 	
+	private String createdDatetime2;
+	
 	private String updatedId;
 	
 	private String updatedDatetime;
