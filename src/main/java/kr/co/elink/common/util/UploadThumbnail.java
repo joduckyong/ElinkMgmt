@@ -1,13 +1,10 @@
 package kr.co.elink.common.util;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.UUID;
-
-import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -46,22 +43,23 @@ public class UploadThumbnail {
 		UUID uuid = UUID.randomUUID();
 		String originalFileName = multipartFile.getOriginalFilename();
 		String fileExt = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-		String fileName = "s_" + uuid + "." + fileExt;
+		String fileName = uuid + "." + fileExt;
+		String thumbnailFileName = "s_" + fileName;
 		String dir = makeDir();
 		
 		File file = new File(serverThumbnailPath + dir, fileName);
-		File thumbnailFile = new File(serverThumbnailPath + dir, fileName);
+		File thumbnailFile = new File(serverThumbnailPath + dir, thumbnailFileName);
 		
 	    multipartFile.transferTo(file);
 		
-		BufferedImage bi = ImageIO.read(file);
+//		BufferedImage bi = ImageIO.read(file);
 		//비율 
 //		double ratio = 3;
 		//넓이 높이
 //		int width = (int) (bi.getWidth() / ratio);
 //		int height = (int) (bi.getHeight() / ratio);		
-		int width = 200;
-		int height = 100;
+		int width = 320;
+		int height = 220;
 	
 		Thumbnails.of(file)
 	    .size(width, height)
@@ -69,7 +67,7 @@ public class UploadThumbnail {
 		
 		FileVo fileVo = new FileVo();
 		fileVo.setFileId(vo.getFileId());
-		fileVo.setFileNm(fileName);
+		fileVo.setFileNm(thumbnailFileName);
 		fileVo.setFileOriginNm(originalFileName);
 		fileVo.setFilePath(dir);
 		fileVo.setFileSize(thumbnailFile.length());
