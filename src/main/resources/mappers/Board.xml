@@ -74,6 +74,12 @@
 					  <if test="url neq '' and url != null">
 					  , url
 					  </if>
+					  <if test="boardStartDatetime neq '' and boardStartDatetime != null">
+					  , board_start_datetime
+					  </if>
+					  <if test="boardEndDatetime neq '' and boardEndDatetime != null">
+					  , board_end_datetime
+					  </if>
 					  <if test="createdId neq '' and createdId != null">
 					  , created_id
 					  </if>
@@ -92,6 +98,12 @@
 					  </if>
 					  <if test="url neq '' and url != null">
 					  , #{url}
+					  </if>
+					  <if test="boardStartDatetime neq '' and boardStartDatetime != null">
+					  , #{boardStartDatetime}
+					  </if>
+					  <if test="boardEndDatetime neq '' and boardEndDatetime != null">
+					  , #{boardEndDatetime}
 					  </if>
 					  <if test="createdId neq '' and createdId != null">
 					  , #{createdId}
@@ -115,6 +127,12 @@
 		   <if test="url neq '' and url != null">
 		     , url = #{url}
 		   </if>
+		   <if test="boardStartDatetime neq '' and boardStartDatetime != null">
+		  	, board_start_datetime = #{boardStartDatetime}
+		  </if>
+		  <if test="boardEndDatetime neq '' and boardEndDatetime != null">
+		  	, board_end_datetime = #{boardEndDatetime}
+		  </if>
 		   <if test="boardType neq '' and boardType != null">
 		     , board_type = #{boardType}
 		   </if>
@@ -134,6 +152,16 @@
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>		
-	</delete>	
+	</delete>
+	
+	<select id="selectPrevNextBoard" parameterType="String" resultType="kr.co.elink.dto.PrevNextVo">
+		/* BoardMapper.selectPrevNextBoard */	
+		select
+		   (select board_id from tb_board where board_id <![CDATA[<]]> #{id} and board_id like concat(left(#{id},3),'%') order by board_id desc limit 1) as prev_board_id
+		   ,(select board_id from tb_board where board_id > #{id} and board_id like concat(left(#{id},3),'%') order by board_id limit 1) as next_board_id
+		from tb_board
+		where 1=1
+		and board_id = #{id}
+	</select>
 	
 </mapper>
