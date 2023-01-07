@@ -13,6 +13,7 @@ import kr.co.elink.common.util.UploadThumbnail;
 import kr.co.elink.dto.BoardRVo;
 import kr.co.elink.dto.BoardVo;
 import kr.co.elink.dto.FileVo;
+import kr.co.elink.dto.PrevNextVo;
 import kr.co.elink.mapper.BoardMapper;
 import kr.co.elink.mapper.FileMapper;
 
@@ -149,4 +150,9 @@ public class BoardService {
 		fileMapper.deleteFileIds(fileVo);
 		return boardMapper.deleteBoardIds(boardVo);
 	}
+	
+	public PrevNextVo selectPrevNextBoard(String id){
+		return boardMapper.selectPrevNextBoard(id);
+	};
+	
 }

@@ -27,5 +27,9 @@ public class BoardVo extends DefaultVo
 	
 	private String updatedDatetime;
 	
+	private String boardStartDatetime;
+	
+	private String boardEndDatetime;
+	
 	private List<String> ids;
 }

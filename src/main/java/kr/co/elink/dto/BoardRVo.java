@@ -26,6 +26,10 @@ public class BoardRVo
 	
 	private String updatedDatetime;
 	
+	private String boardStartDatetime;
+	
+	private String boardEndDatetime;
+	
 	private String thumbNm;
 	
 	private String thumbOriginNm;

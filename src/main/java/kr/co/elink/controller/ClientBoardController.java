@@ -18,6 +18,7 @@ import kr.co.elink.common.StatusEnum;
 import kr.co.elink.dto.BoardRVo;
 import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
+import kr.co.elink.dto.PrevNextVo;
 import kr.co.elink.service.BoardService;
 import kr.co.elink.service.FileService;
 
@@ -61,6 +62,7 @@ public class ClientBoardController {
     public ResponseEntity<MessageVo> selectBoardInfo(@PathVariable("id") String id) {
     	BoardRVo selectBoardInfo = boardService.selectBoardInfo(id);
     	List<FileVo> selectFileList = fileService.selectFileList(id);
+    	PrevNextVo selectPrevNextBoard = boardService.selectPrevNextBoard(id);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -71,6 +73,7 @@ public class ClientBoardController {
             	.totalCount(1)
             	.data(selectBoardInfo)
             	.files(selectFileList)
+            	.prevNextData(selectPrevNextBoard)
             	.build();
         
     	return new ResponseEntity<>(message, headers, HttpStatus.OK);

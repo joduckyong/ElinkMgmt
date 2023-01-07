@@ -15,5 +15,6 @@ public class MessageVo {
     private int totalCount;
     private Object data;
     private Object files;
+    private Object prevNextData;
 
 }
