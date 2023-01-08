@@ -21,6 +21,8 @@
 			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
 			     , updated_id
 			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
+			     , board_start_datetime
+			     , board_end_datetime
 			  from tb_board
 			 where board_id like concat(#{id},'%')   
 			  <if test="searchKeyword neq '' and searchKeyword != null">

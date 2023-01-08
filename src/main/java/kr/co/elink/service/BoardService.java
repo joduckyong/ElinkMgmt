@@ -56,6 +56,9 @@ public class BoardService {
 		if(boardType != null && !"".equals(boardType)) {
 			boardVo.setBoardType(boardType);
 		}
+		if(id.equals("MED")) {
+			boardVo.setRecordCountPerPage(3);
+		}
 		boardVo.setFirstIndex((pageIndex - 1) * boardVo.getRecordCountPerPage());
 		boardVo.setLastIndex(boardVo.getRecordCountPerPage());
 		
