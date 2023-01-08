@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.elink.common.StatusEnum;
+import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.dto.PopupRVo;
+import kr.co.elink.service.FileService;
 import kr.co.elink.service.PopupService;
 
 @RestController
@@ -25,6 +27,9 @@ public class ClientPopupController {
 	@Autowired
 	PopupService popupService;
 
+	@Autowired
+	FileService fileService;
+	
 	@GetMapping({"/{id}/{pageIndex}", "/{id}/{pageIndex}/{searchCondition}"})
 	public ResponseEntity<MessageVo> selectPopup(@PathVariable("id") String id,
 			@PathVariable("pageIndex") int pageIndex,
@@ -44,4 +49,18 @@ public class ClientPopupController {
 		return new ResponseEntity<>(message, headers, HttpStatus.OK);
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<MessageVo> selectPopupInfo(@PathVariable("id") String id) {
+		PopupRVo selectPopupInfo = popupService.selectPopupInfo(id);
+		List<FileVo> selectFileList = fileService.selectFileList(id);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		MessageVo message = MessageVo.builder().status(StatusEnum.OK).message("성공 코드").totalCount(1)
+				.data(selectPopupInfo).files(selectFileList).build();
+
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+	
 }
