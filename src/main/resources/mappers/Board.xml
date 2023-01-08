@@ -28,6 +28,7 @@
 			   	<choose>
 					<when test="searchCondition eq 'title'">and board_title like concat('%',#{searchKeyword},'%')</when>
 					<when test="searchCondition eq 'content'">and board_contents like concat('%',#{searchKeyword},'%')</when>
+					<when test="searchCondition eq 'year'">and DATE_FORMAT(created_datetime, '%Y') = #{searchKeyword}</when>
 					<otherwise>
 						and (
 							board_title like concat('%',#{searchKeyword},'%') or

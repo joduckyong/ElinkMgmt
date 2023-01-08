@@ -46,12 +46,13 @@ public class BoardService {
 		return boardMapper.selectBoard(boardVo);
 	};
 	
-	public List<BoardRVo> selectClientBoard(String id, int pageIndex, String searchKeyword, String boardType){
+	public List<BoardRVo> selectClientBoard(String id, int pageIndex, String searchKeyword, String searchCondition, String boardType){
 		// 페이징 처리
 		BoardVo boardVo = new BoardVo();
 		boardVo.setId(id);
 		if(searchKeyword != null && !"".equals(searchKeyword)) {
 			boardVo.setSearchKeyword(searchKeyword);
+			boardVo.setSearchCondition(searchCondition);
 		}
 		if(boardType != null && !"".equals(boardType)) {
 			boardVo.setBoardType(boardType);

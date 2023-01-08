@@ -32,14 +32,15 @@ public class ClientBoardController {
 	@Autowired
 	FileService fileService;
 	
-    @GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}"})
+    @GetMapping({"/{id}/{pageIndex}/{searchKeyword}/{searchCondition}", "/{id}/{pageIndex}"})
     public ResponseEntity<MessageVo> selectBoard(
     		@PathVariable("id") String id
     		, @PathVariable("pageIndex") int pageIndex
+    		, @PathVariable(name="searchCondition", required=false) String searchCondition
     		, @PathVariable(name="searchKeyword", required=false) String searchKeyword
     		, @RequestParam(name="boardType", required=false) String boardType
     	) {
-        List<BoardRVo> list = boardService.selectClientBoard(id, pageIndex, searchKeyword, boardType);
+        List<BoardRVo> list = boardService.selectClientBoard(id, pageIndex, searchKeyword, searchCondition, boardType);
         int totalCount = 0;
         if(list.size() > 0) {
         	totalCount = list.get(0).getTotalCount();
