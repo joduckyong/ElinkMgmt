@@ -19,6 +19,7 @@
 			     , url
 			     , created_id
 			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+			     , DATE_FORMAT(created_datetime, '%Y%m%d%H%i%s') as created_datetime2
 			     , updated_id
 			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
 			     , board_start_datetime
@@ -29,6 +30,7 @@
 			   	<choose>
 					<when test="searchCondition eq 'title'">and board_title like concat('%',#{searchKeyword},'%')</when>
 					<when test="searchCondition eq 'content'">and board_contents like concat('%',#{searchKeyword},'%')</when>
+					<when test="searchCondition eq 'year'">and DATE_FORMAT(created_datetime, '%Y') = #{searchKeyword}</when>
 					<otherwise>
 						and (
 							board_title like concat('%',#{searchKeyword},'%') or
