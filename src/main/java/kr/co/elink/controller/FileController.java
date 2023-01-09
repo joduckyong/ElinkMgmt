@@ -63,7 +63,13 @@ public class FileController {
 	@GetMapping("/image/{fileName}")
 	public ResponseEntity<Resource> viewImage(@PathVariable String fileName, HttpServletRequest request){
 		
-		FileVo fileVo = fileService.selectFileInfo(fileName);
+		FileVo fileVo = null;
+		if(fileName.indexOf("s_") > -1) {	//썸네일 이미지
+			fileVo = fileService.selectFileInfo(fileName);
+		}else {		//원본 이미지
+			fileVo = fileService.selectFileInfo("s_" + fileName);
+			fileVo.setFileNm(fileName);
+		}
 		Resource resource = null;
 		try {
 			resource = fileService.loadFile(fileVo);
@@ -80,9 +86,7 @@ public class FileController {
        
        return ResponseEntity.ok()
                .contentType(MediaType.parseMediaType(contentType))
-//               .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileVo.getFileOriginNm() + "\"")
                .body(resource);
-		
 	}
 
 }
