@@ -167,4 +167,36 @@
 		and board_id = #{id}
 	</select>
 	
+	<select id="selectPinup" resultType="String">
+		/* BoardMapper.selectPinup */	
+		select
+		   pinup_id
+		from tb_pinup
+		limit 1
+	</select>
+	
+	<insert id="insertPinup" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardMapper.insertPinup */	
+		insert into tb_pinup
+			(
+				pinup_id
+			)
+		values
+			(
+				#{boardId}
+			)
+	</insert>
+	
+	<update id="updatePinup" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardMapper.updatePinup */	
+		update tb_pinup
+		set pinup_id = #{boardId}
+	</update>
+	
+	<delete id="deletePinup">
+		/* BoardMapper.deletePinup */	
+		delete 
+	 	  from tb_pinup
+	</delete>
+	
 </mapper>

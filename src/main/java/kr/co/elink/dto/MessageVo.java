@@ -16,5 +16,6 @@ public class MessageVo {
     private Object data;
     private Object files;
     private Object prevNextData;
+    private Object pinupData;
 
 }

@@ -29,5 +29,11 @@ public interface BoardMapper {
 	
 	public PrevNextVo selectPrevNextBoard(String id);
 	
+	public String selectPinup();
+	
+	public int insertPinup(BoardVo boardVo);
+	
+	public int updatePinup(BoardVo boardVo);
+	
 	
 }
