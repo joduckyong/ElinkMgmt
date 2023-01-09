@@ -159,4 +159,23 @@ public class BoardService {
 		return boardMapper.selectPrevNextBoard(id);
 	};
 	
+	public String selectPinup(){
+		return boardMapper.selectPinup();
+	};
+	
+	@Transactional
+	public int updatePinup(BoardVo boardVo){
+		
+		int result = 0;
+		String pinupId = boardMapper.selectPinup();
+		
+		if(pinupId != null && !"".equals(pinupId)) {
+			result = boardMapper.updatePinup(boardVo);
+		}else {
+			result = boardMapper.insertPinup(boardVo);
+		}
+		
+		return result;
+	};
+	
 }

@@ -124,22 +124,6 @@ public class BoardController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
-//    @PutMapping("")
-//    public ResponseEntity<MessageVo> updateBoard(@RequestBody BoardVo boardVo) {
-//    	int updateBoard = boardService.updateBoard(boardVo);
-//    	
-//        HttpHeaders headers= new HttpHeaders();
-//        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-//
-//        MessageVo message = MessageVo.builder()
-//            	.status(StatusEnum.OK)
-//            	.message("성공 코드")
-//            	.data(updateBoard)
-//            	.build();
-//        
-//        return new ResponseEntity<>(message, headers, HttpStatus.OK);
-//    }    
-    
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageVo> deleteBoard(@PathVariable("id") String id) {
     	int deleteBoard = boardService.deleteBoard(id);
@@ -170,6 +154,40 @@ public class BoardController {
             	.build();
         
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
-	}	    
+	}
+	
+	@GetMapping("/pinup")
+    public ResponseEntity<MessageVo> selectPinup() {
+    	String selectPinup = boardService.selectPinup();
+    	
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.totalCount(1)
+            	.pinupData(selectPinup)
+            	.build();
+        
+    	return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+	
+	@PostMapping("/update/pinup")
+    public ResponseEntity<MessageVo> updatePinup(@RequestBody BoardVo boardVo){
+    	
+    	int updatePinup = boardService.updatePinup(boardVo);
+    	
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(updatePinup)
+            	.build();
+        
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
     
 }

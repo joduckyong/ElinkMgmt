@@ -32,15 +32,14 @@ public class ClientBoardController {
 	@Autowired
 	FileService fileService;
 	
-    @GetMapping({"/{id}/{pageIndex}/{searchKeyword}/{searchCondition}", "/{id}/{pageIndex}"})
+    @GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}"})
     public ResponseEntity<MessageVo> selectBoard(
     		@PathVariable("id") String id
     		, @PathVariable("pageIndex") int pageIndex
-    		, @PathVariable(name="searchCondition", required=false) String searchCondition
     		, @PathVariable(name="searchKeyword", required=false) String searchKeyword
     		, @RequestParam(name="boardType", required=false) String boardType
     	) {
-        List<BoardRVo> list = boardService.selectClientBoard(id, pageIndex, searchKeyword, searchCondition, boardType);
+        List<BoardRVo> list = boardService.selectClientBoard(id, pageIndex, searchKeyword, "", boardType);
         int totalCount = 0;
         if(list.size() > 0) {
         	totalCount = list.get(0).getTotalCount();
@@ -75,6 +74,24 @@ public class ClientBoardController {
             	.data(selectBoardInfo)
             	.files(selectFileList)
             	.prevNextData(selectPrevNextBoard)
+            	.build();
+        
+    	return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+    
+    @GetMapping("/WithPinup")
+    public ResponseEntity<MessageVo> selectBoardInfoWithPinup() {
+    	String pinupId = boardService.selectPinup();
+    	BoardRVo selectBoardInfo = boardService.selectBoardInfo(pinupId);
+    	
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.totalCount(1)
+            	.data(selectBoardInfo)
             	.build();
         
     	return new ResponseEntity<>(message, headers, HttpStatus.OK);
