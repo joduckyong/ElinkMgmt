@@ -73,8 +73,9 @@ public class PopupController {
 
 	@PostMapping("/")
 	public ResponseEntity<MessageVo> insertPopup(@RequestPart PopupVo popupVo,
-			@RequestPart(value = "thumbnail", required = false) MultipartFile multipartThumbnail) throws IOException {
-		int insertPopup = popupService.insertPopup(popupVo, multipartThumbnail);
+			@RequestPart(value = "thumbnail", required = false) MultipartFile multipartThumbnail,
+			@RequestPart(value = "file", required = false) MultipartFile multipartFile) throws IOException {
+		int insertPopup = popupService.insertPopup(popupVo, multipartThumbnail, multipartFile);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -86,9 +87,10 @@ public class PopupController {
 
 	@PostMapping("/update")
 	public ResponseEntity<MessageVo> updatePopup(@RequestPart PopupVo popupVo,
-			@RequestPart(value = "thumbnail", required = false) MultipartFile multipartThumbnail) throws IOException {
+			@RequestPart(value = "thumbnail", required = false) MultipartFile multipartThumbnail,
+			@RequestPart(value = "file", required = false) MultipartFile multipartFile) throws IOException {
 
-		int updatePopup = popupService.updatePopup(popupVo, multipartThumbnail);
+		int updatePopup = popupService.updatePopup(popupVo, multipartThumbnail, multipartFile);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

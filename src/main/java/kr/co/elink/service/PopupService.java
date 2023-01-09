@@ -49,7 +49,7 @@ public class PopupService {
 	};
 	
 	@Transactional
-	public int insertPopup(PopupVo popupVo, MultipartFile multipartThumbnail) throws IOException{
+	public int insertPopup(PopupVo popupVo, MultipartFile multipartThumbnail, MultipartFile multipartFile) throws IOException{
 		int result = popupMapper.insertPopup(popupVo);
 		
 		if(multipartThumbnail != null) {
@@ -58,11 +58,17 @@ public class PopupService {
     		fileMapper.insertFile(uploadThumbnail.upload(multipartThumbnail, fileVo));
     	}
 		
+    	if(multipartFile != null) {
+    		FileVo fileVo = new FileVo();
+    		fileVo.setFileId(popupVo.getId());
+    		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
+    	}
+		
 		return result;
 	};
 	
 	@Transactional
-	public int updatePopup(PopupVo popupVo, MultipartFile multipartThumbnail) throws IOException{
+	public int updatePopup(PopupVo popupVo, MultipartFile multipartThumbnail, MultipartFile multipartFile) throws IOException{
 		
 		if(multipartThumbnail != null) {
     		FileVo fileVo = new FileVo();
@@ -70,6 +76,14 @@ public class PopupService {
     		fileVo.setIds(popupVo.getIds());
     		fileMapper.deleteFileForName(fileVo);
     		fileMapper.insertFile(uploadThumbnail.upload(multipartThumbnail, fileVo));
+		}
+		
+		if(multipartFile != null) {
+    		FileVo fileVo = new FileVo();
+    		fileVo.setFileId(popupVo.getPopupId());
+    		fileVo.setIds(popupVo.getIds());
+    		fileMapper.deleteFileForName(fileVo);
+    		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
 		}
 		
 		return popupMapper.updatePopup(popupVo);
