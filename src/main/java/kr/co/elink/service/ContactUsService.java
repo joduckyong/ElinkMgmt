@@ -49,12 +49,19 @@ public class ContactUsService {
 	@Transactional
 	public int insertContactUs(ContactUsVo contactUsVo, MultipartFile multipartFile) throws IOException{
 		
-		int result = contactUsMapper.insertContactUs(contactUsVo);
+		int result = -1;
+		String acceptFileTypes = "^([\\S]+(\\.(?i)(jpg|gif|png|jpeg|pdf|hwp|xlsx|docx|ppt|pptx))$)";
+		long acceptFileSize = 50 * 1024 * 1024;
 		
-		if(multipartFile != null) {
-    		FileVo fileVo = new FileVo();
-    		fileVo.setFileId(contactUsVo.getId());
-    		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
+		if(multipartFile.getOriginalFilename().matches(acceptFileTypes) && multipartFile.getSize() <= acceptFileSize) {
+		
+			result = contactUsMapper.insertContactUs(contactUsVo);
+			
+			if(multipartFile != null) {
+	    		FileVo fileVo = new FileVo();
+	    		fileVo.setFileId(contactUsVo.getId());
+	    		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
+			}
 		}
 		
 		return result;
