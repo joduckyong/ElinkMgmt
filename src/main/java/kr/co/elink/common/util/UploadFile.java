@@ -20,6 +20,9 @@ public class UploadFile {
 	@Value("${server.file.path}")
 	private String serverFilePath;
 	
+	@Value("${server.file.path2}")
+	private String serverFilePath2;
+	
 	public String makeDir() {
 		Calendar cal = Calendar.getInstance();
 		String yearPath = File.separator +cal.get(Calendar.YEAR) + "";
@@ -49,6 +52,39 @@ public class UploadFile {
 		String dir = makeDir();
 		
 		File file = new File(serverFilePath + dir, fileName);
+		multipartFile.transferTo(file);
+//		file.createNewFile();
+//		FileCopyUtils.copy(multipartFile.getBytes(), file);
+		
+		String type="";
+		String fileType="";
+		type = Files.probeContentType(file.toPath());
+		if(type.startsWith("image")) {
+			fileType = "0";
+		}else {
+			fileType = "2";
+		}
+		
+		FileVo fileVo = new FileVo();
+		fileVo.setFileId(vo.getFileId());
+		fileVo.setFileNm(fileName);
+		fileVo.setFileOriginNm(originalFileName);
+		fileVo.setFilePath(dir);
+		fileVo.setFileSize(multipartFile.getSize());
+		fileVo.setFileType(fileType);
+		
+		return fileVo;
+		
+	}
+	
+	public FileVo upload2(MultipartFile multipartFile, FileVo vo) throws IOException {
+		UUID uuid = UUID.randomUUID();
+		String originalFileName = multipartFile.getOriginalFilename();
+		String fileExt = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+		String fileName = uuid + "." + fileExt;
+		String dir = makeDir();
+		
+		File file = new File(serverFilePath2 + dir, fileName);
 		multipartFile.transferTo(file);
 //		file.createNewFile();
 //		FileCopyUtils.copy(multipartFile.getBytes(), file);

@@ -1,6 +1,7 @@
 package kr.co.elink.service;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,7 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.elink.common.util.UploadFile;
 import kr.co.elink.dto.FileVo;
 import kr.co.elink.mapper.FileMapper;
 
@@ -26,6 +30,9 @@ public class FileService {
 	
 	@Autowired
 	FileMapper fileMapper;
+	
+	@Autowired
+	UploadFile uploadFile;
 	
 	public FileVo selectFileInfo(String fileNm) {
 		return fileMapper.selectFileInfo(fileNm);
@@ -60,4 +67,16 @@ public class FileService {
 
     }
 
+	@Transactional
+	public int insertTempFile(MultipartFile multipartFile) throws IOException{
+		
+		int result = 0;
+    	
+    	if(multipartFile != null) {
+    		FileVo fileVo = new FileVo();
+    		result = fileMapper.insertTempFile(uploadFile.upload2(multipartFile, fileVo));
+    	}
+		
+		return result;
+	};
 }

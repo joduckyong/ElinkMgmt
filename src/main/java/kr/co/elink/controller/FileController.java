@@ -2,6 +2,7 @@ package kr.co.elink.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,14 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.elink.common.StatusEnum;
 import kr.co.elink.dto.FileVo;
+import kr.co.elink.dto.MessageVo;
 import kr.co.elink.service.FileService;
 
 @RestController
@@ -89,4 +96,20 @@ public class FileController {
                .body(resource);
 	}
 
+    @PostMapping("/")
+    public ResponseEntity<MessageVo> insertTempFile(
+    		@RequestPart(value="file", required = false) MultipartFile multipartFile) throws IOException {
+    	int insertTempFile = fileService.insertTempFile(multipartFile);
+    	
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(insertTempFile)
+            	.build();
+    	
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
 }

@@ -17,6 +17,8 @@ public interface FileMapper {
 	
 	public int insertFile(FileVo fileVo);
 	
+	public int insertTempFile(FileVo fileVo);
+	
 	public int deleteFile(String id);
 	
 	public int deleteFileIds(FileVo fileVo);

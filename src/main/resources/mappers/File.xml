@@ -58,6 +58,46 @@
 					)		  
 	</insert>
 	
+	<insert id="insertTempFile" parameterType="kr.co.elink.dto.FileVo">
+		/* FileMapper.insertTempFile */
+		insert into tb_temp_file
+					(	
+					  <if test="fileType neq '' and fileType != null">
+					    file_type
+					  </if>
+					  <if test="filePath neq '' and filePath != null">
+					  , file_path
+					  </if>
+					  <if test="fileNm neq '' and fileNm != null">
+					  , file_nm
+					  </if>
+					  <if test="fileOriginNm neq '' and fileOriginNm != null">
+					  , file_origin_nm
+					  </if>
+					  <if test="fileSize neq '' and fileSize != null">
+					  , file_size
+					  </if>
+					)
+					values
+					(
+					  <if test="fileType neq '' and fileType != null">
+					    #{fileType}
+					  </if>
+					  <if test="filePath neq '' and filePath != null">
+					  , #{filePath}
+					  </if>
+					  <if test="fileNm neq '' and fileNm != null">
+					  , #{fileNm}
+					  </if>
+					  <if test="fileOriginNm neq '' and fileOriginNm != null">
+					  , #{fileOriginNm}
+					  </if>
+					  <if test="fileSize neq '' and fileSize != null">
+					  , #{fileSize}
+					  </if>
+					)		  
+	</insert>
+	
 	
 	<delete id="deleteFile" parameterType="String">
 		/* FileMapper.deleteFile */
