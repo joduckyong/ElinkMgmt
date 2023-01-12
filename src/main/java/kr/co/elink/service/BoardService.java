@@ -113,27 +113,28 @@ public class BoardService {
 	@Transactional
 	public int updateBoard(BoardVo boardVo, MultipartFile multipartThumbnail, MultipartFile multipartFile, List<MultipartFile> multipartFiles) throws IOException{
 		
+		
+		if(boardVo.getIds().size() > 0) {
+			FileVo fileVo = new FileVo();
+			fileVo.setIds(boardVo.getIds());
+    		fileMapper.deleteFileForName(fileVo);
+		}
+		
 		if(multipartThumbnail != null) {
     		FileVo fileVo = new FileVo();
     		fileVo.setFileId(boardVo.getBoardId());
-    		fileVo.setIds(boardVo.getIds());
-    		fileMapper.deleteFileForName(fileVo);
     		fileMapper.insertFile(uploadThumbnail.upload(multipartThumbnail, fileVo));
 		}
 		
 		if(multipartFile != null) {
     		FileVo fileVo = new FileVo();
     		fileVo.setFileId(boardVo.getBoardId());
-    		fileVo.setIds(boardVo.getIds());
-    		fileMapper.deleteFileForName(fileVo);
     		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
 		}
 		
 		if(multipartFiles != null) {
 			FileVo fileVo = new FileVo();
     		fileVo.setFileId(boardVo.getBoardId());
-    		fileVo.setIds(boardVo.getIds());
-    		fileMapper.deleteFileForName(fileVo);
     		for(MultipartFile file : multipartFiles) {
     			fileMapper.insertFile(uploadFile.upload(file, fileVo));
     		}
