@@ -97,19 +97,34 @@ public class FileController {
 	}
 
     @PostMapping("/")
-    public ResponseEntity<MessageVo> insertTempFile(
+    public int insertTempFile(
     		@RequestPart(value="file", required = false) MultipartFile multipartFile) throws IOException {
     	int insertTempFile = fileService.insertTempFile(multipartFile);
-    	
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        MessageVo message = MessageVo.builder()
-            	.status(StatusEnum.OK)
-            	.message("성공 코드")
-            	.data(insertTempFile)
-            	.build();
-    	
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return insertTempFile;
     }
+    
+	@GetMapping("/img/{fileNo}")
+	public ResponseEntity<Resource> viewTempImage(@PathVariable int fileNo, HttpServletRequest request){
+		
+		FileVo fileVo = fileService.selectTempFileInfo(fileNo);
+		Resource resource = null;
+		
+		try {
+			resource = fileService.loadTempFile(fileVo);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		String contentType = null;
+       try {
+           contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       
+       return ResponseEntity.ok()
+               .contentType(MediaType.parseMediaType(contentType))
+               .body(resource);
+	}
+	
 }

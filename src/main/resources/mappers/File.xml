@@ -9,6 +9,13 @@
 		 where file_nm = #{fileNm}
 	</select>
 	
+	<select id="selectTempFileInfo" parameterType="int" resultType="kr.co.elink.dto.FileVo">
+		/* FileMapper.selectTempFileInfo */
+		select *
+		  from tb_temp_file
+		 where file_no = #{fileNo}
+	</select>
+	
 	<select id="selectFileList" parameterType="String" resultType="kr.co.elink.dto.FileVo">
 		/* FileMapper.selectFileList */
 		select *
@@ -58,8 +65,9 @@
 					)		  
 	</insert>
 	
-	<insert id="insertTempFile" parameterType="kr.co.elink.dto.FileVo">
+	<insert id="insertTempFile" parameterType="kr.co.elink.dto.FileVo" useGeneratedKeys="true" keyProperty="fileNo">
 		/* FileMapper.insertTempFile */
+		
 		insert into tb_temp_file
 					(	
 					  <if test="fileType neq '' and fileType != null">

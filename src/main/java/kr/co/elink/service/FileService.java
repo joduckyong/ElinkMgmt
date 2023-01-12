@@ -25,6 +25,9 @@ public class FileService {
 	@Value("${server.file.path}")
 	private String serverFilePath;
 	
+	@Value("${server.temp.file.path}")
+	private String serverTempFilePath;
+	
 	@Value("${server.thumbnail.path}")
 	private String serverThumbnailPath;
 	
@@ -36,6 +39,10 @@ public class FileService {
 	
 	public FileVo selectFileInfo(String fileNm) {
 		return fileMapper.selectFileInfo(fileNm);
+	}
+	
+	public FileVo selectTempFileInfo(int fileNo) {
+		return fileMapper.selectTempFileInfo(fileNo);
 	}
 	
 	public List<FileVo> selectFileList(String fileId) {
@@ -66,15 +73,36 @@ public class FileService {
         }
 
     }
+	
+	public Resource loadTempFile(FileVo fileVo) throws FileNotFoundException {
+		
+		String serverPath = serverTempFilePath;
+		
+		try {
+			Path file = Paths.get(serverPath + fileVo.getFilePath())
+					.toAbsolutePath().normalize().resolve(fileVo.getFileNm()).normalize();
+			Resource resource = new UrlResource(file.toUri());
+			
+			if(resource.exists() || resource.isReadable()) {
+				return resource;
+			}else {
+				throw new FileNotFoundException("Could not find file");
+			}
+		} catch (MalformedURLException e) {
+			throw new FileNotFoundException("Could not download file");
+		}
+		
+	}
 
 	@Transactional
 	public int insertTempFile(MultipartFile multipartFile) throws IOException{
 		
 		int result = 0;
-    	
+		FileVo fileVo = new FileVo();
     	if(multipartFile != null) {
-    		FileVo fileVo = new FileVo();
-    		result = fileMapper.insertTempFile(uploadFile.upload2(multipartFile, fileVo));
+    		fileVo = uploadFile.uploadTemp(multipartFile, fileVo);
+    		fileMapper.insertTempFile(fileVo);
+    		result = fileVo.getFileNo();
     	}
 		
 		return result;
