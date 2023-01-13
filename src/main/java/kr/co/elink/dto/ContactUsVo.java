@@ -27,4 +27,6 @@ public class ContactUsVo extends DefaultVo
 	
 	private List<String> ids;
 	
+	private String encryptKey;
+	
 }
