@@ -10,10 +10,10 @@
 			, tb.*
 		 from (	
 			select contact_id
-			     , contact_nm
+			     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
 			     , contact_title
-			     , contact_phone
-			     , contact_mail
+			     , CAST(AES_DECRYPT(UNHEX(contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
+			     , CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
 			     , contact_contents
 			     , contact_agree
 			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
@@ -38,9 +38,17 @@
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 	
 	</select>
 
-	<select id="selecContactUsInfo" parameterType="String" resultType="kr.co.elink.dto.ContactUsRVo">
+	<select id="selecContactUsInfo" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.ContactUsRVo">
 		/* ContactUsMapper.selecContactUsInfo */	
-		select *
+		select
+			contact_id
+		     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
+		     , contact_title
+		     , CAST(AES_DECRYPT(UNHEX(contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
+		     , CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
+		     , contact_contents
+		     , contact_agree
+		     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
 		  from tb_contact_us
 		 where contact_id = #{id}
 	</select>
@@ -76,16 +84,16 @@
 					(
 						FNC_ID(#{contactId})
 					  <if test="contactNm neq '' and contactNm != null">
-					  , #{contactNm}
+					  ,HEX(AES_ENCRYPT(#{contactNm},  SHA2(#{encryptKey}, 256)))
 					  </if>
 					  <if test="contactTitle neq '' and contactTitle != null">
 					  , #{contactTitle}
 					  </if>
 					  <if test="contactPhone neq '' and contactPhone != null">
-					  , #{contactPhone}
+					  ,HEX(AES_ENCRYPT(#{contactPhone},  SHA2(#{encryptKey}, 256)))
 					  </if>
 					  <if test="contactMail neq '' and contactMail != null">
-					  , #{contactMail}
+					  ,HEX(AES_ENCRYPT(#{contactMail},  SHA2(#{encryptKey}, 256)))
 					  </if>
 					  <if test="contactContents neq '' and contactContents != null">
 					  , #{contactContents}

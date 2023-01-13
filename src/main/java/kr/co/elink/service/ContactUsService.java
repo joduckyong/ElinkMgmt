@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,11 +28,16 @@ public class ContactUsService {
 	@Autowired
 	UploadFile uploadFile;
 	
+	@Value("${encrypt.key}")
+	private String encryptKey;
+	
 	public List<ContactUsRVo> selectContactUs(String id, int pageIndex, String searchKeyword, String searchCondition){
 		
 		// 페이징 처리
 		ContactUsVo contactUsVo = new ContactUsVo();
 		contactUsVo.setId(id);
+		contactUsVo.setEncryptKey(encryptKey);
+		
 		if(searchKeyword != null && !"".equals(searchKeyword)) {
 			contactUsVo.setSearchKeyword(searchKeyword);
 			contactUsVo.setSearchCondition(searchCondition);
@@ -43,7 +49,11 @@ public class ContactUsService {
 	};
 	
 	public ContactUsRVo selecContactUsInfo(String id){
-		return contactUsMapper.selecContactUsInfo(id);
+		ContactUsVo contactUsVo = new ContactUsVo();
+		contactUsVo.setId(id);
+		contactUsVo.setEncryptKey(encryptKey);
+		
+		return contactUsMapper.selecContactUsInfo(contactUsVo);
 	};
 	
 	@Transactional
@@ -52,12 +62,12 @@ public class ContactUsService {
 		int result = -1;
 		String acceptFileTypes = "^([\\S]+(\\.(?i)(jpg|gif|png|jpeg|pdf|hwp|xlsx|docx|ppt|pptx))$)";
 		long acceptFileSize = 50 * 1024 * 1024;
+		contactUsVo.setEncryptKey(encryptKey);
 		
-		if(multipartFile.getOriginalFilename().matches(acceptFileTypes) && multipartFile.getSize() <= acceptFileSize) {
+		result = contactUsMapper.insertContactUs(contactUsVo);
 		
-			result = contactUsMapper.insertContactUs(contactUsVo);
-			
-			if(multipartFile != null) {
+		if(multipartFile != null) {
+			if(multipartFile.getOriginalFilename().matches(acceptFileTypes) && multipartFile.getSize() <= acceptFileSize) {
 	    		FileVo fileVo = new FileVo();
 	    		fileVo.setFileId(contactUsVo.getId());
 	    		fileMapper.insertFile(uploadFile.upload(multipartFile, fileVo));
