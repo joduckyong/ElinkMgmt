@@ -7,6 +7,7 @@
 		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
 	   select count(1) over() as total_count
 	        , row_number() over(order by board_id desc ) as rnum
+	        , row_number() over(order by board_id asc ) as num
 			, tb.*
 			, tf.file_nm as thumb_nm
 			, tf.file_origin_nm as thumb_origin_nm

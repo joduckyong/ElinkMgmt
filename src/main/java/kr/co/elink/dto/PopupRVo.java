@@ -42,6 +42,9 @@ public class PopupRVo
 	
 	/** row number */
     private int rnum = 0;
+    
+    /** row number */
+    private int num = 0;
 	
 	@JsonIgnore
 	private int totalCount;
