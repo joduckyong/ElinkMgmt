@@ -1,5 +1,8 @@
 package kr.co.elink.jwt;
 
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +23,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
  
+	@Value("${client.domain}")
+	private String clientDomain;
+	
     private final JwtTokenProvider jwtTokenProvider;
     
     @Bean
@@ -53,9 +59,14 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
+//        configuration.addAllowedOriginPattern("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedMethod("*");
+        
+        configuration.setAllowedOrigins(Arrays.asList(clientDomain));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
