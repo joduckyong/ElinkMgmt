@@ -17,15 +17,14 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
  
-	@Value("${client.domain}")
-	private String clientDomain;
-	
     private final JwtTokenProvider jwtTokenProvider;
     
     @Bean
@@ -59,12 +58,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-//        configuration.addAllowedOriginPattern("*");
-//        configuration.addAllowedHeader("*");
-//        configuration.addAllowedMethod("*");
-        
-        configuration.setAllowedOrigins(Arrays.asList(clientDomain));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         
         configuration.setAllowCredentials(true);
