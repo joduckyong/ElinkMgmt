@@ -39,8 +39,8 @@
 			  )tb 
 	    where 1 = 1		
 	    <if test="searchCondition neq '' and searchCondition != null">
-	      and tb.popup_startdate <![CDATA[<=]]> now()
-          and tb.popup_enddate <![CDATA[>=]]> now()	    
+	      and tb.popup_startdate <![CDATA[<=]]> DATE_FORMAT(now(), '%Y-%m-%d')
+          and tb.popup_enddate <![CDATA[>=]]> DATE_FORMAT(now(), '%Y-%m-%d')   
         </if>
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 		  
 	</select>
