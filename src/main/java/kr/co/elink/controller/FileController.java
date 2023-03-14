@@ -28,12 +28,6 @@ import kr.co.elink.service.FileService;
 @RequestMapping("/api/file")
 public class FileController {
 	
-	@Value("${server.file.path}")
-	private String serverFilePath;
-	
-	@Value("${server.thumbnail.path}")
-	private String serverThumbnailPath;
-	
 	@Autowired
 	FileService fileService;
 	
@@ -64,6 +58,35 @@ public class FileController {
                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(fileVo.getFileOriginNm(),"UTF-8") + "\"")
                .body(resource);
    }
+	
+	@GetMapping("/zip/{fileName}")
+	public ResponseEntity<Resource> downloadFile2(@PathVariable String fileName, HttpServletRequest request) throws UnsupportedEncodingException{
+		
+		FileVo fileVo = fileService.selectFileInfo(fileName);
+		Resource resource = null;
+		try {
+			resource = fileService.loadFile2(fileVo);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		String contentType = null;
+		try {
+			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(contentType == null) {
+			contentType = "application/zip";
+		}
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.COOKIE, "fileDownload=true; path=/")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(fileVo.getFileOriginNm(),"UTF-8") + "\"")
+				.body(resource);
+	}
 	
 	@GetMapping("/image/{fileName}")
 	public ResponseEntity<Resource> viewImage(@PathVariable String fileName, HttpServletRequest request){

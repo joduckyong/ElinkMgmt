@@ -25,6 +25,9 @@ public class FileService {
 	@Value("${server.file.path}")
 	private String serverFilePath;
 	
+	@Value("${server.zipfile.path}")
+	private String serverZipFilePath;
+	
 	@Value("${server.temp.file.path}")
 	private String serverTempFilePath;
 	
@@ -73,6 +76,26 @@ public class FileService {
         }
 
     }
+	
+	public Resource loadFile2(FileVo fileVo) throws FileNotFoundException {
+		
+		String serverPath = serverZipFilePath;
+		
+		try {
+			Path file = Paths.get(serverPath + fileVo.getFilePath())
+					.toAbsolutePath().normalize().resolve(fileVo.getFileNm()).normalize();
+			Resource resource = new UrlResource(file.toUri());
+			
+			if(resource.exists() || resource.isReadable()) {
+				return resource;
+			}else {
+				throw new FileNotFoundException("Could not find file");
+			}
+		} catch (MalformedURLException e) {
+			throw new FileNotFoundException("Could not download file");
+		}
+		
+	}
 	
 	public Resource loadTempFile(FileVo fileVo) throws FileNotFoundException {
 		
