@@ -11,6 +11,8 @@ public class ContactUsVo extends DefaultVo
 	
 	private String contactId;
 	
+	private String contactType;
+	
 	private String contactNm;
 	
 	private String contactTitle;

@@ -18,15 +18,16 @@
 			     , contact_agree
 			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
 			  from tb_contact_us
-			 where contact_id like concat(#{id},'%')   
+			 where contact_id like concat(#{id},'%')
+			 and contact_type = #{contactType}
 			 <if test="searchKeyword neq '' and searchKeyword != null">
 			   	<choose>
-			   		<when test="searchCondition eq 'name'">and contact_nm like concat('%',#{searchKeyword},'%')</when>
+			   		<when test="searchCondition eq 'name'">and CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) like concat('%',#{searchKeyword},'%')</when>
 					<when test="searchCondition eq 'title'">and contact_title like concat('%',#{searchKeyword},'%')</when>
 					<when test="searchCondition eq 'content'">and contact_contents like concat('%',#{searchKeyword},'%')</when>
 					<otherwise>
 						and (
-							contact_nm like concat('%',#{searchKeyword},'%') or
+							CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) like concat('%',#{searchKeyword},'%') or
 							contact_title like concat('%',#{searchKeyword},'%') or
 							contact_contents like concat('%',#{searchKeyword},'%')
 							)
@@ -61,6 +62,9 @@
 		insert into tb_contact_us
 					(	
 						contact_id
+					  <if test="contactType neq '' and contactType != null">
+					  , contact_type
+					  </if>
 					  <if test="contactNm neq '' and contactNm != null">
 					  , contact_nm
 					  </if>
@@ -83,6 +87,9 @@
 					values
 					(
 						FNC_ID(#{contactId})
+					  <if test="contactType neq '' and contactType != null">
+					  , #{contactType}
+					  </if>
 					  <if test="contactNm neq '' and contactNm != null">
 					  ,HEX(AES_ENCRYPT(#{contactNm},  SHA2(#{encryptKey}, 256)))
 					  </if>

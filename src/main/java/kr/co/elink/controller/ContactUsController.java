@@ -33,14 +33,15 @@ public class ContactUsController {
 	@Autowired
 	FileService fileService;
 	
-	@GetMapping({"/{id}/{pageIndex}/{searchKeyword}", "/{id}/{pageIndex}/{searchKeyword}/{searchCondition}", "/{id}/{pageIndex}"})
+	@GetMapping({"/{id}/{contactType}/{pageIndex}/{searchKeyword}", "/{id}/{contactType}/{pageIndex}/{searchKeyword}/{searchCondition}", "/{id}/{contactType}/{pageIndex}"})
     public ResponseEntity<MessageVo> selectContactUs(
     		@PathVariable("id") String id
+    		, @PathVariable("contactType") String contactType
     		, @PathVariable("pageIndex") int pageIndex
     		, @PathVariable(name="searchCondition", required=false) String searchCondition
     		, @PathVariable(name="searchKeyword", required=false) String searchKeyword
     	) {
-        List<ContactUsRVo> list = contactUsService.selectContactUs(id, pageIndex, searchKeyword, searchCondition);
+        List<ContactUsRVo> list = contactUsService.selectContactUs(id, contactType, pageIndex, searchKeyword, searchCondition);
         int totalCount = 0;
         if(list.size() > 0) {
         	totalCount = list.get(0).getTotalCount();
