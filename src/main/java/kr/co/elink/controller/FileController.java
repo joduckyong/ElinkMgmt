@@ -28,12 +28,6 @@ import kr.co.elink.service.FileService;
 @RequestMapping("/api/file")
 public class FileController {
 	
-	@Value("${server.file.path}")
-	private String serverFilePath;
-	
-	@Value("${server.thumbnail.path}")
-	private String serverThumbnailPath;
-	
 	@Autowired
 	FileService fileService;
 	
