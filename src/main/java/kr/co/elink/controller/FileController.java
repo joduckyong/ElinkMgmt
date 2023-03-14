@@ -2,7 +2,8 @@ package kr.co.elink.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.elink.common.StatusEnum;
 import kr.co.elink.dto.FileVo;
-import kr.co.elink.dto.MessageVo;
 import kr.co.elink.service.FileService;
 
 @RestController
@@ -40,7 +38,7 @@ public class FileController {
 	FileService fileService;
 	
 	@GetMapping("/download/{fileName}")
-	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request){
+	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws UnsupportedEncodingException{
 		
 		FileVo fileVo = fileService.selectFileInfo(fileName);
 		Resource resource = null;
@@ -63,7 +61,7 @@ public class FileController {
 
        return ResponseEntity.ok()
                .contentType(MediaType.parseMediaType(contentType))
-               .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileVo.getFileOriginNm() + "\"")
+               .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(fileVo.getFileOriginNm(),"UTF-8") + "\"")
                .body(resource);
    }
 	
