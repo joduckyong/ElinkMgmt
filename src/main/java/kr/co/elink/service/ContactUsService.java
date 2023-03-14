@@ -31,11 +31,12 @@ public class ContactUsService {
 	@Value("${encrypt.key}")
 	private String encryptKey;
 	
-	public List<ContactUsRVo> selectContactUs(String id, int pageIndex, String searchKeyword, String searchCondition){
+	public List<ContactUsRVo> selectContactUs(String id, String contactType, int pageIndex, String searchKeyword, String searchCondition){
 		
 		// 페이징 처리
 		ContactUsVo contactUsVo = new ContactUsVo();
 		contactUsVo.setId(id);
+		contactUsVo.setContactType(contactType);
 		contactUsVo.setEncryptKey(encryptKey);
 		
 		if(searchKeyword != null && !"".equals(searchKeyword)) {
