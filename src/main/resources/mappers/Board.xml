@@ -127,9 +127,7 @@
 		   <if test="boardContents neq '' and boardContents != null">
 		     , board_contents = #{boardContents}
 		   </if>
-		   <if test="url neq '' and url != null">
 		     , url = #{url}
-		   </if>
 		   <if test="boardStartDatetime neq '' and boardStartDatetime != null">
 		  	, board_start_datetime = #{boardStartDatetime}
 		  </if>
