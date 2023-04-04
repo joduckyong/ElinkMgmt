@@ -10,6 +10,7 @@
 		 <if test="adminId neq '' and adminId != null">
 		   and admin_id = #{id}
 		 </if>
+		   and use_yn = 'Y'
 	</select>
 	
 </mapper>

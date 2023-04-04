@@ -114,7 +114,7 @@ public class BoardService {
 	public int updateBoard(BoardVo boardVo, MultipartFile multipartThumbnail, MultipartFile multipartFile, List<MultipartFile> multipartFiles) throws IOException{
 		
 		
-		if(boardVo.getIds().size() > 0) {
+		if(boardVo.getIds() != null && boardVo.getIds().size() > 0) {
 			FileVo fileVo = new FileVo();
 			fileVo.setIds(boardVo.getIds());
     		fileMapper.deleteFileForName(fileVo);
