@@ -12,7 +12,6 @@
 		    select *
 			  from tb_admin
 			 where 1 = 1
-			 and use_yn = 'Y' 
 		)tb
 		where 1 = 1
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 
@@ -22,7 +21,7 @@
 		/* ManagerMapper.selectManagerInfo */	
 		select *
 		  from tb_admin
-		 where admin_id = #{id}
+		 where admin_no = #{id}
 	</select>
 	
 	<insert id="insertManager" parameterType="kr.co.elink.dto.ManagerVo">
@@ -66,6 +65,9 @@
 		   <if test="updatedId neq '' and updatedId != null">
 		     , updated_id = #{updatedId}
 		   </if>
+		   <if test="useYn neq '' and useYn != null">
+		     , use_yn = #{useYn}
+		   </if>
 		   <if test="adminPw neq '' and adminPw != null">
 		     , admin_pw = #{adminPw}
 		   </if>
@@ -98,12 +100,11 @@
 	
 	<delete id="deleteManagerIds" parameterType="kr.co.elink.dto.ManagerVo">
 		/* ManagerMapper.deleteManagerIds */		
-		delete from tb_admin where admin_id in 
+		delete from tb_admin where admin_no in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>	
-		where 1 = 1
-		and admin_id != 'admin'	
+		and admin_role != 'ADMIN'	
 	</delete>	
 
 </mapper>

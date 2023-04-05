@@ -41,6 +41,8 @@ public class ManagerService {
 	};
 	
 	public int updateManager(ManagerVo managerVo){
+		String encodedPassword = passwordEncoder.encode(managerVo.getAdminPw());
+		managerVo.setAdminPw(encodedPassword);
 		
 		return managerMapper.updateManager(managerVo);
 	};
