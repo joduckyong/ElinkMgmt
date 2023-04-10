@@ -1,9 +1,11 @@
 package kr.co.elink.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
-public class ManagerRVo extends DefaultVo
+public class ManagerRVo
 {
 	/** 관리자 번호 */
 	private int adminNo;
@@ -40,5 +42,8 @@ public class ManagerRVo extends DefaultVo
     
     /** 사용유무(Y:사용, N:미사용) */
     private String useYn;
+    
+    @JsonIgnore
+	private int totalCount;
     
 }
