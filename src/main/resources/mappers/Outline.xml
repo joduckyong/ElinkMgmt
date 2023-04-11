@@ -44,16 +44,16 @@
 		     , updated_id = #{updatedId}
 		   </if>
 		   <if test="companyYear neq '' and companyYear != null">
-		     , use_yn = #{companyYear}
+		     , company_year = #{companyYear}
 		   </if>
 		   <if test="companyMonth neq '' and companyMonth != null">
-		     , admin_pw = #{companyMonth}
+		     , company_month = #{companyMonth}
 		   </if>
 		   <if test="companyDay neq '' and companyDay != null">
-		     , admin_nm = #{companyDay}
+		     , company_day = #{companyDay}
 		   </if>
 		   <if test="companyContents neq '' and companyContents != null">
-		     , role_main = #{companyContents}
+		     , company_contents = #{companyContents}
 		   </if>
 		 where company_id = #{companyId}
 	</update>
