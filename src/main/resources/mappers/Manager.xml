@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.mapper.ManagerMapper">
+
+	<select id="selectManager" parameterType="kr.co.elink.dto.ManagerVo" resultType="kr.co.elink.dto.ManagerRVo">
+		/* ManagerMapper.selectManager */	
+		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
+		select count(1) over() as total_count
+	        , row_number() over(order by admin_no desc ) as rnum
+			, tb.*
+		from (	
+		    select *
+			  from tb_admin
+			 where 1 = 1
+		)tb
+		where 1 = 1
+	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 
+	</select>
+	
+	<select id="selectManagerInfo" parameterType="String" resultType="kr.co.elink.dto.ManagerRVo">
+		/* ManagerMapper.selectManagerInfo */	
+		select *
+		  from tb_admin
+		 where admin_no = #{id}
+	</select>
+	
+	<insert id="insertManager" parameterType="kr.co.elink.dto.ManagerVo">
+		/* ManagerMapper.insertManager */
+		insert into tb_admin
+		(	
+			admin_id
+			, admin_pw
+			, admin_nm
+			, admin_role
+			, role_main
+			, role_prom
+			, role_cont
+			, role_mgm
+			, role_inve
+			, role_jobs
+			, role_evst
+			, created_id
+		)
+		values
+		(
+			#{adminId}
+			, #{adminPw}
+			, #{adminNm}
+			, 'USER'
+			, #{roleMain}
+			, #{roleProm}
+			, #{roleCont}
+			, #{roleMgm}
+			, #{roleInve}
+			, #{roleJobs}
+			, #{roleEvst}
+			, #{createdId}
+		)		  
+	</insert>
+	
+	<update id="updateManager" parameterType="kr.co.elink.dto.ManagerVo">
+		/* ManagerMapper.updateManager */	
+		update tb_admin
+		   set updated_datetime = now()
+		   <if test="updatedId neq '' and updatedId != null">
+		     , updated_id = #{updatedId}
+		   </if>
+		   <if test="useYn neq '' and useYn != null">
+		     , use_yn = #{useYn}
+		   </if>
+		   <if test="adminPw neq '' and adminPw != null">
+		     , admin_pw = #{adminPw}
+		   </if>
+		   <if test="adminNm neq '' and adminNm != null">
+		     , admin_nm = #{adminNm}
+		   </if>
+		   <if test="roleMain neq '' and roleMain != null">
+		     , role_main = #{roleMain}
+		   </if>
+		   <if test="roleProm neq '' and roleProm != null">
+		     , role_prom = #{roleProm}
+		   </if>
+		   <if test="roleCont neq '' and roleCont != null">
+		     , role_cont = #{roleCont}
+		   </if>
+		   <if test="roleMgm neq '' and roleMgm != null">
+		     , role_mgm = #{roleMgm}
+		   </if>
+		   <if test="roleInve neq '' and roleInve != null">
+		     , role_inve = #{roleInve}
+		   </if>
+		   <if test="roleJobs neq '' and roleJobs != null">
+		     , role_jobs = #{roleJobs}
+		   </if>
+		   <if test="roleEvst neq '' and roleEvst != null">
+		     , role_evst = #{roleEvst}
+		   </if>
+		 where admin_id = #{adminId}
+	</update>
+	
+	<delete id="deleteManagerIds" parameterType="kr.co.elink.dto.ManagerVo">
+		/* ManagerMapper.deleteManagerIds */		
+		delete from tb_admin where admin_no in 
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>	
+		and admin_role != 'ADMIN'	
+	</delete>	
+
+</mapper>
