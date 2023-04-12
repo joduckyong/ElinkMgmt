@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/auth").permitAll()
+                .antMatchers("/api/ev/**").permitAll()
                 .antMatchers("/api/phone/**").permitAll()
                 .antMatchers("/api/file/**").permitAll()
                 .antMatchers("/api/client/**").permitAll()
