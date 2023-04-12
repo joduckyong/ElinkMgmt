@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.mapper.UserMapper">
+
+	<select id="selectUserInfo" parameterType="kr.co.elink.dto.UserVo" resultType="kr.co.elink.dto.UserRVo">
+		/* UserMapper.selectUserInfo */	
+		select CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) as telno
+		     , telcom
+		     , gender
+		     , CAST(AES_DECRYPT(UNHEX(brth), SHA2(#{encryptKey}, 256)) AS CHAR) as brth
+		     , ci
+		  from tb_user
+		 where telno = #{telno}
+	</select>
+	
+	<insert id="insertUser" parameterType="kr.co.elink.dto.UserVo">
+		/* UserMapper.insertUser */
+		insert into tb_user
+					(	
+						telno
+					  <if test="telcom neq '' and telcom != null">
+					  , telcom
+					  </if>
+					  <if test="gender neq '' and gender != null">
+					  , gender
+					  </if>
+					  <if test="brth neq '' and brth != null">
+					  , brth
+					  </if>
+					  <if test="ci neq '' and ci != null">
+					  , ci
+					  </if>
+					)
+					values
+					(
+						HEX(AES_ENCRYPT(#{telno},  SHA2(#{encryptKey}, 256)))
+					  <if test="telcom neq '' and telcom != null">
+					  , #{telcom}
+					  </if>
+					  <if test="gender neq '' and gender != null">
+					  , #{gender}
+					  </if>
+					  <if test="brth neq '' and brth != null">
+					  , HEX(AES_ENCRYPT(#{brth},  SHA2(#{encryptKey}, 256)))
+					  </if>
+					  <if test="ci neq '' and ci != null">
+					  , #{ci}
+					  </if>
+					)		  
+	</insert>
+		
+</mapper>
