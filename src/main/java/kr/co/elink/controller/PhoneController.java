@@ -1,16 +1,28 @@
 package kr.co.elink.controller;
 
+import java.nio.charset.Charset;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kcb.org.json.JSONObject;
+import kr.co.elink.common.StatusEnum;
+import kr.co.elink.dto.BoardRVo;
+import kr.co.elink.dto.FileVo;
+import kr.co.elink.dto.MessageVo;
+import kr.co.elink.dto.UserRVo;
 import kr.co.elink.dto.UserVo;
 import kr.co.elink.service.PhoneService;
 
@@ -21,20 +33,11 @@ public class PhoneController {
 	@Value("${kcb_module.cp_cd}")
 	private String kcbModuleCpCd;
 	
+	@Value("${kcb_module.url}")
+	private String kcbModuleUrl;
+	
 	@Autowired
 	PhoneService phoneService;
-	
-//	@GetMapping("{page}")
-//	public String phoneGet(@PathVariable String page, ModelMap model) throws Exception{
-//		
-//		return "phone/"+page;
-//	}	
-//	
-//	@PostMapping("{page}")
-//	public String phonePost(@PathVariable String page, ModelMap model) throws Exception{
-//		
-//		return "phone/"+page;
-//	}	
 	
 	@GetMapping("popup1")
 	public String phoneGet(ModelMap model) throws Exception{
@@ -45,7 +48,7 @@ public class PhoneController {
 	@GetMapping("popup2")
 	public String phoneGet2(HttpServletRequest request, ModelMap model) throws Exception{
 		
-		String popupUrl = "https://safe.ok-name.co.kr/CommonSvl";// 운영 URL
+		String popupUrl = kcbModuleUrl;// 운영 URL
 		
 		String resultStr = phoneService.phonePost2(request);
 		
@@ -136,5 +139,21 @@ public class PhoneController {
 		return "phone/popup3";
 	}		
 	
+	@GetMapping("phoneInfo/{id}")
+    public ResponseEntity<MessageVo> selectUserInfo(@PathVariable("id") String id) {
+		UserRVo selectUserInfo = phoneService.selectUserInfo(id);
+    	
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.totalCount(1)
+            	.data(selectUserInfo)
+            	.build();
+        
+    	return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
 	
 }

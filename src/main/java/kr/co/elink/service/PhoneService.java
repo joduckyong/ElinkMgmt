@@ -31,6 +31,9 @@ public class PhoneService {
 	@Value("${kcb_module.site_url}")
 	private String kcbSiteUrl;
 	
+	@Value("${kcb_module.return_url}")
+	private String kcbReturnUrl;
+	
 	@Value("${encrypt.key}")
 	private String encryptKey;
 	
@@ -41,7 +44,7 @@ public class PhoneService {
 	
 	public String phonePost2(HttpServletRequest request) throws OkCertException{
 
-		String RETURN_URL = "http://"+request.getServerName()+":9060/api/phone/popup3";
+		String RETURN_URL = kcbReturnUrl;
 		String SITE_NAME = kcbModuleSiteName; 		
 		String SITE_URL = kcbSiteUrl;
 		String RQST_CAUS_CD = "00";
