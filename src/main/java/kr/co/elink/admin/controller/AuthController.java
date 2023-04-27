@@ -1,4 +1,4 @@
-package kr.co.elink.controller;
+package kr.co.elink.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

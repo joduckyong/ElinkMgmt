@@ -1,4 +1,4 @@
-package kr.co.elink.controller;
+package kr.co.elink.client.controller;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

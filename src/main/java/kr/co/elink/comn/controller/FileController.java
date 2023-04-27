@@ -1,4 +1,4 @@
-package kr.co.elink.controller;
+package kr.co.elink.comn.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

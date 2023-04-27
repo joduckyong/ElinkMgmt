@@ -1,4 +1,4 @@
-package kr.co.elink.controller;
+package kr.co.elink.client.controller;
 
 import java.nio.charset.Charset;
 import java.util.List;
