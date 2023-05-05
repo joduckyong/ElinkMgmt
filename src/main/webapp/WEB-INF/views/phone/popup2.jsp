@@ -19,6 +19,7 @@
 		<input type="hidden" name="tc" value="kcb.oknm.online.safehscert.popup.cmd.P931_CertChoiceCmd"/>	<!-- 변경불가-->
 		<input type="hidden" name="cp_cd" value="<c:out value='${CP_CD}'/>">	<!-- 회원사코드 -->
 		<input type="hidden" name="mdl_tkn" value="<c:out value='${MDL_TKN}'/>">	<!-- 토큰 --> 
+		<input type="hidden" name="type" value="<c:out value='${TYPE}'/>">	<!-- 토큰 --> 
 		<input type="hidden" name="target_id" value="">	
 	</form>
 </body>

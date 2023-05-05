@@ -50,6 +50,7 @@ public class PhoneController {
 		
 		String popupUrl = kcbModuleUrl;// 운영 URL
 		
+		String TYPE = request.getParameter("type");
 		String resultStr = phoneService.phonePost2(request);
 		
 		JSONObject resJson = new JSONObject(resultStr);
@@ -69,6 +70,7 @@ public class PhoneController {
 	    
 	    model.addAttribute("RSLT_CD", RSLT_CD);
 	    model.addAttribute("RSLT_MSG", RSLT_MSG);
+	    model.addAttribute("TYPE", TYPE);
 	    
 	    model.addAttribute("POPUP_URL", popupUrl);
 	    
@@ -77,6 +79,8 @@ public class PhoneController {
 	
 	@GetMapping("popup3")
 	public String phoneGet3(HttpServletRequest request, ModelMap model) throws Exception{
+		
+		String TYPE = request.getParameter("type");
 		
 		String resultStr = phoneService.phonePost3(request);
 		JSONObject resJson = new JSONObject(resultStr);
@@ -117,7 +121,9 @@ public class PhoneController {
 			userVo.setTelcom(TEL_COM_CD);
 			userVo.setGender(RSLT_SEX_CD);
 			userVo.setBrth(RSLT_BIRTHDAY);
-			phoneService.insertUser(userVo);
+			if("I".equals(TYPE)) {
+				phoneService.insertUser(userVo);
+			}
 		}
 		
 		
