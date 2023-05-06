@@ -10,7 +10,7 @@
 		     , CAST(AES_DECRYPT(UNHEX(brth), SHA2(#{encryptKey}, 256)) AS CHAR) as brth
 		     , ci
 		  from tb_user
-		 where telno = #{telno}
+		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}
 	</select>
 	
 	<insert id="insertUser" parameterType="kr.co.elink.dto.UserVo">
