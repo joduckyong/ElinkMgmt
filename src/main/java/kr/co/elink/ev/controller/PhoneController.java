@@ -42,6 +42,9 @@ public class PhoneController {
 		return "phone/popup1";
 	}	
 	
+	/*
+	 * 휴대폰 인증창 
+	 */
 	@GetMapping("popup2")
 	public String phoneGet2(HttpServletRequest request, ModelMap model) throws Exception{
 		
@@ -71,6 +74,9 @@ public class PhoneController {
 		return "phone/popup2";
 	}		
 	
+	/*
+	 * 휴대폰 검증 및 사용자 등록 
+	 */
 	@GetMapping("popupAdd")
 	public String phoneGetAdd(HttpServletRequest request, ModelMap model) throws Exception{
 		
@@ -134,6 +140,9 @@ public class PhoneController {
 		return "phone/popup3";
 	}		
 	
+	/*
+	 * 휴대폰 검증 
+	 */
 	@GetMapping("popupView")
 	public String phoneGetView(HttpServletRequest request, ModelMap model) throws Exception{
 		
@@ -196,6 +205,9 @@ public class PhoneController {
 		return "phone/popup3";
 	}		
 	
+	/*
+	 * 사용자 정보 
+	 */
 	@GetMapping("phoneInfo/{id}")
     public ResponseEntity<MessageVo> selectUserInfo(@PathVariable("id") String id) {
 		UserRVo selectUserInfo = phoneService.selectUserInfo(id);
