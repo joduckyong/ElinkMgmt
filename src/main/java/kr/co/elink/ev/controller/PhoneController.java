@@ -1,7 +1,6 @@
 package kr.co.elink.ev.controller;
 
 import java.nio.charset.Charset;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kcb.org.json.JSONObject;
 import kr.co.elink.common.StatusEnum;
-import kr.co.elink.dto.BoardRVo;
-import kr.co.elink.dto.FileVo;
 import kr.co.elink.dto.MessageVo;
 import kr.co.elink.dto.UserRVo;
 import kr.co.elink.dto.UserVo;
@@ -50,7 +47,6 @@ public class PhoneController {
 		
 		String popupUrl = kcbModuleUrl;// 운영 URL
 		
-		String TYPE = request.getParameter("type");
 		String resultStr = phoneService.phonePost2(request);
 		
 		JSONObject resJson = new JSONObject(resultStr);
@@ -70,17 +66,13 @@ public class PhoneController {
 	    
 	    model.addAttribute("RSLT_CD", RSLT_CD);
 	    model.addAttribute("RSLT_MSG", RSLT_MSG);
-	    model.addAttribute("TYPE", TYPE);
-	    
 	    model.addAttribute("POPUP_URL", popupUrl);
 	    
 		return "phone/popup2";
 	}		
 	
-	@GetMapping("popup3")
-	public String phoneGet3(HttpServletRequest request, ModelMap model) throws Exception{
-		
-		String TYPE = request.getParameter("type");
+	@GetMapping("popupAdd")
+	public String phoneGetAdd(HttpServletRequest request, ModelMap model) throws Exception{
 		
 		String resultStr = phoneService.phonePost3(request);
 		JSONObject resJson = new JSONObject(resultStr);
@@ -121,11 +113,70 @@ public class PhoneController {
 			userVo.setTelcom(TEL_COM_CD);
 			userVo.setGender(RSLT_SEX_CD);
 			userVo.setBrth(RSLT_BIRTHDAY);
-			if("I".equals(TYPE)) {
-				phoneService.insertUser(userVo);
-			}
+			phoneService.insertUser(userVo);
 		}
 		
+		model.addAttribute("CP_CD", kcbModuleCpCd);
+		model.addAttribute("TX_SEQ_NO", TX_SEQ_NO);
+		model.addAttribute("RSLT_CD", RSLT_CD);
+		model.addAttribute("RSLT_MSG", RSLT_MSG);
+		model.addAttribute("RSLT_NAME", RSLT_NAME);
+		model.addAttribute("RSLT_BIRTHDAY", RSLT_BIRTHDAY);
+		model.addAttribute("RSLT_SEX_CD", RSLT_SEX_CD);
+		model.addAttribute("RSLT_NTV_FRNR_CD", RSLT_NTV_FRNR_CD);
+		model.addAttribute("DI", DI);
+		model.addAttribute("CI", CI);
+		model.addAttribute("CI_UPDATE", CI_UPDATE);
+		model.addAttribute("TEL_COM_CD", TEL_COM_CD);
+		model.addAttribute("TEL_NO", TEL_NO);
+		model.addAttribute("RETURN_MSG", RETURN_MSG);
+		
+		return "phone/popup3";
+	}		
+	
+	@GetMapping("popupView")
+	public String phoneGetView(HttpServletRequest request, ModelMap model) throws Exception{
+		
+		String resultStr = phoneService.phonePost3(request);
+		JSONObject resJson = new JSONObject(resultStr);
+	    String RSLT_CD =  resJson.getString("RSLT_CD");
+	    String RSLT_MSG =  resJson.getString("RSLT_MSG");
+		String TX_SEQ_NO =  resJson.getString("TX_SEQ_NO");
+		
+		String RSLT_NAME = "";
+		String RSLT_BIRTHDAY = "";
+		String RSLT_SEX_CD = "";
+		String RSLT_NTV_FRNR_CD = "";
+		
+		String DI = "";
+		String CI = "";
+		String CI_UPDATE = "";
+		String TEL_COM_CD = "";
+		String TEL_NO = "";
+		
+		String RETURN_MSG= "";
+		if(resJson.has("RETURN_MSG")) RETURN_MSG =  resJson.getString("RETURN_MSG");
+		
+		if ("B000".equals(RSLT_CD)){
+			RSLT_NAME = resJson.getString("RSLT_NAME");
+			RSLT_BIRTHDAY = resJson.getString("RSLT_BIRTHDAY");
+			RSLT_SEX_CD = resJson.getString("RSLT_SEX_CD");
+			RSLT_NTV_FRNR_CD = resJson.getString("RSLT_NTV_FRNR_CD");
+			
+			DI = resJson.getString("DI");
+			CI = resJson.getString("CI");
+			CI_UPDATE = resJson.getString("CI_UPDATE");
+			TEL_COM_CD = resJson.getString("TEL_COM_CD");
+			TEL_NO = resJson.getString("TEL_NO");
+			
+			UserVo userVo = new UserVo();
+			
+			userVo.setCi(CI);
+			userVo.setTelno(TEL_NO);
+			userVo.setTelcom(TEL_COM_CD);
+			userVo.setGender(RSLT_SEX_CD);
+			userVo.setBrth(RSLT_BIRTHDAY);
+		}
 		
 		model.addAttribute("CP_CD", kcbModuleCpCd);
 		model.addAttribute("TX_SEQ_NO", TX_SEQ_NO);
