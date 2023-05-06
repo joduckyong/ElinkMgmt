@@ -50,7 +50,7 @@ public class EVAuthController {
 		body.add("password", param.get("password"));
 		body.add("grant_type", param.get("grant_type"));
 		body.add("scope", param.get("scope"));
-		body.add("roleId", param.get("roleId"));
+		body.add("login_type", param.get("login_type"));
 		
 		ResponseEntity<?> responseEntity = apiService.postAuth(url, body);
 		
