@@ -12,7 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,14 @@ public class EVAuthController {
 		
 		String url = evApiUrl+param.get("url");
 		
-		ResponseEntity<?> responseEntity = apiService.postAuth(url, param);
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("username", param.get("username"));
+		body.add("password", param.get("password"));
+		body.add("grant_type", param.get("grant_type"));
+		body.add("scope", param.get("scope"));
+		body.add("roleId", param.get("roleId"));
+		
+		ResponseEntity<?> responseEntity = apiService.postAuth(url, body);
 		
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

@@ -78,17 +78,17 @@ public class ApiService<T> {
         return multiCallApi(url, HttpMethod.POST, body, clazz, mediaType);
     }    
     
-    public ResponseEntity<T> postAuth(String url, Object body) {
+    public ResponseEntity<T> postAuth(String url, MultiValueMap<String, Object> body) {
         return authCallApi(url, HttpMethod.POST, body,(Class<T>)Object.class, MediaType.APPLICATION_FORM_URLENCODED);
     }
-    
-    public ResponseEntity<T> postAuth(String url, Object body, Class<T> clazz) {
+ 
+    public ResponseEntity<T> postAuth(String url, MultiValueMap<String, Object> body, Class<T> clazz) {
         return authCallApi(url, HttpMethod.POST, body, clazz, MediaType.APPLICATION_FORM_URLENCODED);
     }
     
-    public ResponseEntity<T> postAuth(String url, Object body, Class<T> clazz, MediaType mediaType) {
+    public ResponseEntity<T> postAuth(String url, MultiValueMap<String, Object> body, Class<T> clazz, MediaType mediaType) {
         return authCallApi(url, HttpMethod.POST, body, clazz, mediaType);
-    }
+    }   
     
     @SuppressWarnings("unchecked")
 	private ResponseEntity<T> callApi(String url, HttpMethod httpMethod, Object body, Class<T> clazz, MediaType mediaType) {
@@ -117,17 +117,17 @@ public class ApiService<T> {
     }
     
     @SuppressWarnings("unchecked")
-	private ResponseEntity<T> authCallApi(String url, HttpMethod httpMethod, Object body, Class<T> clazz, MediaType mediaType) {
+	private ResponseEntity<T> authCallApi(String url, HttpMethod httpMethod, MultiValueMap<String, Object> body, Class<T> clazz, MediaType mediaType) {
     	HttpHeaders httpHeaders = new HttpHeaders();
     	httpHeaders.setContentType(mediaType);
     	httpHeaders.setBasicAuth(username, password);
     	
     	log.info("body : "+body);    	
-    	ResponseEntity<T> responseEntity = restTemplate.exchange(url, httpMethod, new HttpEntity<>(body, httpHeaders), clazz);
-		log.info("getStatusCode() : "+responseEntity.getStatusCode());
-		log.info("getBody() : "+responseEntity.getBody());    	
-    	
-        return (ResponseEntity<T>) responseEntity;
+    	HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, httpHeaders);    	
+    	ResponseEntity<T> responseEntity = restTemplate.postForEntity(url, requestEntity, clazz);
+    	log.info("getStatusCode() : "+responseEntity.getStatusCode());
+    	log.info("getBody() : "+responseEntity.getBody());    	
+    	return (ResponseEntity<T>) responseEntity;
     }    
 }
 
