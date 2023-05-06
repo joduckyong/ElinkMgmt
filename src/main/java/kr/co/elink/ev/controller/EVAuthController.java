@@ -35,13 +35,16 @@ public class EVAuthController {
 	@Autowired
 	private ApiService<?> apiService;
 	
+	/*
+	 * EV 인증
+	 */
 	@ResponseBody
-	@PostMapping("{apiId}")
+	@PostMapping("")
 	public ResponseEntity<MessageVo> auth(@RequestBody Map<String, Object> param, HttpSession session, ModelMap model) throws Exception{
 		
 		String url = evApiUrl+param.get("url");
 		
-		ResponseEntity<?> responseEntity = apiService.post(url, param);
+		ResponseEntity<?> responseEntity = apiService.postAuth(url, param);
 		
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -55,6 +58,9 @@ public class EVAuthController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
 	}	
 	
+	/*
+	 * SNS 인증
+	 */
 	@ResponseBody
 	@PostMapping("/token/{apiId}")
 	public ResponseEntity<MessageVo> authToken(@RequestBody Map<String, Object> param, HttpSession session, ModelMap model) throws Exception{
