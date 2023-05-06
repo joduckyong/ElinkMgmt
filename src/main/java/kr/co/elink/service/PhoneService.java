@@ -31,8 +31,11 @@ public class PhoneService {
 	@Value("${kcb_module.site_url}")
 	private String kcbSiteUrl;
 	
-	@Value("${kcb_module.return_url}")
-	private String kcbReturnUrl;
+	@Value("${kcb_module.add.url}")
+	private String kcbReturnAddUrl;
+	
+	@Value("${kcb_module.view.url}")
+	private String kcbReturnViewUrl;
 	
 	@Value("${encrypt.key}")
 	private String encryptKey;
@@ -44,7 +47,13 @@ public class PhoneService {
 	
 	public String phonePost2(HttpServletRequest request) throws OkCertException{
 
-		String RETURN_URL = kcbReturnUrl;
+		String TYPE = request.getParameter("type");
+		String RETURN_URL = kcbReturnViewUrl;
+		
+		if("I".equals(TYPE)) {
+			RETURN_URL = kcbReturnAddUrl;
+		}
+		
 		String SITE_NAME = kcbModuleSiteName; 		
 		String SITE_URL = kcbSiteUrl;
 		String RQST_CAUS_CD = "00";
