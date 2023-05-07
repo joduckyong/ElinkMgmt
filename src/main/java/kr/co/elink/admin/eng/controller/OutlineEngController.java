@@ -1,8 +1,7 @@
-package kr.co.elink.admin.controller;
+package kr.co.elink.admin.eng.controller;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,38 +11,27 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.StatusEnum;
-import kr.co.elink.dto.BoardRVo;
-import kr.co.elink.dto.BoardVo;
-import kr.co.elink.dto.FileVo;
-import kr.co.elink.dto.ManagerRVo;
-import kr.co.elink.dto.ManagerVo;
 import kr.co.elink.dto.MessageVo;
-import kr.co.elink.service.ManagerService;
-import kr.co.elink.service.BoardService;
-import kr.co.elink.service.FileService;
+import kr.co.elink.dto.OutlineRVo;
+import kr.co.elink.dto.OutlineVo;
+import kr.co.elink.eng.service.OutlineEngService;
 
 @RestController
-@RequestMapping("/api/manager")
-public class ManagerController {
+@RequestMapping("/en/api/company/outline")
+public class OutlineEngController {
 
 	@Autowired
-	ManagerService managerService;
+	OutlineEngService outlineEngService;
 	
-    @GetMapping("/list/{pageIndex}")
-    public ResponseEntity<MessageVo> selectManager(
-    		@PathVariable("pageIndex") int pageIndex
-    	) {
-        List<ManagerRVo> list = managerService.selectManager(pageIndex);
+    @GetMapping("")
+    public ResponseEntity<MessageVo> selectEngOutline() {
+        List<OutlineRVo> list = outlineEngService.selectEngOutline();
         int totalCount = 0;
         if(list.size() > 0) {
         	totalCount = list.get(0).getTotalCount();
@@ -62,27 +50,10 @@ public class ManagerController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
-    @GetMapping("/{id}")
-    public ResponseEntity<MessageVo> selectManagerInfo(@PathVariable("id") String id) {
-    	ManagerRVo selectManagerInfo = managerService.selectManagerInfo(id);
-    	
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        MessageVo message = MessageVo.builder()
-            	.status(StatusEnum.OK)
-            	.message("성공 코드")
-            	.totalCount(1)
-            	.data(selectManagerInfo)
-            	.build();
-        
-    	return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }
-    
     @PostMapping("")
-    public ResponseEntity<MessageVo> insertManager(@RequestBody ManagerVo managerVo) throws IOException {
+    public ResponseEntity<MessageVo> insertEngOutline(@RequestBody OutlineVo outlineVo) throws IOException {
     	
-    	int insertManager = managerService.insertManager(managerVo);
+    	int insertOutline = outlineEngService.insertEngOutline(outlineVo);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -90,16 +61,16 @@ public class ManagerController {
         MessageVo message = MessageVo.builder()
             	.status(StatusEnum.OK)
             	.message("성공 코드")
-            	.data(insertManager)
+            	.data(insertOutline)
             	.build();
     	
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
     @PostMapping("/update")
-    public ResponseEntity<MessageVo> updateManager(@RequestBody ManagerVo managerVo) throws IOException {
+    public ResponseEntity<MessageVo> updateEngOutline(@RequestBody OutlineVo outlineVo) throws IOException {
     	
-    	int updateManager = managerService.updateManager(managerVo);
+    	int updateOutline = outlineEngService.updateEngOutline(outlineVo);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -107,15 +78,15 @@ public class ManagerController {
         MessageVo message = MessageVo.builder()
             	.status(StatusEnum.OK)
             	.message("성공 코드")
-            	.data(updateManager)
+            	.data(updateOutline)
             	.build();
         
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
     @DeleteMapping("")
-	public ResponseEntity<MessageVo> deleteManagerIds(@RequestBody ManagerVo managerVo) throws Exception{
-    	int deleteManagerIds = managerService.deleteManagerIds(managerVo);
+	public ResponseEntity<MessageVo> deleteEngOutlineIds(@RequestBody OutlineVo outlineVo) throws Exception{
+    	int deleteOutlineIds = outlineEngService.deleteEngOutlineIds(outlineVo);
         
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -123,7 +94,7 @@ public class ManagerController {
         MessageVo message = MessageVo.builder()
             	.status(StatusEnum.OK)
             	.message("성공 코드")
-            	.data(deleteManagerIds)
+            	.data(deleteOutlineIds)
             	.build();
         
         return new ResponseEntity<>(message, headers, HttpStatus.OK);

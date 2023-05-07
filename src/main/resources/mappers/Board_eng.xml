@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.eng.mapper.BoardEngMapper">
+
+	<select id="selectEngBoard" parameterType="kr.co.elink.dto.BoardVo" resultType="kr.co.elink.dto.BoardRVo">
+		/* BoardEngMapper.selectEngBoard */	
+		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
+	   select count(1) over() as total_count
+	        , row_number() over(order by board_id desc ) as rnum
+			, tb.*
+			, tf.file_nm as thumb_nm
+			, tf.file_origin_nm as thumb_origin_nm
+			, tf.file_size as thumb_size
+		from (	
+			select board_id
+			     , board_type
+			     , board_title
+			     , board_contents
+			     , url
+			     , created_id
+			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+			     , DATE_FORMAT(created_datetime, '%Y%m%d%H%i%s') as created_datetime2
+			     , updated_id
+			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
+			     , board_start_datetime
+			     , board_end_datetime
+			  from tb_board
+			 where board_id like concat(#{id},'%')   
+			  <if test="searchKeyword neq '' and searchKeyword != null">
+			   	<choose>
+					<when test="searchCondition eq 'title'">and board_title like concat('%',#{searchKeyword},'%')</when>
+					<when test="searchCondition eq 'content'">and board_contents like concat('%',#{searchKeyword},'%')</when>
+					<when test="searchCondition eq 'year'">and DATE_FORMAT(created_datetime, '%Y') = #{searchKeyword}</when>
+					<otherwise>
+						and (
+							board_title like concat('%',#{searchKeyword},'%') or
+							board_contents like concat('%',#{searchKeyword},'%')
+							)
+					</otherwise>					
+				</choose>
+			  </if>
+			  <if test="boardType neq '' and boardType != null">
+			  	and board_type = #{boardType}
+			  </if>
+			 )tb
+			 left outer join tb_file tf 
+			on tb.board_id = tf.file_id 
+			and tf.file_type = '1' 
+	   where 1 = 1		
+	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 
+	</select>
+
+	<select id="selectEngBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardRVo">
+		/* BoardEngMapper.selectEngBoardInfo */	
+		select *
+		  from tb_board
+		 where board_id = #{id}
+	</select>
+	
+	<insert id="insertEngBoard" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardEngMapper.insertEngBoard */
+		<selectKey resultType="string" keyProperty="id" order="BEFORE">
+	        SELECT FNC_ID(#{boardId})       
+	    </selectKey>
+		insert into tb_board
+					(	
+						board_id
+					  <if test="boardType neq '' and boardType != null">
+					  , board_type
+					  </if>
+					  <if test="boardTitle neq '' and boardTitle != null">
+					  , board_title
+					  </if>
+					  <if test="boardContents neq '' and boardContents != null">
+					  , board_contents
+					  </if>
+					  <if test="url neq '' and url != null">
+					  , url
+					  </if>
+					  <if test="boardStartDatetime neq '' and boardStartDatetime != null">
+					  , board_start_datetime
+					  </if>
+					  <if test="boardEndDatetime neq '' and boardEndDatetime != null">
+					  , board_end_datetime
+					  </if>
+					  <if test="createdId neq '' and createdId != null">
+					  , created_id
+					  </if>
+					)
+					values
+					(
+						FNC_ID(#{boardId})
+					  <if test="boardType neq '' and boardType != null">
+					  , #{boardType}
+					  </if>
+					  <if test="boardTitle neq '' and boardTitle != null">
+					  , #{boardTitle}
+					  </if>
+					  <if test="boardContents neq '' and boardContents != null">
+					  , #{boardContents}
+					  </if>
+					  <if test="url neq '' and url != null">
+					  , #{url}
+					  </if>
+					  <if test="boardStartDatetime neq '' and boardStartDatetime != null">
+					  , #{boardStartDatetime}
+					  </if>
+					  <if test="boardEndDatetime neq '' and boardEndDatetime != null">
+					  , #{boardEndDatetime}
+					  </if>
+					  <if test="createdId neq '' and createdId != null">
+					  , #{createdId}
+					  </if>
+					)		  
+	</insert>
+	
+	<update id="updateEngBoard" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardEngMapper.updateEngBoard */	
+		update tb_board
+		   set updated_datetime = now()
+		   <if test="updatedId neq '' and updatedId != null">
+		     , updated_id = #{updatedId}
+		   </if>
+		   <if test="boardTitle neq '' and boardTitle != null">
+		     , board_title = #{boardTitle}
+		   </if>
+		   <if test="boardContents neq '' and boardContents != null">
+		     , board_contents = #{boardContents}
+		   </if>
+		     , url = #{url}
+		   <if test="boardStartDatetime neq '' and boardStartDatetime != null">
+		  	, board_start_datetime = #{boardStartDatetime}
+		  </if>
+		  <if test="boardEndDatetime neq '' and boardEndDatetime != null">
+		  	, board_end_datetime = #{boardEndDatetime}
+		  </if>
+		   <if test="boardType neq '' and boardType != null">
+		     , board_type = #{boardType}
+		   </if>
+		 where board_id = #{boardId}
+	</update>		
+	
+	<delete id="deleteEngBoard" parameterType="String">
+		/* BoardEngMapper.deleteEngBoard */	
+		delete 
+	 	  from tb_board
+	 	 where board_id = #{id}
+	</delete>		
+	
+	<delete id="deleteBoardIds" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardEngMapper.deleteEngBoardIds */		
+		delete from tb_board where board_id in 
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>		
+	</delete>
+	
+	<select id="selectEngPrevNextBoard" parameterType="String" resultType="kr.co.elink.dto.PrevNextVo">
+		/* BoardEngMapper.selectEngPrevNextBoard */	
+		select
+		   (select board_id from tb_board where board_id <![CDATA[<]]> #{id} and board_id like concat(left(#{id},3),'%') order by board_id desc limit 1) as prev_board_id
+		   ,(select board_id from tb_board where board_id > #{id} and board_id like concat(left(#{id},3),'%') order by board_id limit 1) as next_board_id
+		from tb_board
+		where 1=1
+		and board_id = #{id}
+	</select>
+	
+	<select id="selectEngPinup" resultType="String">
+		/* BoardEngMapper.selectEngPinup */	
+		select
+		   pinup_id
+		from tb_pinup
+		limit 1
+	</select>
+	
+	<insert id="insertEngPinup" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardEngMapper.insertEngPinup */	
+		insert into tb_pinup
+			(
+				pinup_id
+			)
+		values
+			(
+				#{boardId}
+			)
+	</insert>
+	
+	<update id="updateEngPinup" parameterType="kr.co.elink.dto.BoardVo">
+		/* BoardEngMapper.updateEngPinup */	
+		update tb_pinup
+		set pinup_id = #{boardId}
+	</update>
+	
+	<delete id="deleteEngPinup">
+		/* BoardEngMapper.deleteEngPinup */	
+		delete 
+	 	  from tb_pinup
+	</delete>
+	
+</mapper>

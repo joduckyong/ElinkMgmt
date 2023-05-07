@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.elink.mapper.ContactUsMapper">
+<mapper namespace="kr.co.elink.eng.mapper.ContactUsEngMapper">
 
-	<select id="selectContactUs" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.ContactUsRVo">
-		/* ContactUsMapper.selectContactUs */	
+	<select id="selectEngContactUs" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.ContactUsRVo">
+		/* ContactUsEngMapper.selectEngContactUs */	
 		<include refid="kr.co.elink.mapper.CommonMapper.pagePrefix" />
 	   select count(1) over() as total_count
 	        , row_number() over(order by contact_id desc ) as rnum
@@ -39,8 +39,8 @@
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 	
 	</select>
 
-	<select id="selectContactUsInfo" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.ContactUsRVo">
-		/* ContactUsMapper.selectContactUsInfo */	
+	<select id="selectEngContactUsInfo" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.ContactUsRVo">
+		/* ContactUsEngMapper.selectEngContactUsInfo */	
 		select
 			contact_id
 		     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
@@ -54,8 +54,8 @@
 		 where contact_id = #{id}
 	</select>
 	
-	<insert id="insertContactUs" parameterType="kr.co.elink.dto.ContactUsVo">
-		/* ContactUsMapper.insertContactUs */
+	<insert id="insertEngContactUs" parameterType="kr.co.elink.dto.ContactUsVo">
+		/* ContactUsEngMapper.insertEngContactUs */
 		<selectKey resultType="string" keyProperty="id" order="BEFORE">
 	        SELECT FNC_ID(#{contactId})       
 	    </selectKey>
@@ -111,15 +111,15 @@
 					)		  
 	</insert>
 	
-	<delete id="deleteContactUs" parameterType="String">
-		/* ContactUsMapper.deleteContactUs */	
+	<delete id="deleteEngContactUs" parameterType="String">
+		/* ContactUsEngMapper.deleteEngContactUs */	
 		delete 
 	 	  from tb_contact_us
 	 	 where contact_id = #{id}
 	</delete>		
 	
-	<delete id="deleteContactUsIds">
-		/* ContactUsMapper.deleteContactUsIds */		
+	<delete id="deleteEngContactUsIds">
+		/* ContactUsEngMapper.deleteEngContactUsIds */		
 		delete from tb_contact_us where contact_id in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}

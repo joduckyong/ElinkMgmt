@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.elink.eng.mapper.OutlineEngMapper">
+
+	<select id="selectEngOutline" parameterType="kr.co.elink.dto.OutlineVo" resultType="kr.co.elink.dto.OutlineRVo">
+		/* OutlineEngMapper.selectEngOutline */	
+		select count(1) over() as total_count
+	        , row_number() over(order by company_year desc, company_month desc, company_day desc ) as rnum
+			, tb.*
+		from (	
+		    select *
+			  from tb_company_outline
+			 where 1 = 1
+			 order by company_year desc, company_month desc, company_day desc
+		)tb
+		where 1 = 1
+	</select>
+	
+	<insert id="insertEngOutline" parameterType="kr.co.elink.dto.OutlineVo">
+		/* OutlineEngMapper.insertEngOutline */
+		insert into tb_company_outline
+		(	
+			company_year
+			,company_month
+			,company_day
+			,company_contents
+			,created_id
+		)
+		values
+		(
+			#{companyYear}
+			, #{companyMonth}
+			, #{companyDay}
+			, #{companyContents}
+			, #{createdId}
+		)		  
+	</insert>
+	
+	<update id="updateEngOutline" parameterType="kr.co.elink.dto.OutlineVo">
+		/* OutlineEngMapper.updateEngOutline */	
+		update tb_company_outline
+		   set updated_datetime = now()
+		   <if test="updatedId neq '' and updatedId != null">
+		     , updated_id = #{updatedId}
+		   </if>
+		   <if test="companyYear neq '' and companyYear != null">
+		     , company_year = #{companyYear}
+		   </if>
+		   <if test="companyMonth neq '' and companyMonth != null">
+		     , company_month = #{companyMonth}
+		   </if>
+		   <if test="companyDay neq '' and companyDay != null">
+		     , company_day = #{companyDay}
+		   </if>
+		   <if test="companyContents neq '' and companyContents != null">
+		     , company_contents = #{companyContents}
+		   </if>
+		 where company_id = #{companyId}
+	</update>
+	
+	<delete id="deleteEngOutlineIds" parameterType="kr.co.elink.dto.OutlineVo">
+		/* OutlineEngMapper.deleteEngOutline */		
+		delete from tb_company_outline where company_id in 
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>	
+	</delete>	
+
+</mapper>
