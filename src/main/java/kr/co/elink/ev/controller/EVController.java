@@ -14,17 +14,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.elink.common.ApiService;
-import kr.co.elink.common.EvConstants;
 import kr.co.elink.common.StatusEnum;
 import kr.co.elink.dto.MessageVo;
 
 @Controller
-@RequestMapping("/api/customer")
-public class CustomerController {
+@RequestMapping("/api/ev/common")
+public class EVController {
 	
 	@Value("${ev.api.url}")
     private String evApiUrl;
@@ -32,12 +33,12 @@ public class CustomerController {
 	@Autowired
 	private ApiService<?> apiService;
 
-	@GetMapping("/notice")
-	public ResponseEntity<MessageVo> selectNotice(HttpSession session, ModelMap model) {
+	@PostMapping("")
+	public ResponseEntity<MessageVo> selectEv(@RequestBody Map<String, Object> param, @RequestHeader String accessEvToken, HttpSession session, ModelMap model) {
 		
-		String url = evApiUrl + EvConstants.GET_NOITS_URL;
+		String url = evApiUrl+param.get("url");
 		
-		ResponseEntity<?> responseEntity = apiService.post(url, "");
+		ResponseEntity<?> responseEntity = apiService.post(url, "", accessEvToken);
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
