@@ -5,6 +5,8 @@
 <title>KCB 휴대폰 본인확인 서비스</title>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
 <script type="text/javascript">
 	function request(){
 		opener.document.form1.action = "http://localhost:9091/ev/join2?test=test";
