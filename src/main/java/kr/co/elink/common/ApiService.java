@@ -41,6 +41,10 @@ public class ApiService<T> {
     public ResponseEntity<T> post(String url, Object body) {
         return callApi(url, HttpMethod.POST, body,(Class<T>)Object.class, MediaType.APPLICATION_JSON);
     }
+    
+    public ResponseEntity<T> post(String url, Object body, String accessToken) {
+        return callApi(url, HttpMethod.POST, body,(Class<T>)Object.class, MediaType.APPLICATION_JSON, accessToken);
+    }
  
     public ResponseEntity<T> post(String url, Object body, Class<T> clazz) {
         return callApi(url, HttpMethod.POST, body, clazz, MediaType.APPLICATION_JSON);
@@ -94,7 +98,20 @@ public class ApiService<T> {
 	private ResponseEntity<T> callApi(String url, HttpMethod httpMethod, Object body, Class<T> clazz, MediaType mediaType) {
     	HttpHeaders httpHeaders = new HttpHeaders();
     	httpHeaders.setContentType(mediaType);
-    	httpHeaders.set("Authorization", "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVU0VSX05PIjoiTFNFTElOS0tFWSIsInVzZXJfbmFtZSI6ImxzZWxpbmtfa2V5Iiwic2NvcGUiOlsibW9iaWxlY2xpZW50Il0sImV4cCI6MTY4MjU5NjcwOSwiYXV0aG9yaXRpZXMiOlsiY2xpZW50Il0sImp0aSI6ImRjMGViNGFkLWE2OTItNGRmZC05YjBhLTk0MDEzN2ZlMzQxMCIsImNsaWVudF9pZCI6ImV2Y3Ntb2JpbGUifQ.0_YoXESvIOEn2UKUVIQMz3R0fdtbjw_puuLMFfSCyRY");
+    	
+    	log.info("body : "+body);    	
+    	ResponseEntity<T> responseEntity = restTemplate.exchange(url, httpMethod, new HttpEntity<>(body, httpHeaders), clazz);
+		log.info("getStatusCode() : "+responseEntity.getStatusCode());
+		log.info("getBody() : "+responseEntity.getBody());    	
+    	
+        return (ResponseEntity<T>) responseEntity;
+    }
+    
+    @SuppressWarnings("unchecked")
+	private ResponseEntity<T> callApi(String url, HttpMethod httpMethod, Object body, Class<T> clazz, MediaType mediaType, String accessToken) {
+    	HttpHeaders httpHeaders = new HttpHeaders();
+    	httpHeaders.setContentType(mediaType);
+    	httpHeaders.set("Authorization", "bearer " + accessToken);
     	
     	log.info("body : "+body);    	
     	ResponseEntity<T> responseEntity = restTemplate.exchange(url, httpMethod, new HttpEntity<>(body, httpHeaders), clazz);
