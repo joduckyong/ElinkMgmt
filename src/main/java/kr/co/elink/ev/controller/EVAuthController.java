@@ -67,6 +67,30 @@ public class EVAuthController {
 	}	
 	
 	/*
+	 * 공통 값
+	 */
+	@ResponseBody
+	@PostMapping("{apiUser}")
+	public ResponseEntity<MessageVo> apiUser(@RequestBody Map<String, Object> param, HttpSession session, ModelMap model) throws Exception{
+		
+		String url = evApiUrl+param.get("url");
+		
+		ResponseEntity<?> responseEntity = apiService.post(url, param);
+		
+		HttpHeaders headers= new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		MessageVo message = MessageVo.builder()
+				.status(StatusEnum.OK)
+				.message("성공 코드")
+				.data(responseEntity.getBody())
+				.build();
+		
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}	
+	
+
+	/*
 	 * SNS 인증
 	 */
 	@ResponseBody
