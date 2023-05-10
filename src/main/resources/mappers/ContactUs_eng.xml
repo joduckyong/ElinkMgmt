@@ -17,7 +17,7 @@
 			     , contact_contents
 			     , contact_agree
 			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
-			  from tb_contact_us
+			  from tb_contact_us_en
 			 where contact_id like concat(#{id},'%')
 			 and contact_type = #{contactType}
 			 <if test="searchKeyword neq '' and searchKeyword != null">
@@ -50,16 +50,16 @@
 		     , contact_contents
 		     , contact_agree
 		     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
-		  from tb_contact_us
+		  from tb_contact_us_en
 		 where contact_id = #{id}
 	</select>
 	
 	<insert id="insertEngContactUs" parameterType="kr.co.elink.dto.ContactUsVo">
 		/* ContactUsEngMapper.insertEngContactUs */
 		<selectKey resultType="string" keyProperty="id" order="BEFORE">
-	        SELECT FNC_ID(#{contactId})       
+	        SELECT FNC_ID_EN(#{contactId})       
 	    </selectKey>
-		insert into tb_contact_us
+		insert into tb_contact_us_en
 					(	
 						contact_id
 					  <if test="contactType neq '' and contactType != null">
@@ -86,7 +86,7 @@
 					)
 					values
 					(
-						FNC_ID(#{contactId})
+						FNC_ID_EN(#{contactId})
 					  <if test="contactType neq '' and contactType != null">
 					  , #{contactType}
 					  </if>
@@ -114,13 +114,13 @@
 	<delete id="deleteEngContactUs" parameterType="String">
 		/* ContactUsEngMapper.deleteEngContactUs */	
 		delete 
-	 	  from tb_contact_us
+	 	  from tb_contact_us_en
 	 	 where contact_id = #{id}
 	</delete>		
 	
 	<delete id="deleteEngContactUsIds">
 		/* ContactUsEngMapper.deleteEngContactUsIds */		
-		delete from tb_contact_us where contact_id in 
+		delete from tb_contact_us_en where contact_id in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>		

@@ -24,7 +24,7 @@
 			     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
 			     , board_start_datetime
 			     , board_end_datetime
-			  from tb_board
+			  from tb_board_en
 			 where board_id like concat(#{id},'%')   
 			  <if test="searchKeyword neq '' and searchKeyword != null">
 			   	<choose>
@@ -53,16 +53,16 @@
 	<select id="selectEngBoardInfo" parameterType="String" resultType="kr.co.elink.dto.BoardRVo">
 		/* BoardEngMapper.selectEngBoardInfo */	
 		select *
-		  from tb_board
+		  from tb_board_en
 		 where board_id = #{id}
 	</select>
 	
 	<insert id="insertEngBoard" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardEngMapper.insertEngBoard */
 		<selectKey resultType="string" keyProperty="id" order="BEFORE">
-	        SELECT FNC_ID(#{boardId})       
+	        SELECT FNC_ID_EN(#{boardId})       
 	    </selectKey>
-		insert into tb_board
+		insert into tb_board_en
 					(	
 						board_id
 					  <if test="boardType neq '' and boardType != null">
@@ -89,7 +89,7 @@
 					)
 					values
 					(
-						FNC_ID(#{boardId})
+						FNC_ID_EN(#{boardId})
 					  <if test="boardType neq '' and boardType != null">
 					  , #{boardType}
 					  </if>
@@ -116,7 +116,7 @@
 	
 	<update id="updateEngBoard" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardEngMapper.updateEngBoard */	
-		update tb_board
+		update tb_board_en
 		   set updated_datetime = now()
 		   <if test="updatedId neq '' and updatedId != null">
 		     , updated_id = #{updatedId}
@@ -143,13 +143,13 @@
 	<delete id="deleteEngBoard" parameterType="String">
 		/* BoardEngMapper.deleteEngBoard */	
 		delete 
-	 	  from tb_board
+	 	  from tb_board_en
 	 	 where board_id = #{id}
 	</delete>		
 	
 	<delete id="deleteBoardIds" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardEngMapper.deleteEngBoardIds */		
-		delete from tb_board where board_id in 
+		delete from tb_board_en where board_id in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>		
@@ -158,9 +158,9 @@
 	<select id="selectEngPrevNextBoard" parameterType="String" resultType="kr.co.elink.dto.PrevNextVo">
 		/* BoardEngMapper.selectEngPrevNextBoard */	
 		select
-		   (select board_id from tb_board where board_id <![CDATA[<]]> #{id} and board_id like concat(left(#{id},3),'%') order by board_id desc limit 1) as prev_board_id
-		   ,(select board_id from tb_board where board_id > #{id} and board_id like concat(left(#{id},3),'%') order by board_id limit 1) as next_board_id
-		from tb_board
+		   (select board_id from tb_board_en where board_id <![CDATA[<]]> #{id} and board_id like concat(left(#{id},3),'%') order by board_id desc limit 1) as prev_board_id
+		   ,(select board_id from tb_board_en where board_id > #{id} and board_id like concat(left(#{id},3),'%') order by board_id limit 1) as next_board_id
+		from tb_board_en
 		where 1=1
 		and board_id = #{id}
 	</select>
@@ -169,13 +169,13 @@
 		/* BoardEngMapper.selectEngPinup */	
 		select
 		   pinup_id
-		from tb_pinup
+		from tb_pinup_en
 		limit 1
 	</select>
 	
 	<insert id="insertEngPinup" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardEngMapper.insertEngPinup */	
-		insert into tb_pinup
+		insert into tb_pinup_en
 			(
 				pinup_id
 			)
@@ -187,14 +187,14 @@
 	
 	<update id="updateEngPinup" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardEngMapper.updateEngPinup */	
-		update tb_pinup
+		update tb_pinup_en
 		set pinup_id = #{boardId}
 	</update>
 	
 	<delete id="deleteEngPinup">
 		/* BoardEngMapper.deleteEngPinup */	
 		delete 
-	 	  from tb_pinup
+	 	  from tb_pinup_en
 	</delete>
 	
 </mapper>
