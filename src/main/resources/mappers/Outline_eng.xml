@@ -9,7 +9,7 @@
 			, tb.*
 		from (	
 		    select *
-			  from tb_company_outline
+			  from tb_company_outline_en
 			 where 1 = 1
 			 order by company_year desc, company_month desc, company_day desc
 		)tb
@@ -18,7 +18,7 @@
 	
 	<insert id="insertEngOutline" parameterType="kr.co.elink.dto.OutlineVo">
 		/* OutlineEngMapper.insertEngOutline */
-		insert into tb_company_outline
+		insert into tb_company_outline_en
 		(	
 			company_year
 			,company_month
@@ -38,7 +38,7 @@
 	
 	<update id="updateEngOutline" parameterType="kr.co.elink.dto.OutlineVo">
 		/* OutlineEngMapper.updateEngOutline */	
-		update tb_company_outline
+		update tb_company_outline_en
 		   set updated_datetime = now()
 		   <if test="updatedId neq '' and updatedId != null">
 		     , updated_id = #{updatedId}
@@ -60,7 +60,7 @@
 	
 	<delete id="deleteEngOutlineIds" parameterType="kr.co.elink.dto.OutlineVo">
 		/* OutlineEngMapper.deleteEngOutline */		
-		delete from tb_company_outline where company_id in 
+		delete from tb_company_outline_en where company_id in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>	

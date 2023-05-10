@@ -25,14 +25,14 @@
 				 , fil.thumb_nm
 				 , fil.thumb_origin_nm
 				 , fil.thumb_size		     
-			  from tb_popup pop
+			  from tb_popup_en pop
 			  left join 
 				   (
                     select file_id
                          , file_nm as thumb_nm
                          , file_origin_nm as thumb_origin_nm
                          , file_size as thumb_size			
-                      from tb_file
+                      from tb_file_en
                    ) fil
 			    on pop.popup_id = fil.file_id 
 			 where pop.popup_id like concat(#{id},'%')   
@@ -48,16 +48,16 @@
 	<select id="selectEngPopupInfo" parameterType="String" resultType="kr.co.elink.dto.PopupRVo">
 		/* PopupEngMapper.selectEngPopupInfo */	
 		select *
-		  from tb_popup
+		  from tb_popup_en
 		 where popup_id = #{id}
 	</select>
 	
 	<insert id="insertEngPopup" parameterType="kr.co.elink.dto.PopupVo" >
 		/* PopupEngMapper.insertEngPopup */	
 		<selectKey resultType="string" keyProperty="id" order="BEFORE">
-	        SELECT FNC_ID(#{popupId})       
+	        SELECT FNC_ID_EN(#{popupId})       
 	    </selectKey>		
-		insert into tb_popup
+		insert into tb_popup_en
 					(	
 						popup_id
 					  <if test="popupTitle neq '' and popupTitle != null">
@@ -90,7 +90,7 @@
 					)
 					values
 					(
-						FNC_ID(#{popupId})
+						FNC_ID_EN(#{popupId})
 					  <if test="popupTitle neq '' and popupTitle != null">
 					  , #{popupTitle}
 					  </if>
@@ -123,7 +123,7 @@
 	
 	<update id="updateEngPopup" parameterType="kr.co.elink.dto.PopupVo">
 		/* PopupEngMapper.updateEngPopup */	
-		update tb_popup
+		update tb_popup_en
 		   set updated_datetime = now()
 		   <if test="updatedId neq '' and updatedId != null">
 		     , updated_id = #{updatedId}
@@ -158,13 +158,13 @@
 	<delete id="deleteEngPopup" parameterType="String">
 		/* PopupEngMapper.deleteEngPopup */	
 		delete 
-	 	  from tb_popup
+	 	  from tb_popup_en
 	 	 where popup_id = #{id}
 	</delete>		
 	
 	<delete id="deleteEngPopupIds">
 		/* PopupEngMapper.deleteEngPopupIds */		
-		delete from tb_popup where popup_id in 
+		delete from tb_popup_en where popup_id in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>		
