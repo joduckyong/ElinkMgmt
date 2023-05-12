@@ -32,7 +32,7 @@
                          , file_nm as thumb_nm
                          , file_origin_nm as thumb_origin_nm
                          , file_size as thumb_size			
-                      from tb_file_en
+                      from tb_file
                    ) fil
 			    on pop.popup_id = fil.file_id 
 			 where pop.popup_id like concat(#{id},'%')   
