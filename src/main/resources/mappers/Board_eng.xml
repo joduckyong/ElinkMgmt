@@ -60,7 +60,7 @@
 	<insert id="insertEngBoard" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardEngMapper.insertEngBoard */
 		<selectKey resultType="string" keyProperty="id" order="BEFORE">
-	        SELECT FNC_ID_EN(#{boardId})       
+	        SELECT FNC_ID(#{boardId})       
 	    </selectKey>
 		insert into tb_board_en
 					(	
@@ -89,7 +89,7 @@
 					)
 					values
 					(
-						FNC_ID_EN(#{boardId})
+						FNC_ID(#{boardId})
 					  <if test="boardType neq '' and boardType != null">
 					  , #{boardType}
 					  </if>
