@@ -46,6 +46,7 @@ public class EVAuthController {
 	/*
 	 * EV 인증
 	 */
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("")
 	public ResponseEntity<MessageVo> auth(@RequestBody Map<String, Object> param, HttpSession session, ModelMap model)
