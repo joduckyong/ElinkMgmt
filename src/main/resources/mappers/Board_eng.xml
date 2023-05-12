@@ -147,7 +147,7 @@
 	 	 where board_id = #{id}
 	</delete>		
 	
-	<delete id="deleteBoardIds" parameterType="kr.co.elink.dto.BoardVo">
+	<delete id="deleteEngBoardIds" parameterType="kr.co.elink.dto.BoardVo">
 		/* BoardEngMapper.deleteEngBoardIds */		
 		delete from tb_board_en where board_id in 
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
