@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.elink.common.ApiService;
 import kr.co.elink.common.StatusEnum;
+import kr.co.elink.common.util.AES256;
 import kr.co.elink.dto.MessageVo;
 
 @Controller
@@ -37,8 +39,14 @@ public class EVController {
 	public ResponseEntity<MessageVo> selectEv(@RequestBody Map<String, Object> param, @RequestHeader String accessEvToken, HttpSession session, ModelMap model) {
 		
 		String url = evApiUrl+param.get("url");
+		String userNo = (String) param.get("userNo");
 		
-		ResponseEntity<?> responseEntity = apiService.post(url, "", accessEvToken);
+		//마이페이지 > 이용내역 사용자 번호
+		if(userNo != null && !"".equals(userNo)) {
+			param.put("userNo", AES256.decrypt(userNo));
+		}
+		
+		ResponseEntity<?> responseEntity = apiService.post(url, param, accessEvToken);
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
