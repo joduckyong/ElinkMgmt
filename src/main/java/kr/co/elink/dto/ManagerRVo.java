@@ -46,4 +46,6 @@ public class ManagerRVo
     @JsonIgnore
 	private int totalCount;
     
+	private int rnum;
+    
 }
