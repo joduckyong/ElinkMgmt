@@ -16,16 +16,9 @@
 	<name>ElinkMgmt</name>
 	<description>Demo project for Spring Boot</description>
 
-	<repositories>
-		<repository>
-			<id>local-repository</id>
-			<name>local repository</name>
-			<url>file://${project.basedir}/lib</url>
-		</repository>
-	</repositories>
-
 	<properties>
 		<java.version>11</java.version>
+		<webapp.lib>${basedir}/lib</webapp.lib>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -173,13 +166,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>kcb.module.v3</groupId>
-			<artifactId>OkCert</artifactId>
+			<groupId>OkCert3</groupId>
+			<artifactId>OkCert3</artifactId>
 			<version>2.3.1</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/OkCert3-java1.5-2.3.1.jar</systemPath>
+			<systemPath>${webapp.lib}/OkCert3-java1.5-2.3.1.jar</systemPath>
 		</dependency>
-
 
 		<!-- dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
 			<scope>provided</scope> </dependency -->
@@ -192,6 +184,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<includeSystemScope>true</includeSystemScope>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -202,5 +195,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
