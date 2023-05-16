@@ -55,7 +55,7 @@
 	<insert id="insertEngPopup" parameterType="kr.co.elink.dto.PopupVo" >
 		/* PopupEngMapper.insertEngPopup */	
 		<selectKey resultType="string" keyProperty="id" order="BEFORE">
-	        SELECT FNC_ID_EN(#{popupId})       
+	        SELECT FNC_ID(#{popupId})       
 	    </selectKey>		
 		insert into tb_popup_en
 					(	
@@ -90,7 +90,7 @@
 					)
 					values
 					(
-						FNC_ID_EN(#{popupId})
+						FNC_ID(#{popupId})
 					  <if test="popupTitle neq '' and popupTitle != null">
 					  , #{popupTitle}
 					  </if>
