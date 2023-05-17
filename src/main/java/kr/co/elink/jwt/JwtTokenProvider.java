@@ -23,6 +23,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import kr.co.elink.dto.AdminVo;
 import kr.co.elink.dto.TokenVo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,6 +48,8 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
  
+        AdminVo adminVo = (AdminVo) authentication.getPrincipal();
+        
         long now = (new Date()).getTime();
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + this.tokenValidityInMilliseconds);
@@ -67,6 +70,8 @@ public class JwtTokenProvider {
 //                .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .tAdminId(authentication.getName())
+                .tAdminNm(adminVo.getAdminNm())
                 .build();
     }
  

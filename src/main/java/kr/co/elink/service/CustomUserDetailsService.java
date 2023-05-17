@@ -24,7 +24,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
 		AdminVo adminVo = authMapper.selectAdmin(loginId);
-		return createUserDetails(loginId, adminVo);
+		
+		if (adminVo == null) {
+			throw new BadCredentialsException(loginId + " -> 사용자가 없습니다.");
+		}
+		
+		return adminVo;
+//		return createUserDetails(loginId, adminVo);
 	}
 
 	// 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 리턴
