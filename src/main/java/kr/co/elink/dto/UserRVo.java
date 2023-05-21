@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class UserRVo
 {
+	private String id;
 	
 	private String ci;
 	
@@ -15,6 +16,8 @@ public class UserRVo
 	private String gender;
 	
 	private String brth;
+	
+	private String snsToken;
 	
 	private String encryptKey;
 	

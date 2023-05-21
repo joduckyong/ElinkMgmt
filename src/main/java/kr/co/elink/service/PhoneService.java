@@ -93,7 +93,7 @@ public class PhoneService {
 	public UserRVo selectUserInfo(String id){
 		
 		UserVo userVo = new UserVo();
-		userVo.setTelno(id);
+		userVo.setId(id);
 		userVo.setEncryptKey(encryptKey);
 		return userMapper.selectUserInfo(userVo);
 	};

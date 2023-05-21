@@ -9,8 +9,16 @@
 		     , gender
 		     , CAST(AES_DECRYPT(UNHEX(brth), SHA2(#{encryptKey}, 256)) AS CHAR) as brth
 		     , ci
+		     , sns_token
 		  from tb_user
-		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}
+	   <where>
+		 <if test="id neq '' and id != null">
+		   and (
+		   		CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{id}
+		    	or sns_token = #{id}
+		       )
+		 </if>	 
+   	  </where>  
 	</select>
 	
 	<insert id="insertUser" parameterType="kr.co.elink.dto.UserVo">

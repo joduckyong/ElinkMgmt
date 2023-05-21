@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class UserVo extends DefaultVo
 {
+	private String id;
+	
 	private String ci;
 	
 	private String telno;
@@ -14,6 +16,8 @@ public class UserVo extends DefaultVo
 	private String gender;
 	
 	private String brth;
+	
+	private String snsToken;
 	
 	private String encryptKey;
 }
