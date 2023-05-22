@@ -61,8 +61,8 @@ public class ContactUsController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<MessageVo> selecContactUsInfo(@PathVariable("id") String id) {
-    	ContactUsRVo selecContactUsInfo = contactUsService.selecContactUsInfo(id);
+    public ResponseEntity<MessageVo> selectContactUsInfo(@PathVariable("id") String id) {
+    	ContactUsRVo selectContactUsInfo = contactUsService.selectContactUsInfo(id);
     	List<FileVo> selectFileList = fileService.selectFileList(id);
         
     	HttpHeaders headers= new HttpHeaders();
@@ -72,7 +72,7 @@ public class ContactUsController {
             	.status(StatusEnum.OK)
             	.message("성공 코드")
             	.totalCount(1)
-            	.data(selecContactUsInfo)
+            	.data(selectContactUsInfo)
             	.files(selectFileList)
             	.build();
         

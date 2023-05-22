@@ -14,7 +14,7 @@ public interface ContactUsMapper {
 	
 	public List<ContactUsRVo> selectContactUs(ContactUsVo contactUsVo);
 	
-	public ContactUsRVo selecContactUsInfo(ContactUsVo contactUsVo);
+	public ContactUsRVo selectContactUsInfo(ContactUsVo contactUsVo);
 	
 	public int insertContactUs(ContactUsVo contactUsVo);
 	

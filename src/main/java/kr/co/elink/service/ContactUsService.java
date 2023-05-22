@@ -49,12 +49,12 @@ public class ContactUsService {
 		
 	};
 	
-	public ContactUsRVo selecContactUsInfo(String id){
+	public ContactUsRVo selectContactUsInfo(String id){
 		ContactUsVo contactUsVo = new ContactUsVo();
 		contactUsVo.setId(id);
 		contactUsVo.setEncryptKey(encryptKey);
 		
-		return contactUsMapper.selecContactUsInfo(contactUsVo);
+		return contactUsMapper.selectContactUsInfo(contactUsVo);
 	};
 	
 	@Transactional
