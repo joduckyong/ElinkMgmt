@@ -48,7 +48,7 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
  
-        AdminVo adminVo = (AdminVo) authentication.getPrincipal();
+//        AdminVo adminVo = (AdminVo) authentication.getPrincipal();
         
         long now = (new Date()).getTime();
         // Access Token 생성
@@ -71,7 +71,7 @@ public class JwtTokenProvider {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tAdminId(authentication.getName())
-                .tAdminNm(adminVo.getAdminNm())
+//                .tAdminNm(adminVo.getAdminNm())
                 .build();
     }
  
