@@ -60,6 +60,7 @@ public class EVAuthController {
 		body.add("grant_type", param.get("grant_type"));
 		body.add("scope", param.get("scope"));
 		body.add("login_type", param.get("login_type"));
+		body.add("refresh_token", param.get("refresh_token"));
 
 		ResponseEntity<?> responseEntity = apiService.postAuth(url, body);
 		
