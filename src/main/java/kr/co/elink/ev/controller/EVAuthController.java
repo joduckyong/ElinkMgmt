@@ -67,7 +67,9 @@ public class EVAuthController {
 		objectMapper = new ObjectMapper();
 		String json = objectMapper.writeValueAsString(responseEntity.getBody());
 		JSONObject jsonObject = (JSONObject) new JSONParser().parse(json);
-        jsonObject.replace("USER_NO", AES256.encrypt((String) jsonObject.get("USER_NO")));
+		if(jsonObject.get("USER_NO") != null && !"".equals(jsonObject.get("USER_NO"))) {
+			jsonObject.replace("USER_NO", AES256.encrypt((String) jsonObject.get("USER_NO")));
+		}
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
