@@ -107,4 +107,13 @@ public class PhoneService {
 		return result;
 	};
 	
+	@Transactional
+	public int updateUser(UserVo userVo) throws IOException{
+		
+		userVo.setEncryptKey(encryptKey);
+		int result = userMapper.updateUser(userVo);
+		
+		return result;
+	};
+	
 }

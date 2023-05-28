@@ -14,4 +14,6 @@ public interface UserMapper {
 	
 	public int insertUser(UserVo userVo);
 	
+	public int updateUser(UserVo userVo);
+	
 }

@@ -1,6 +1,8 @@
 package kr.co.elink.ev.controller;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kcb.org.json.JSONObject;
@@ -224,5 +228,30 @@ public class PhoneController {
         
     	return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
+	
+	/*
+	 * 사용자 정보 
+	 */
+	@PostMapping("phoneInfo/updateUser")
+	public ResponseEntity<MessageVo> updateUser(@RequestBody Map<String, Object> param) throws IOException {
+		
+		UserVo userVo = new UserVo();
+		userVo.setTelno((String) param.get("telno"));
+		userVo.setSnsToken((String) param.get("snsToken"));
+		
+		int result = phoneService.updateUser(userVo);
+		
+		HttpHeaders headers= new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		MessageVo message = MessageVo.builder()
+				.status(StatusEnum.OK)
+				.message("성공 코드")
+				.totalCount(1)
+				.data(result)
+				.build();
+		
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
 	
 }

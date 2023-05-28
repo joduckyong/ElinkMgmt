@@ -56,5 +56,12 @@
 					  </if>
 					)		  
 	</insert>
+	
+	<update id="updateUser" parameterType="kr.co.elink.dto.UserVo">
+		/* UserMapper.updateUser */
+		update tb_user
+		   set sns_token = #{snsToken}
+		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}  
+	</update>
 		
 </mapper>
