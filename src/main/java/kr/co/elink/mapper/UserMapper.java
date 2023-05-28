@@ -16,4 +16,6 @@ public interface UserMapper {
 	
 	public int updateUser(UserVo userVo);
 	
+	public int deleteUser(UserVo userVo);
+	
 }

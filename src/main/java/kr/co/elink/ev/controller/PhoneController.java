@@ -230,16 +230,39 @@ public class PhoneController {
     }
 	
 	/*
-	 * 사용자 정보 
+	 * 사용자 정보 및 토큰값 등록
 	 */
-	@PostMapping("phoneInfo/updateUser")
-	public ResponseEntity<MessageVo> updateUser(@RequestBody Map<String, Object> param) throws IOException {
+	@GetMapping("phoneInfo/{telno}/{snsToken}")
+	public ResponseEntity<MessageVo> selectUserInfoSave(@PathVariable("telno") String telno, @PathVariable("snsToken") String snsToken) throws IOException {
+		UserRVo selectUserInfo = phoneService.selectUserInfo(telno);
 		
 		UserVo userVo = new UserVo();
-		userVo.setTelno((String) param.get("telno"));
-		userVo.setSnsToken((String) param.get("snsToken"));
+		userVo.setTelno(telno);
+		userVo.setSnsToken(snsToken);
+		phoneService.updateUser(userVo);
+				
+		HttpHeaders headers= new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		
-		int result = phoneService.updateUser(userVo);
+		MessageVo message = MessageVo.builder()
+				.status(StatusEnum.OK)
+				.message("성공 코드")
+				.totalCount(1)
+				.data(selectUserInfo)
+				.build();
+		
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+	
+	/*
+	 * 사용자 정보 삭제
+	 */
+	@GetMapping("phoneDel/{telno}")
+	public ResponseEntity<MessageVo> deleteUser(@PathVariable("telno") String telno) throws IOException {
+		
+		UserVo userVo = new UserVo();
+		userVo.setTelno(telno);
+		int result = phoneService.deleteUser(userVo);
 		
 		HttpHeaders headers= new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -253,5 +276,7 @@ public class PhoneController {
 		
 		return new ResponseEntity<>(message, headers, HttpStatus.OK);
 	}
+	
+
 	
 }

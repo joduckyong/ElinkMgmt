@@ -116,4 +116,13 @@ public class PhoneService {
 		return result;
 	};
 	
+	@Transactional
+	public int deleteUser(UserVo userVo) throws IOException{
+		
+		userVo.setEncryptKey(encryptKey);
+		int result = userMapper.deleteUser(userVo);
+		
+		return result;
+	};
+	
 }
