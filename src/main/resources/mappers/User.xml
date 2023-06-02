@@ -11,21 +11,29 @@
 		     , ci
 		     , sns_token
 		  from tb_user
-	   <where>
+		 where sns_type = #{snsType}
 		 <if test="id neq '' and id != null">
 		   and (
 		   		CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{id}
 		    	or sns_token = #{id}
 		       )
 		 </if>	 
-   	  </where>  
 	</select>
 	
+	<select id="selectUserInfoCnt" parameterType="kr.co.elink.dto.UserVo" resultType="Integer">
+		/* UserMapper.selectUserInfoCnt */	
+		select count(1) cnt
+		  from tb_user
+		 where sns_type = #{snsType}
+		   and CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}
+	</select>
+		
 	<insert id="insertUser" parameterType="kr.co.elink.dto.UserVo">
 		/* UserMapper.insertUser */
 		insert into tb_user
 					(	
 						telno
+					  , sns_type
 					  <if test="telcom neq '' and telcom != null">
 					  , telcom
 					  </if>
@@ -42,6 +50,7 @@
 					values
 					(
 						HEX(AES_ENCRYPT(#{telno},  SHA2(#{encryptKey}, 256)))
+					  , #{snsType}	
 					  <if test="telcom neq '' and telcom != null">
 					  , #{telcom}
 					  </if>
@@ -62,12 +71,14 @@
 		update tb_user
 		   set sns_token = #{snsToken}
 		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}  
+		   and sns_type = #{snsType}
 	</update>
 	
 	<delete id="deleteUser" parameterType="kr.co.elink.dto.UserVo">
 		/* UserMapper.updateUser */
 		delete from tb_user
 		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}  
+		   and sns_type = #{snsType}
 	</delete>
 		
 </mapper>

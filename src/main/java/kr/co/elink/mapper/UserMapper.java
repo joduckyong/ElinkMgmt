@@ -12,6 +12,8 @@ public interface UserMapper {
 	
 	public UserRVo selectUserInfo(UserVo userVo);
 	
+	public int selectUserInfoCnt(UserVo userVo);
+	
 	public int insertUser(UserVo userVo);
 	
 	public int updateUser(UserVo userVo);

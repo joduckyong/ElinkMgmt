@@ -48,10 +48,11 @@ public class PhoneService {
 	public String phonePost2(HttpServletRequest request) throws OkCertException{
 
 		String TYPE = request.getParameter("type");
+		String snsType = request.getParameter("snsType");
 		String RETURN_URL = kcbReturnViewUrl;
 		
 		if("I".equals(TYPE)) {
-			RETURN_URL = kcbReturnAddUrl;
+			RETURN_URL = kcbReturnAddUrl+snsType;
 		}
 		
 		String SITE_NAME = kcbModuleSiteName; 		
@@ -64,6 +65,7 @@ public class PhoneService {
 		reqJson.put("SITE_NAME", SITE_NAME);
 		reqJson.put("SITE_URL", SITE_URL);
 		reqJson.put("RQST_CAUS_CD", RQST_CAUS_CD);
+		reqJson.put("snsType", snsType);
 		
 		String reqStr = reqJson.toString();
 		OkCert okcert = new OkCert();
@@ -75,6 +77,7 @@ public class PhoneService {
 	public String phonePost3(HttpServletRequest request) throws OkCertException{
 		
 		String MDL_TKN = request.getParameter("mdl_tkn");
+		String AAAA = request.getParameter("AAAA");
 		String svcName = "IDS_HS_POPUP_RESULT";
 		
 		/**************************************************************************
@@ -82,6 +85,7 @@ public class PhoneService {
 		**************************************************************************/
 		JSONObject reqJson = new JSONObject();
 		reqJson.put("MDL_TKN", MDL_TKN);
+		reqJson.put("AAAA", AAAA);
 		
 		String reqStr = reqJson.toString();
 		OkCert okcert = new OkCert();
@@ -90,10 +94,11 @@ public class PhoneService {
 		return resultStr;
 	};
 	
-	public UserRVo selectUserInfo(String id){
+	public UserRVo selectUserInfo(String id, String snsType){
 		
 		UserVo userVo = new UserVo();
 		userVo.setId(id);
+		userVo.setSnsType(snsType);
 		userVo.setEncryptKey(encryptKey);
 		return userMapper.selectUserInfo(userVo);
 	};
@@ -102,9 +107,12 @@ public class PhoneService {
 	public int insertUser(UserVo userVo) throws IOException{
 		
 		userVo.setEncryptKey(encryptKey);
-		int result = userMapper.insertUser(userVo);
+		int cnt = userMapper.selectUserInfoCnt(userVo);
+		if(cnt == 0) {
+			userMapper.insertUser(userVo);
+		}
 		
-		return result;
+		return cnt;
 	};
 	
 	@Transactional

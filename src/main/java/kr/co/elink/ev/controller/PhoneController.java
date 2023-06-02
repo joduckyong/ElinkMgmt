@@ -81,10 +81,11 @@ public class PhoneController {
 	/*
 	 * 휴대폰 검증 및 사용자 등록 
 	 */
-	@GetMapping("popupAdd")
-	public String phoneGetAdd(HttpServletRequest request, ModelMap model) throws Exception{
+	@GetMapping("popupAdd/{snsType}")
+	public String phoneGetAdd(HttpServletRequest request, @PathVariable("snsType") String snsType, ModelMap model) throws Exception{
 		
 		String resultStr = phoneService.phonePost3(request);
+		
 		JSONObject resJson = new JSONObject(resultStr);
 	    String RSLT_CD =  resJson.getString("RSLT_CD");
 	    String RSLT_MSG =  resJson.getString("RSLT_MSG");
@@ -117,12 +118,12 @@ public class PhoneController {
 			TEL_NO = resJson.getString("TEL_NO");
 			
 			UserVo userVo = new UserVo();
-			
 			userVo.setCi(CI);
 			userVo.setTelno(TEL_NO);
 			userVo.setTelcom(TEL_COM_CD);
 			userVo.setGender(RSLT_SEX_CD);
 			userVo.setBrth(RSLT_BIRTHDAY);
+			userVo.setSnsType(snsType);
 			phoneService.insertUser(userVo);
 		}
 		
@@ -212,9 +213,9 @@ public class PhoneController {
 	/*
 	 * 사용자 정보 
 	 */
-	@GetMapping("phoneInfo/{id}")
-    public ResponseEntity<MessageVo> selectUserInfo(@PathVariable("id") String id) {
-		UserRVo selectUserInfo = phoneService.selectUserInfo(id);
+	@GetMapping("phoneInfo/{id}/{snsType}")
+    public ResponseEntity<MessageVo> selectUserInfo(@PathVariable("id") String id, @PathVariable("snsType") String snsType) {
+		UserRVo selectUserInfo = phoneService.selectUserInfo(id, snsType);
     	
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -232,12 +233,13 @@ public class PhoneController {
 	/*
 	 * 사용자 정보 및 토큰값 등록
 	 */
-	@GetMapping("phoneInfo/{telno}/{snsToken}")
-	public ResponseEntity<MessageVo> selectUserInfoSave(@PathVariable("telno") String telno, @PathVariable("snsToken") String snsToken) throws IOException {
-		UserRVo selectUserInfo = phoneService.selectUserInfo(telno);
+	@GetMapping("phoneInfo/{telno}/{snsToken}/{snsType}")
+	public ResponseEntity<MessageVo> selectUserInfoSave(@PathVariable("telno") String telno, @PathVariable("snsToken") String snsToken, @PathVariable("snsType") String snsType) throws IOException {
+		UserRVo selectUserInfo = phoneService.selectUserInfo(telno, snsType);
 		
 		UserVo userVo = new UserVo();
 		userVo.setTelno(telno);
+		userVo.setSnsType(snsType);
 		userVo.setSnsToken(snsToken);
 		phoneService.updateUser(userVo);
 				
@@ -257,11 +259,12 @@ public class PhoneController {
 	/*
 	 * 사용자 정보 삭제
 	 */
-	@GetMapping("phoneDel/{telno}")
-	public ResponseEntity<MessageVo> deleteUser(@PathVariable("telno") String telno) throws IOException {
+	@GetMapping("phoneDel/{telno}/{snsType}")
+	public ResponseEntity<MessageVo> deleteUser(@PathVariable("telno") String telno, @PathVariable("snsType") String snsType) throws IOException {
 		
 		UserVo userVo = new UserVo();
 		userVo.setTelno(telno);
+		userVo.setSnsType(snsType);
 		int result = phoneService.deleteUser(userVo);
 		
 		HttpHeaders headers= new HttpHeaders();

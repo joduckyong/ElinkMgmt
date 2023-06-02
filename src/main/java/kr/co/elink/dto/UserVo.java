@@ -11,6 +11,8 @@ public class UserVo extends DefaultVo
 	
 	private String telno;
 	
+	private String snsType;
+	
 	private String telcom;
 	
 	private String gender;
@@ -18,6 +20,7 @@ public class UserVo extends DefaultVo
 	private String brth;
 	
 	private String snsToken;
+	
 	
 	private String encryptKey;
 }
