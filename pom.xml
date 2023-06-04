@@ -12,13 +12,15 @@
 	<groupId>kr.co.elink</groupId>
 	<artifactId>ElinkMgmt</artifactId>
 	<version>2.6.3-SNAPSHOT</version>
-	<!-- packaging>war</packaging -->	<!-- war 추가 -->
+	<packaging>war</packaging>	<!-- war 추가 -->
 	<name>ElinkMgmt</name>
+	<!-- packaging>war</packaging-->
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>11</java.version>
 		<webapp.lib>${basedir}/lib</webapp.lib>
+		<start-class>kr.co.elink.Application</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -193,6 +195,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
+	        <!-- plugin>
+	            <artifactId>maven-war-plugin</artifactId>
+	            <configuration>
+	                <warSourceDirectory>src/main/resources/META-INF/resources</warSourceDirectory>
+	            </configuration>
+	        </plugin-->			
 		</plugins>
 	</build>
 </project>

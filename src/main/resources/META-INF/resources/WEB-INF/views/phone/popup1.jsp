@@ -18,6 +18,8 @@
 		form1.target = "auth_popup";
 		form1.submit();
 	}
+
+	alert('111');
 //-->
 </script>
 </head>
