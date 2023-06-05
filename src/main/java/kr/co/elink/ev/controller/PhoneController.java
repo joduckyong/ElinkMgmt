@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kcb.org.json.JSONObject;
 import kr.co.elink.common.StatusEnum;
@@ -213,8 +215,13 @@ public class PhoneController {
 	/*
 	 * 사용자 정보 
 	 */
-	@GetMapping("phoneInfo/{id}/{snsType}")
-    public ResponseEntity<MessageVo> selectUserInfo(@PathVariable("id") String id, @PathVariable("snsType") String snsType) {
+	@ResponseBody
+	@PostMapping("phoneInfo/id/snsType")
+    public ResponseEntity<MessageVo> selectUserInfo(@RequestBody Map<String, Object> param, ModelMap model) {
+		
+		String id = (String) param.get("id");
+		String snsType = (String) param.get("snsType");
+		
 		UserRVo selectUserInfo = phoneService.selectUserInfo(id, snsType);
     	
         HttpHeaders headers= new HttpHeaders();
@@ -233,8 +240,14 @@ public class PhoneController {
 	/*
 	 * 사용자 정보 및 토큰값 등록
 	 */
-	@GetMapping("phoneInfo/{telno}/{snsToken}/{snsType}")
-	public ResponseEntity<MessageVo> selectUserInfoSave(@PathVariable("telno") String telno, @PathVariable("snsToken") String snsToken, @PathVariable("snsType") String snsType) throws IOException {
+	@ResponseBody
+	@PostMapping("phoneInfo/telno/snsToken/snsType")
+	public ResponseEntity<MessageVo> selectUserInfoSave(@RequestBody Map<String, Object> param, ModelMap model) throws IOException {
+		
+		String telno = (String) param.get("telno");
+		String snsType = (String) param.get("snsType");
+		String snsToken = (String) param.get("snsToken");
+		
 		UserRVo selectUserInfo = phoneService.selectUserInfo(telno, snsType);
 		
 		UserVo userVo = new UserVo();
