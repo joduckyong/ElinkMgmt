@@ -195,12 +195,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
-	        <!-- plugin>
+	        <plugin>
 	            <artifactId>maven-war-plugin</artifactId>
 	            <configuration>
 	                <warSourceDirectory>src/main/resources/META-INF/resources</warSourceDirectory>
 	            </configuration>
-	        </plugin-->			
+	        </plugin>			
 		</plugins>
 	</build>
 </project>
