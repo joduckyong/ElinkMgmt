@@ -9,13 +9,25 @@
 		     , gender
 		     , CAST(AES_DECRYPT(UNHEX(brth), SHA2(#{encryptKey}, 256)) AS CHAR) as brth
 		     , ci
-		     , sns_token
+			<if test="snsType neq '' and snsType != null">		    
+				<choose>
+					<when test="snsType == 1">, naver as sns_token</when>
+					<when test="snsType == 2">, kakao as sns_token</when>
+					<when test="snsType == 3">, google as sns_token</when>
+					<when test="snsType == 4">, apple as sns_token</when>
+				</choose>   		     
+			</if> 
 		  from tb_user
-		 where sns_type = #{snsType}
+		 where 1 = 1
 		 <if test="id neq '' and id != null">
 		   and (
 		   		CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{id}
-		    	or sns_token = #{id}
+				<choose>
+					<when test="snsType == 1">or naver = #{id}</when>
+					<when test="snsType == 2">or kakao = #{id}</when>
+					<when test="snsType == 3">or google = #{id}</when>
+					<when test="snsType == 4">or apple = #{id}</when>
+				</choose>   		
 		       )
 		 </if>	 
 	</select>
@@ -24,8 +36,7 @@
 		/* UserMapper.selectUserInfoCnt */	
 		select count(1) cnt
 		  from tb_user
-		 where sns_type = #{snsType}
-		   and CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}
+		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}
 	</select>
 		
 	<insert id="insertUser" parameterType="kr.co.elink.dto.UserVo">
@@ -33,7 +44,6 @@
 		insert into tb_user
 					(	
 						telno
-					  , sns_type
 					  <if test="telcom neq '' and telcom != null">
 					  , telcom
 					  </if>
@@ -50,7 +60,6 @@
 					values
 					(
 						HEX(AES_ENCRYPT(#{telno},  SHA2(#{encryptKey}, 256)))
-					  , #{snsType}	
 					  <if test="telcom neq '' and telcom != null">
 					  , #{telcom}
 					  </if>
@@ -69,16 +78,22 @@
 	<update id="updateUser" parameterType="kr.co.elink.dto.UserVo">
 		/* UserMapper.updateUser */
 		update tb_user
-		   set sns_token = #{snsToken}
+		   set 
+	    <if test="snsType neq '' and snsType != null">		    
+			<choose>
+				<when test="snsType == 1">naver = #{snsToken}</when>
+				<when test="snsType == 2">kakao = #{snsToken}</when>
+				<when test="snsType == 3">google = #{snsToken}</when>
+				<when test="snsType == 4">apple = #{snsToken}</when>
+			</choose>  		   
+		</if>
 		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}  
-		   and sns_type = #{snsType}
 	</update>
 	
 	<delete id="deleteUser" parameterType="kr.co.elink.dto.UserVo">
 		/* UserMapper.updateUser */
 		delete from tb_user
 		 where CAST(AES_DECRYPT(UNHEX(telno), SHA2(#{encryptKey}, 256)) AS CHAR) = #{telno}  
-		   and sns_type = #{snsType}
 	</delete>
 		
 </mapper>

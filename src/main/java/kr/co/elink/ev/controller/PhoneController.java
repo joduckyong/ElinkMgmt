@@ -125,7 +125,6 @@ public class PhoneController {
 			userVo.setTelcom(TEL_COM_CD);
 			userVo.setGender(RSLT_SEX_CD);
 			userVo.setBrth(RSLT_BIRTHDAY);
-			userVo.setSnsType(snsType);
 			phoneService.insertUser(userVo);
 		}
 		
@@ -253,7 +252,10 @@ public class PhoneController {
 		UserVo userVo = new UserVo();
 		userVo.setTelno(telno);
 		userVo.setSnsType(snsType);
+		
 		userVo.setSnsToken(snsToken);
+		System.out.println("getSnsType : "+userVo.getSnsType());
+		System.out.println("getSnsToken : "+userVo.getSnsToken());
 		phoneService.updateUser(userVo);
 				
 		HttpHeaders headers= new HttpHeaders();

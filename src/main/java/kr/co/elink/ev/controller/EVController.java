@@ -40,7 +40,11 @@ public class EVController {
 		
 		String url = evApiUrl+param.get("url");
 		String userNo = (String) param.get("userNo");
+		String urlType = (String) param.get("urlType");
 		
+		if(urlType != null && "none".equals(urlType)) {
+			url = (String) param.get("url");
+		}
 		//마이페이지 > 이용내역 사용자 번호
 		if(userNo != null && !"".equals(userNo)) {
 			param.put("userNo", AES256.decrypt(userNo));
