@@ -1,6 +1,8 @@
 package kr.co.elink.ev.controller;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -19,10 +21,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.ApiService;
 import kr.co.elink.common.StatusEnum;
 import kr.co.elink.common.util.AES256;
+import kr.co.elink.dto.BoardVo;
 import kr.co.elink.dto.MessageVo;
 
 @Controller
@@ -64,4 +69,29 @@ public class EVController {
 		return new ResponseEntity<>(message, headers, HttpStatus.OK);
 		
 	}
+	
+	@PostMapping("/insert")
+    public ResponseEntity<MessageVo> insertEv(@RequestBody Map<String, Object> param, @RequestHeader String accessEvToken, HttpSession session, ModelMap model) throws IOException {
+    	
+    	String url = evApiUrl+param.get("url");
+		String userNo = (String) param.get("userNo");
+		
+		//사용자 번호
+		if(userNo != null && !"".equals(userNo)) {
+			param.put("userNo", AES256.decrypt(userNo));
+		}
+		
+		ResponseEntity<?> responseEntity = apiService.post(url, param, accessEvToken);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        MessageVo message = MessageVo.builder()
+            	.status(StatusEnum.OK)
+            	.message("성공 코드")
+            	.data(responseEntity.getBody())
+            	.build();
+    	
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
 }
