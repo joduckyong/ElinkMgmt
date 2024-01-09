@@ -25,6 +25,8 @@ public class ContactUsVo extends DefaultVo
 	
 	private String contactAgree;
 	
+	private String contactProcess;
+	
 	private String createdDatetime;
 	
 	private List<String> ids;

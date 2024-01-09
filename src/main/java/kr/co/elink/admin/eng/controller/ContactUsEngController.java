@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -95,9 +96,9 @@ public class ContactUsEngController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
-	@DeleteMapping("")
-	public ResponseEntity<MessageVo> deleteEngContactUsIds(@RequestBody ContactUsVo contactUsVo) throws Exception{
-    	int deleteContactUsIds = contactUsEngService.deleteEngContactUsIds(contactUsVo);
+    @PostMapping("")
+	public ResponseEntity<MessageVo> updateEngContactUsIds(@RequestBody ContactUsVo contactUsVo) throws Exception{
+    	int updateEngContactUsIds = contactUsEngService.updateEngContactUsIds(contactUsVo);
         
     	 HttpHeaders headers= new HttpHeaders();
          headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -105,9 +106,25 @@ public class ContactUsEngController {
          MessageVo message = MessageVo.builder()
              	.status(StatusEnum.OK)
              	.message("성공 코드")
-             	.data(deleteContactUsIds)
+             	.data(updateEngContactUsIds)
              	.build();
          
          return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("")
+	public ResponseEntity<MessageVo> deleteEngContactUsIds(@RequestBody ContactUsVo contactUsVo) throws Exception{
+		int deleteContactUsIds = contactUsEngService.deleteEngContactUsIds(contactUsVo);
+		
+		HttpHeaders headers= new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		MessageVo message = MessageVo.builder()
+				.status(StatusEnum.OK)
+				.message("성공 코드")
+				.data(deleteContactUsIds)
+				.build();
+		
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
 	}
 }

@@ -22,5 +22,7 @@ public interface ContactUsMapper {
 	
 	public int deleteContactUs(String id);
 	
+	public int updateContactUsIds(ContactUsVo contactUsVo);
+	
 	public int deleteContactUsIds(ContactUsVo contactUsVo);
 }

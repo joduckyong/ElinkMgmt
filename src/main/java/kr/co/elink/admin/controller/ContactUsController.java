@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -95,6 +96,22 @@ public class ContactUsController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
+	@PostMapping("")
+	public ResponseEntity<MessageVo> updateContactUsIds(@RequestBody ContactUsVo contactUsVo) throws Exception{
+    	int updateContactUsIds = contactUsService.updateContactUsIds(contactUsVo);
+        
+    	 HttpHeaders headers= new HttpHeaders();
+         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+         MessageVo message = MessageVo.builder()
+             	.status(StatusEnum.OK)
+             	.message("성공 코드")
+             	.data(updateContactUsIds)
+             	.build();
+         
+         return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+	
 	@DeleteMapping("")
 	public ResponseEntity<MessageVo> deleteContactUsIds(@RequestBody ContactUsVo contactUsVo) throws Exception{
     	int deleteContactUsIds = contactUsService.deleteContactUsIds(contactUsVo);

@@ -1,7 +1,5 @@
 package kr.co.elink.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -23,6 +21,8 @@ public class ContactUsRVo
 	private String contactContents;
 	
 	private String contactAgree;
+	
+	private String contactProcess;
 	
 	private String createdDatetime;
 	

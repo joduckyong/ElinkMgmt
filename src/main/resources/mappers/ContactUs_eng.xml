@@ -17,6 +17,7 @@
 			     , contact_contents
 			     , contact_agree
 			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+			     , contact_process
 			  from tb_contact_us_en
 			 where contact_id like concat(#{id},'%')
 			 and contact_type = #{contactType}
@@ -50,6 +51,7 @@
 		     , contact_contents
 		     , contact_agree
 		     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+		     , contact_process
 		  from tb_contact_us_en
 		 where contact_id = #{id}
 	</select>
@@ -116,6 +118,16 @@
 		delete 
 	 	  from tb_contact_us_en
 	 	 where contact_id = #{id}
+	</delete>		
+	
+	<delete id="updateEngContactUsIds">
+		/* ContactUsEngMapper.updateEngContactUsIds */		
+		update tb_contact_us_en 
+		   set contact_process = 'Y' 
+		 where contact_id in 
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>		
 	</delete>		
 	
 	<delete id="deleteEngContactUsIds">

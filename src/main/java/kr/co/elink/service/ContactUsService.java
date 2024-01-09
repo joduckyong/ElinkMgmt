@@ -89,6 +89,11 @@ public class ContactUsService {
 	};
 	
 	@Transactional
+	public int updateContactUsIds(ContactUsVo contactUsVo){
+		return contactUsMapper.updateContactUsIds(contactUsVo);
+	}
+	
+	@Transactional
 	public int deleteContactUsIds(ContactUsVo contactUsVo){
 		FileVo fileVo = new FileVo();
 		fileVo.setIds(contactUsVo.getIds());
