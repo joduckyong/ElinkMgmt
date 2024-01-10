@@ -2,6 +2,7 @@ package kr.co.elink.ev.controller;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.elink.common.ApiService;
@@ -137,5 +139,21 @@ public class EVController {
             	.build();
     	
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+	
+	@PostMapping("/decrypt")
+	@ResponseBody
+    public Map<String, String> decrypt(@RequestBody Map<String, Object> param) throws IOException {
+		
+		Map<String, String> map = new HashMap<String, String>();
+    	
+		String userNo = (String) param.get("userNo");
+		
+		//마이페이지 > 이용내역 사용자 번호
+		if(userNo != null && !"".equals(userNo)) {
+			map.put("userNo", AES256.decrypt(userNo));
+		}
+    	
+        return map;
     }
 }
