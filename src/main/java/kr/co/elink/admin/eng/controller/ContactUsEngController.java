@@ -96,6 +96,22 @@ public class ContactUsEngController {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
     
+	@PostMapping("/update")
+	public ResponseEntity<MessageVo> updateEngContactUs(@RequestBody ContactUsVo contactUsVo) throws Exception{
+		int updateContactUsIds = contactUsEngService.updateEngContactUs(contactUsVo);
+		
+		HttpHeaders headers= new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		MessageVo message = MessageVo.builder()
+				.status(StatusEnum.OK)
+				.message("성공 코드")
+				.data(updateContactUsIds)
+				.build();
+		
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+	
     @PostMapping("")
 	public ResponseEntity<MessageVo> updateEngContactUsIds(@RequestBody ContactUsVo contactUsVo) throws Exception{
     	int updateEngContactUsIds = contactUsEngService.updateEngContactUsIds(contactUsVo);

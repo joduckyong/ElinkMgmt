@@ -23,6 +23,10 @@ public class ContactUsVo extends DefaultVo
 	
 	private String contactContents;
 	
+	private String contactRecontents;
+	
+	private String contactPw;
+	
 	private String contactAgree;
 	
 	private String contactProcess;

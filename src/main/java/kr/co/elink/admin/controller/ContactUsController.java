@@ -112,6 +112,22 @@ public class ContactUsController {
          return new ResponseEntity<>(message, headers, HttpStatus.OK);
 	}
 	
+	@PostMapping("/update")
+	public ResponseEntity<MessageVo> updateContactUs(@RequestBody ContactUsVo contactUsVo) throws Exception{
+		int updateContactUsIds = contactUsService.updateContactUs(contactUsVo);
+		
+		HttpHeaders headers= new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		
+		MessageVo message = MessageVo.builder()
+				.status(StatusEnum.OK)
+				.message("성공 코드")
+				.data(updateContactUsIds)
+				.build();
+		
+		return new ResponseEntity<>(message, headers, HttpStatus.OK);
+	}
+	
 	@DeleteMapping("")
 	public ResponseEntity<MessageVo> deleteContactUsIds(@RequestBody ContactUsVo contactUsVo) throws Exception{
     	int deleteContactUsIds = contactUsService.deleteContactUsIds(contactUsVo);

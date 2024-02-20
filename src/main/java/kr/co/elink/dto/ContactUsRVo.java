@@ -10,6 +10,8 @@ public class ContactUsRVo
 	
 	private String contactId;
 	
+	private String contactType;
+	
 	private String contactNm;
 	
 	private String contactTitle;
@@ -19,6 +21,10 @@ public class ContactUsRVo
 	private String contactMail;
 	
 	private String contactContents;
+	
+	private String contactRecontents;
+	
+	private String contactPw;
 	
 	private String contactAgree;
 	

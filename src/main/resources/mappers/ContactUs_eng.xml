@@ -15,6 +15,8 @@
 			     , CAST(AES_DECRYPT(UNHEX(contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
 			     , CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
 			     , contact_contents
+			     , contact_recontents
+			     , contact_pw			     
 			     , contact_agree
 			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
 			     , contact_process
@@ -44,11 +46,14 @@
 		/* ContactUsEngMapper.selectEngContactUsInfo */	
 		select
 			contact_id
+			 , contact_type
 		     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
 		     , contact_title
 		     , CAST(AES_DECRYPT(UNHEX(contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
 		     , CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
 		     , contact_contents
+		     , contact_recontents
+		     , contact_pw			     
 		     , contact_agree
 		     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
 		     , contact_process
@@ -82,6 +87,12 @@
 					  <if test="contactContents neq '' and contactContents != null">
 					  , contact_contents
 					  </if>
+					  <if test="contactRecontents neq '' and contactRecontents != null">
+					  , contact_recontents
+					  </if>
+					  <if test="contactPw neq '' and contactPw != null">
+					  , contact_pw
+					  </if>					  
 					  <if test="contactAgree neq '' and contactAgree != null">
 					  , contact_agree
 					  </if>
@@ -107,6 +118,12 @@
 					  <if test="contactContents neq '' and contactContents != null">
 					  , #{contactContents}
 					  </if>
+					  <if test="contactRecontents neq '' and contactRecontents != null">
+					  , #{contactRecontents}
+					  </if>
+					  <if test="contactPw neq '' and contactPw != null">
+					  , #{contactPw}
+					  </if>					  
 					  <if test="contactAgree neq '' and contactAgree != null">
 					  , #{contactAgree}
 					  </if>
@@ -120,6 +137,14 @@
 	 	 where contact_id = #{id}
 	</delete>		
 	
+	<update id="updateEngContactUs">
+		/* ContactUsMapper.updateEngContactUs */		
+		update tb_contact_us_en
+		   set contact_process = 'Y' 
+		     , contact_recontents = #{contactRecontents}
+		 where contact_id = #{contactId}
+	</update>	
+		
 	<delete id="updateEngContactUsIds">
 		/* ContactUsEngMapper.updateEngContactUsIds */		
 		update tb_contact_us_en 

@@ -18,9 +18,9 @@ public interface ContactUsEngMapper {
 	
 	public int insertEngContactUs(ContactUsVo contactUsVo);
 	
-	public int updateEngContactUs(ContactUsVo contactUsVo);
-	
 	public int deleteEngContactUs(String id);
+	
+	public int updateEngContactUs(ContactUsVo contactUsVo);
 	
 	public int updateEngContactUsIds(ContactUsVo contactUsVo);
 	
