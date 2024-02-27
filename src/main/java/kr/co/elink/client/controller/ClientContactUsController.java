@@ -72,11 +72,16 @@ public class ClientContactUsController {
     
     @PostMapping("/list")
     public ResponseEntity<MessageVo> selectContactUs(@RequestBody ContactUsVo contactUsVo) {
-        List<ContactUsRVo> list = contactUsService.selectClientContactUs(contactUsVo);
-        int totalCount = 0;
-        if(list.size() > 0) {
-        	totalCount = list.get(0).getTotalCount();
-        }
+    	
+    	List<ContactUsRVo> list = null;
+    	int totalCount = 0;
+    	
+    	if(contactUsVo.getContactMail() != null && !"".equals(contactUsVo.getContactMail())) {
+    		list = contactUsService.selectClientContactUs(contactUsVo);
+    		if(list.size() > 0) {
+    			totalCount = list.get(0).getTotalCount();
+    		}
+    	}
         
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

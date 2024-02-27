@@ -34,6 +34,12 @@ public class ContactUsRVo
 	
 	private String createdDatetime;
 	
+	private String fileNm;
+	
+	private String fileOriginNm;
+	
+	private String fileSize;
+	
 	/** row number */
     private int rnum = 0;
 	

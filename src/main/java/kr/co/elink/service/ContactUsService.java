@@ -75,6 +75,7 @@ public class ContactUsService {
 	};
 	
 	public PrevNextVo selectPrevNextContactUs(ContactUsVo contactUsVo){
+		contactUsVo.setEncryptKey(encryptKey);		
 		return contactUsMapper.selectPrevNextContactUs(contactUsVo);
 	};
 	
