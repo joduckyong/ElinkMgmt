@@ -14,6 +14,8 @@ public class ContactUsRVo
 	
 	private String contactNm;
 	
+	private String contactNm2;
+	
 	private String contactTitle;
 	
 	private String contactPhone;

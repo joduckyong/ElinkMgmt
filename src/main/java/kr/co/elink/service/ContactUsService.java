@@ -13,6 +13,7 @@ import kr.co.elink.common.util.UploadFile;
 import kr.co.elink.dto.ContactUsRVo;
 import kr.co.elink.dto.ContactUsVo;
 import kr.co.elink.dto.FileVo;
+import kr.co.elink.dto.PrevNextVo;
 import kr.co.elink.mapper.ContactUsMapper;
 import kr.co.elink.mapper.FileMapper;
 
@@ -49,12 +50,32 @@ public class ContactUsService {
 		
 	};
 	
+	public List<ContactUsRVo> selectClientContactUs(ContactUsVo contactUsVo){
+		
+		contactUsVo.setEncryptKey(encryptKey);
+		
+		contactUsVo.setFirstIndex((contactUsVo.getPageIndex() - 1) * contactUsVo.getRecordCountPerPage());
+		contactUsVo.setLastIndex(contactUsVo.getRecordCountPerPage());		
+		return contactUsMapper.selectContactUs(contactUsVo);
+		
+	};
+	
 	public ContactUsRVo selectContactUsInfo(String id){
 		ContactUsVo contactUsVo = new ContactUsVo();
 		contactUsVo.setId(id);
 		contactUsVo.setEncryptKey(encryptKey);
 		
 		return contactUsMapper.selectContactUsInfo(contactUsVo);
+	};
+	
+	public int selectContactUsInfoCnt(ContactUsVo contactUsVo){
+		contactUsVo.setEncryptKey(encryptKey);
+		
+		return contactUsMapper.selectContactUsInfoCnt(contactUsVo);
+	};
+	
+	public PrevNextVo selectPrevNextContactUs(ContactUsVo contactUsVo){
+		return contactUsMapper.selectPrevNextContactUs(contactUsVo);
 	};
 	
 	@Transactional

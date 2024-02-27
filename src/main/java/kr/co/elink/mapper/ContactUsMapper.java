@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.elink.dto.ContactUsRVo;
 import kr.co.elink.dto.ContactUsVo;
+import kr.co.elink.dto.PrevNextVo;
 
 @Repository
 @Mapper
@@ -15,6 +16,10 @@ public interface ContactUsMapper {
 	public List<ContactUsRVo> selectContactUs(ContactUsVo contactUsVo);
 	
 	public ContactUsRVo selectContactUsInfo(ContactUsVo contactUsVo);
+	
+	public PrevNextVo selectPrevNextContactUs(ContactUsVo contactUsVo);
+	
+	public int selectContactUsInfoCnt(ContactUsVo contactUsVo);
 	
 	public int insertContactUs(ContactUsVo contactUsVo);
 	
