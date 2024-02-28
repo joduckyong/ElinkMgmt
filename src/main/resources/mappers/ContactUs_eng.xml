@@ -9,58 +9,119 @@
 	        , row_number() over(order by contact_id desc ) as rnum
 			, tb.*
 		 from (	
-			select contact_id
-			     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
-			     , contact_title
-			     , CAST(AES_DECRYPT(UNHEX(contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
-			     , CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
-			     , contact_contents
-			     , contact_recontents
-			     , contact_pw			     
-			     , contact_agree
-			     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
-			     , contact_process
-			  from tb_contact_us_en
-			 where contact_id like concat(#{id},'%')
-			 and contact_type = #{contactType}
-			 <if test="searchKeyword neq '' and searchKeyword != null">
-			   	<choose>
-			   		<when test="searchCondition eq 'name'">and CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) like concat('%',#{searchKeyword},'%')</when>
-					<when test="searchCondition eq 'title'">and contact_title like concat('%',#{searchKeyword},'%')</when>
-					<when test="searchCondition eq 'content'">and contact_contents like concat('%',#{searchKeyword},'%')</when>
-					<otherwise>
-						and (
-							CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) like concat('%',#{searchKeyword},'%') or
-							contact_title like concat('%',#{searchKeyword},'%') or
-							contact_contents like concat('%',#{searchKeyword},'%')
-							)
-					</otherwise>					
-				</choose>
-			  </if>
+				 select tb.contact_id
+				      , tb.contact_type
+			          , tb.contact_nm
+			          , replace(tb.contact_nm2, substr(tb.contact_nm2, 2, 1), '*') contact_nm2
+			          , tb.contact_title
+			          , tb.contact_phone
+			          , tb.contact_mail
+			          , tb.contact_contents
+			          , tb.contact_recontents
+			          , tb.contact_agree
+			          , tb.created_datetime
+			          , tb.contact_process
+				   from (		 
+						select contact_id
+						     , contact_type
+						     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
+						     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm2
+						     , contact_title
+						     , CAST(AES_DECRYPT(UNHEX(contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
+						     , CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
+						     , contact_contents
+						     , contact_recontents
+						     , contact_pw
+						     , contact_agree
+						     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+						     , contact_process
+						  from tb_contact_us_en
+						 where 1 = 1
+						 <if test="id neq '' and id != null">
+						   and contact_id like concat(#{id},'%')
+						 </if>				 
+						 <if test="contactType neq '' and contactType != null">
+						   and contact_type = #{contactType}
+						 </if>				 
+						 <if test="contactMail neq '' and contactMail != null">
+						   and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail}
+						 </if>				 
+						 <if test="searchKeyword neq '' and searchKeyword != null">
+						   	<choose>
+						   		<when test="searchCondition eq 'name'">and CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) like concat('%',#{searchKeyword},'%')</when>
+								<when test="searchCondition eq 'title'">and contact_title like concat('%',#{searchKeyword},'%')</when>
+								<when test="searchCondition eq 'content'">and contact_contents like concat('%',#{searchKeyword},'%')</when>
+								<otherwise>
+									and (
+										CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) like concat('%',#{searchKeyword},'%') or
+										contact_title like concat('%',#{searchKeyword},'%') or
+										contact_contents like concat('%',#{searchKeyword},'%')
+										)
+								</otherwise>					
+							</choose>
+						  </if>
+						) tb
 			 )tb 
-	    where 1 = 1		
+	    where 1 = 1	
 	   <include refid="kr.co.elink.mapper.CommonMapper.pageSubfix" /> 	
 	</select>
 
 	<select id="selectEngContactUsInfo" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.ContactUsRVo">
 		/* ContactUsEngMapper.selectEngContactUsInfo */	
-		select
-			contact_id
-			 , contact_type
-		     , CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
-		     , contact_title
-		     , CAST(AES_DECRYPT(UNHEX(contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
-		     , CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
-		     , contact_contents
-		     , contact_recontents
-		     , contact_pw			     
-		     , contact_agree
-		     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
-		     , contact_process
-		  from tb_contact_us_en
-		 where contact_id = #{id}
+		select cu.contact_id
+			 , cu.contact_type
+		     , CAST(AES_DECRYPT(UNHEX(cu.contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_nm
+		     , cu.contact_title
+		     , CAST(AES_DECRYPT(UNHEX(cu.contact_phone), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_phone
+		     , CAST(AES_DECRYPT(UNHEX(cu.contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) as contact_mail
+		     , cu.contact_contents
+		     , cu.contact_recontents
+		     , cu.contact_pw		     
+		     , cu.contact_agree
+		     , DATE_FORMAT(cu.created_datetime, '%Y-%m-%d') as created_datetime
+		     , cu.contact_process
+			 , tf.file_nm
+			 , tf.file_origin_nm
+			 , tf.file_size		     
+		  from tb_contact_us_en cu
+		  left join tb_file tf 
+		    on cu.contact_id = tf.file_id
+		 where 1 = 1
+		 <if test="id neq '' and id != null">
+		   and cu.contact_id = #{id}
+		 </if>		
 	</select>
 	
+	<select id="selectEngContactUsInfoCnt" parameterType="kr.co.elink.dto.ContactUsVo" resultType="int">
+		/* ContactUsMapper.selectEngContactUsInfoCnt */	
+		select count(1) cnt
+		  from tb_contact_us_en
+		 where 1 = 1
+		 <if test="id neq '' and id != null">
+		   and contact_id = #{id}
+		 </if>		   
+		 <if test="contactType neq '' and contactType != null">
+		   and contact_type = #{contactType}
+		 </if>		   
+		 <if test="contactMail neq '' and contactMail != null">
+		   and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail}
+		 </if>		   
+		 <if test="contactPw neq '' and contactPw != null">  
+		   and CAST(AES_DECRYPT(UNHEX(contact_pw), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactPw}
+		 </if>  
+	</select>
+		
+	<select id="selectEngPrevNextContactUs" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.PrevNextVo">
+		/* ContactUsMapper.selectEngPrevNextContactUs */	
+		 <![CDATA[
+	  select (select contact_id from tb_contact_us_en where contact_id < #{contactId} and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail} and contact_id like concat(left(#{contactId},3),'%') order by contact_id desc limit 1) as prev_board_id
+		   , (select contact_id from tb_contact_us_en where contact_id > #{contactId} and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail} and contact_id like concat(left(#{contactId},3),'%') order by contact_id limit 1) as next_board_id
+		from tb_contact_us_en
+	   where 1=1
+		 and contact_id = #{contactId}
+		]]>
+	</select>
+			
 	<insert id="insertEngContactUs" parameterType="kr.co.elink.dto.ContactUsVo">
 		/* ContactUsEngMapper.insertEngContactUs */
 		<selectKey resultType="string" keyProperty="id" order="BEFORE">
@@ -122,7 +183,7 @@
 					  , #{contactRecontents}
 					  </if>
 					  <if test="contactPw neq '' and contactPw != null">
-					  , #{contactPw}
+					  ,HEX(AES_ENCRYPT(#{contactPw},  SHA2(#{encryptKey}, 256)))
 					  </if>					  
 					  <if test="contactAgree neq '' and contactAgree != null">
 					  , #{contactAgree}
