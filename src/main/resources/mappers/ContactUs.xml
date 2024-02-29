@@ -20,6 +20,7 @@
 			          , tb.contact_recontents
 			          , tb.contact_agree
 			          , tb.created_datetime
+			          , tb.updated_datetime
 			          , tb.contact_process
 				   from (		 
 						select contact_id
@@ -34,6 +35,7 @@
 						     , contact_pw
 						     , contact_agree
 						     , DATE_FORMAT(created_datetime, '%Y-%m-%d') as created_datetime
+						     , DATE_FORMAT(updated_datetime, '%Y-%m-%d') as updated_datetime
 						     , contact_process
 						  from tb_contact_us
 						 where 1 = 1
@@ -79,6 +81,7 @@
 		     , cu.contact_pw		     
 		     , cu.contact_agree
 		     , DATE_FORMAT(cu.created_datetime, '%Y-%m-%d') as created_datetime
+		     , DATE_FORMAT(cu.updated_datetime, '%Y-%m-%d') as updated_datetime
 		     , cu.contact_process
 			 , tf.file_nm
 			 , tf.file_origin_nm
@@ -203,6 +206,7 @@
 		update tb_contact_us
 		   set contact_process = 'Y' 
 		     , contact_recontents = #{contactRecontents}
+		     , updated_datetime = now()
 		 where contact_id = #{contactId}
 	</update>	
 		

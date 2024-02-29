@@ -34,6 +34,8 @@ public class ContactUsRVo
 	
 	private String createdDatetime;
 	
+	private String updatedDatetime;
+	
 	private String fileNm;
 	
 	private String fileOriginNm;
