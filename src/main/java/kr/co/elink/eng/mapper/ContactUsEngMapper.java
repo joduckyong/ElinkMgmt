@@ -19,7 +19,7 @@ public interface ContactUsEngMapper {
 	
 	public PrevNextVo selectEngPrevNextContactUs(ContactUsVo contactUsVo);
 	
-	public int selectEngContactUsInfoCnt(ContactUsVo contactUsVo);
+	public String selectEngContactUsInfoCnt(ContactUsVo contactUsVo);
 	
 	public int insertEngContactUs(ContactUsVo contactUsVo);
 	

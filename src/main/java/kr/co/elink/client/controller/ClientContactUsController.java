@@ -55,7 +55,7 @@ public class ClientContactUsController {
     
     @PostMapping("/cnt")
     public ResponseEntity<MessageVo> selectContactUsInfoCnt(@RequestBody ContactUsVo contactUsVo) {
-    	int selectContactUsInfoCnt = contactUsService.selectContactUsInfoCnt(contactUsVo);
+    	String selectContactUsInfoCnt = contactUsService.selectContactUsInfoCnt(contactUsVo);
         
     	HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

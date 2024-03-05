@@ -47,7 +47,10 @@
 						 </if>				 
 						 <if test="contactMail neq '' and contactMail != null">
 						   and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail}
-						 </if>				 
+						 </if>				
+						 <if test="contactPw neq '' and contactPw != null">
+						   and contact_pw = #{contactPw}
+						 </if>	
 						 <if test="searchKeyword neq '' and searchKeyword != null">
 						   	<choose>
 						   		<when test="searchCondition eq 'name'">and CAST(AES_DECRYPT(UNHEX(contact_nm), SHA2(#{encryptKey}, 256)) AS CHAR) like concat('%',#{searchKeyword},'%')</when>
@@ -93,11 +96,14 @@
 		 <if test="id neq '' and id != null">
 		   and cu.contact_id = #{id}
 		 </if>		   
+		 <if test="contactPw neq '' and contactPw != null">
+		   and cu.contact_pw = #{contactPw}
+		 </if>		   
 	</select>
 	
-	<select id="selectContactUsInfoCnt" parameterType="kr.co.elink.dto.ContactUsVo" resultType="int">
+	<select id="selectContactUsInfoCnt" parameterType="kr.co.elink.dto.ContactUsVo" resultType="String">
 		/* ContactUsMapper.selectContactUsInfoCnt */	
-		select count(1) cnt
+		select distinct contact_pw
 		  from tb_contact_us
 		 where 1 = 1
 		 <if test="id neq '' and id != null">
@@ -117,8 +123,8 @@
 	<select id="selectPrevNextContactUs" parameterType="kr.co.elink.dto.ContactUsVo" resultType="kr.co.elink.dto.PrevNextVo">
 		/* ContactUsMapper.selectPrevNextContactUs */	
 		 <![CDATA[
-	  select (select contact_id from tb_contact_us where contact_id < #{contactId} and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail} and contact_id like concat(left(#{contactId},3),'%') order by contact_id desc limit 1) as prev_board_id
-		   , (select contact_id from tb_contact_us where contact_id > #{contactId} and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail} and contact_id like concat(left(#{contactId},3),'%') order by contact_id limit 1) as next_board_id
+	  select (select contact_id from tb_contact_us where contact_id < #{contactId} and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail} and contact_id like concat(left(#{contactId},3),'%') and contact_pw = #{contactPw} order by contact_id desc limit 1) as prev_board_id
+		   , (select contact_id from tb_contact_us where contact_id > #{contactId} and CAST(AES_DECRYPT(UNHEX(contact_mail), SHA2(#{encryptKey}, 256)) AS CHAR) = #{contactMail} and contact_id like concat(left(#{contactId},3),'%') and contact_pw = #{contactPw} order by contact_id limit 1) as next_board_id
 		from tb_contact_us
 	   where 1=1
 		 and contact_id = #{contactId}

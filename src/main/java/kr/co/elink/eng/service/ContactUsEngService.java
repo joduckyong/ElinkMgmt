@@ -68,7 +68,7 @@ public class ContactUsEngService {
 		return contactUsEngMapper.selectEngContactUsInfo(contactUsVo);
 	};
 	
-	public int selectEngContactUsInfoCnt(ContactUsVo contactUsVo){
+	public String selectEngContactUsInfoCnt(ContactUsVo contactUsVo){
 		contactUsVo.setEncryptKey(encryptKey);
 		
 		return contactUsEngMapper.selectEngContactUsInfoCnt(contactUsVo);
